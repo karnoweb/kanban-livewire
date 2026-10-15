@@ -1,0 +1,11 @@
+/vendor/
+/node_modules/
+/.phpunit.cache/
+/for-start-package/
+/kanban.zip
+/test-results/
+/playwright-report/
+/workbench/database/*.sqlite
+/workbench/database/*.sqlite-*
+.phpunit.result.cache
+.env

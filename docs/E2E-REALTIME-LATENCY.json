@@ -1,0 +1,10 @@
+{
+  "measuredAt": "2026-10-15T12:11:36.105Z",
+  "browser": "msedge",
+  "samples": 20,
+  "minMs": 142,
+  "medianMs": 164,
+  "p95Ms": 207,
+  "maxMs": 267,
+  "note": "alice drop event to bob DOM observation (upper bound, includes polling), local Reverb, SQLite"
+}

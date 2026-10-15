@@ -1,0 +1,44 @@
+{
+  "name": "karnoweb/laravel-livewire-kanban",
+  "description": "Domain-agnostic enterprise Kanban and List UI for Laravel Livewire",
+  "type": "library",
+  "version": "13.0.0",
+  "license": "proprietary",
+  "require": {
+    "php": "^8.3",
+    "illuminate/support": "^13.0",
+    "livewire/livewire": "^4.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^11.0",
+    "phpunit/phpunit": "^12.5.8",
+    "laravel/reverb": "^1.12"
+  },
+  "autoload": {
+    "psr-4": {
+      "Karnoweb\\Kanban\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Karnoweb\\Kanban\\Tests\\": "tests/",
+      "Workbench\\App\\": "workbench/app/",
+      "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Karnoweb\\Kanban\\KanbanServiceProvider"
+      ],
+      "aliases": {
+        "Kanban": "Karnoweb\\Kanban\\Facades\\Kanban"
+      }
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
