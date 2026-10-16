@@ -28,6 +28,20 @@ final class TaskBoardFactory extends WorkbenchBoardFactory
 
     protected function settings(): array
     {
-        return ['interaction' => ['transition_policy' => 'allow'], 'features' => ['wip' => true, 'bulk' => true, 'create_card' => true, 'create_stage' => true]];
+        return [
+            'interaction' => ['transition_policy' => 'allow'],
+            'features' => [
+                'wip' => true,
+                'bulk' => true,
+                'create_card' => true,
+                'create_stage' => true,
+                'filters' => true,
+                'search' => true,
+                'archive_card' => true,
+                'reorder_cards' => true,
+                'realtime' => false,
+            ],
+            'views' => ['allowed' => ['board', 'list']],
+        ];
     }
 }

@@ -1,3 +1,5 @@
+> تغییر قرارداد استایل پس از این سند: DaisyUI 5 با تنظیمات پیش‌فرض؛ CSS مستقل اکنون شامل Tailwind/DaisyUI و بازنشانی عمومی است و کاملاً namespaced نیست. برای میزبان دارای DaisyUI فقط CSS منبع را import کنید. [راهنمای فعلی](11-views-customization.md).
+
 # سند نهایی نیازمندی‌های محصول (PRD) — پکیج سازمانی Laravel Livewire Kanban
 
 > **نام موقت:** `kanban-livewire`  

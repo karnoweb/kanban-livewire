@@ -25,6 +25,9 @@ final class KanbanServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/kanban.php', 'kanban');
         $this->app->singleton(BoardRegistry::class);
+        $this->app->singleton(\Karnoweb\Kanban\Models\KanbanModelRegistry::class);
+        $this->app->bind(\Karnoweb\Kanban\Contracts\RankStrategy::class, \Karnoweb\Kanban\Actions\SparseNumericRank::class);
+        $this->app->bind(\Karnoweb\Kanban\Contracts\ModelOperationStore::class, \Karnoweb\Kanban\Actions\ModelOperationStore::class);
         $this->app->singleton(KanbanManager::class);
         $this->app->alias(KanbanManager::class, 'kanban');
         $this->app->singleton(ScopeResolver::class, UnconfiguredScopeResolver::class);
@@ -32,9 +35,9 @@ final class KanbanServiceProvider extends ServiceProvider
         $this->app->singleton(Monitor::class, NullMonitor::class);
         $this->app->singleton(AuditSink::class, NullAuditSink::class);
         $this->app->singleton(PreferenceStore::class, SessionPreferenceStore::class);
-        $this->app->singleton(\Karnoweb\Kanban\Support\IdempotencyGuard::class);
-        $this->app->singleton(\Karnoweb\Kanban\Realtime\EventDeduplicator::class);
-        $this->app->singleton(\Karnoweb\Kanban\Realtime\RealtimeBridge::class);
+        $this->app->scoped(\Karnoweb\Kanban\Support\IdempotencyGuard::class);
+        $this->app->scoped(\Karnoweb\Kanban\Realtime\EventDeduplicator::class);
+        $this->app->scoped(\Karnoweb\Kanban\Realtime\RealtimeBridge::class);
     }
 
     public function boot(): void
@@ -55,5 +58,6 @@ final class KanbanServiceProvider extends ServiceProvider
         ], 'kanban-assets');
 
         Livewire::component('kanban-board', Board::class);
+        Livewire::component('kanban-compact', \Karnoweb\Kanban\Livewire\CompactBoard::class);
     }
 }

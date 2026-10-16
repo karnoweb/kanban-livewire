@@ -31,6 +31,19 @@ abstract class WorkbenchTestCase extends TestCase
         $app['config']->set('app.key', 'base64:'.base64_encode(str_repeat('k', 32)));
         $app['config']->set('broadcasting.default', 'null');
         $app['config']->set('queue.default', 'sync');
+        $app['config']->set('view.paths', array_merge(
+            [dirname(__DIR__, 2).'/workbench/resources/views'],
+            $app['config']->get('view.paths', []),
+        ));
+    }
+
+    protected function defineRoutes($router): void
+    {
+        $routes = dirname(__DIR__, 2).'/workbench/routes/web.php';
+
+        if (is_file($routes)) {
+            require $routes;
+        }
     }
 
     protected function defineDatabaseMigrations(): void

@@ -27,3 +27,23 @@ After a timeout the component keeps the original `operationId` and asks `DataPro
 ## ADR-7 — No package database
 
 There is no migration under `src`. Demo tables live only under `workbench/`.
+
+## ADR-8 — Explicit model sources are an optional adapter
+
+`sources(null)` is represented by an omitted builder call and preserves the existing provider path. `sources([])` selects an empty model source set. The model registry contains class descriptors only; each resolution rebuilds the executable definition on the server. Mixed models require a complete explicit stage map. Non-Eloquent sources use an explicit host provider, preserving the existing contracts.
+
+## ADR-9 — Bounded keyset merge and binary text order
+
+Model cursors use authenticated encryption and bind actor/scope/board/source selection/stage/query. Each source fetches at most page size plus one. The merge keeps a position per source. Text predicates and ordering use the same binary semantics on SQL and PHP so engine collation cannot silently skip records.
+
+## ADR-10 — No hidden operation table
+
+The default model operation store uses a persistent shared host cache. A pending marker precedes persistence, preventing a crashed operation from being blindly re-executed. Unknown commit outcomes remain unknown until the host reconciles them. Hosts can implement `Contracts\ModelOperationStore` on an existing domain store. No mandatory rank, version or operation table is introduced.
+
+## ADR-11 — Scope-wide model broadcasts contain no row identity
+
+Subscribers in one scope may have different row visibility. Model broadcasts therefore redact card/source/version and send only board invalidation after an allowed-source check. Each client refetches its own authorized data. Domain hooks receive the detailed server event after commit; broadcasting remains host-owned.
+
+## ADR-12 — Group selection and reachable render windows
+
+The first group presentation lazily selects one authorized group across the columns instead of loading all group rows. Render windows have explicit previous/next controls so loaded cards never disappear without a path back. Scope/actor/board preferences and component-local scroll state remain isolated. Compact presentation reuses the same component and data/action contracts.

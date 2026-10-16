@@ -1,3 +1,5 @@
+> به‌روزرسانی ظاهر: CSS منبع اکنون به DaisyUI 5 وابسته است. میزبان دارای DaisyUI باید آن را در CSS سراسری import کند و فایل مستقل dist را اضافه نکند. قرارداد پوسته، متغیرها و تمام انتخابگرها: [راهنمای سفارشی‌سازی](11-views-customization.md).
+
 # نقشه اجرای صفر تا صد پکیج سازمانی Laravel Livewire Kanban — پنج فاز قابل تحویل داخلی
 
 > **سند اجرایی/Runbook نسخه ۱.۰ — ۲۰۲۶/۱۰/۱۵**  
@@ -270,7 +272,7 @@ Gate decision: PASS / FAIL (if FAIL, DO NOT continue):
 | `resources/js/board-interactions.js` | scroll/keyboard/refocusing/selection/search concurrency. |
 | `resources/js/virtualizer.js` | virtual window، overscan، measured height، cleanup. |
 | `resources/js/announcer.js` | aria-live رویدادها و status. |
-| `resources/css/kanban.css` | استایل namespaced مستقل از Tailwind میزبان، منطقی RTL/LTR. |
+| `resources/css/kanban.css` | استایل ساختاری وابسته به DaisyUI 5؛ import در CSS میزبان و ارث‌بری متغیرها، با جهت منطقی RTL/LTR. |
 | `resources/dist/kanban.css` | artifact ساخته‌شده و نسخه‌بندی‌شده برای نصب مستقیم. |
 | `resources/dist/kanban.js` | bundle ساخته‌شده، بدون Alpine یا Livewire مضاعف. |
 | `package.json` | اسکریپت build/minify و وابستگی فقط development. |

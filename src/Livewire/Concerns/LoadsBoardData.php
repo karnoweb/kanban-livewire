@@ -39,12 +39,16 @@ trait LoadsBoardData
         }
 
         $this->accessDenied = false;
+        $prefs = app(PreferenceManager::class);
         $this->scopeHash = app(ScopeHasher::class)->hash($context->scopeKey);
-        $this->theme = $definition->settings->appearance->theme;
-        $this->dir = $definition->settings->appearance->direction;
-        $this->reducedMotion = $definition->settings->interaction->reducedMotion || $this->reducedMotion;
+        $this->theme = $prefs->theme($context) ?? $definition->settings->appearance->theme;
+        $this->dir = $prefs->direction($context) ?? $definition->settings->appearance->direction;
+        $this->density = $prefs->density($context) ?? $definition->settings->views->density;
+        $this->reducedMotion = $definition->settings->interaction->reducedMotion
+            || ! $definition->settings->interaction->animations
+            || $this->reducedMotion;
         $this->detailSurface = $definition->settings->views->detailSurface;
-        $preferred = app(PreferenceManager::class)->view($context);
+        $preferred = $prefs->view($context);
         $view = $preferred !== null && $definition->settings->views->allows($preferred)
             ? $preferred
             : $definition->settings->views->defaultView;
@@ -81,6 +85,13 @@ trait LoadsBoardData
     {
         $definition = $this->definition();
 
+        if ($definition->providerClass === \Karnoweb\Kanban\Providers\EloquentKanbanDataProvider::class) {
+            return new BoardQuery(view: $this->view, stageId: $stageId, cursor: $cursor,
+                limit: $definition->settings->pagination->pageSize,
+                search: app(\Karnoweb\Kanban\Support\QueryNormalizer::class)->search($this->search),
+                filters: $this->filters, sort: $this->sort, direction: $this->direction);
+        }
+
         return BoardQuery::make(
             $this->view,
             $this->search,
@@ -96,6 +107,18 @@ trait LoadsBoardData
     protected function currentHash(): string
     {
         return $this->query()->hash();
+    }
+
+    protected function loadedVersion(string $id): ?string
+    {
+        $items = array_merge($this->listItems, $this->archiveItems, ...array_column($this->columns, 'cards'));
+        foreach ($items as $item) {
+            if (($item['id'] ?? null) === $id) {
+                return isset($item['version']) ? (string) $item['version'] : null;
+            }
+        }
+
+        return null;
     }
 
     protected function reload(): void
@@ -129,10 +152,12 @@ trait LoadsBoardData
                 'countExact' => $count?->exact ?? $page->countExact,
                 'loadedCount' => count($cards),
                 'renderedCount' => $this->renderedCount(count($cards), $definition),
+                'windowStart' => 0,
                 'hasMore' => $page->hasMore,
                 'nextCursor' => $page->nextCursor,
                 'error' => null,
                 'cards' => $cards,
+                'metrics' => $provider instanceof \Karnoweb\Kanban\Contracts\ColumnMetricsProvider ? $provider->metrics($context, $stage->id, $query) : [],
             ];
         }
 
@@ -150,21 +175,21 @@ trait LoadsBoardData
         $this->syncReorderFlag();
     }
 
-    /**
-     * Every loaded card is rendered. Memory/DOM growth is bounded by server pagination
-     * (Load More), never by hiding already-loaded cards, so no loaded card becomes unreachable.
-     */
+    /** Loaded cards stay reachable through explicit window controls. */
     protected function renderedCount(int $loaded, BoardDefinition $definition): int
     {
-        return $loaded;
+        return $definition->settings->pagination->virtualization
+            ? min($loaded, max(50, $definition->settings->pagination->pageSize * 2)) : $loaded;
     }
 
     protected function execute(ActionCommand $command): ActionResult
     {
         $guard = app(IdempotencyGuard::class);
+        $context = $this->context();
+        $guardId = hash('sha256', json_encode([$context->boardKey, $context->scopeKey, $context->actorId, $command->operationId], JSON_THROW_ON_ERROR));
 
-        if (! $guard->begin($this->instanceId, $command->operationId)) {
-            $remembered = $guard->remembered($command->operationId);
+        if (! $guard->begin($this->instanceId, $guardId)) {
+            $remembered = $guard->remembered($guardId);
 
             if ($remembered instanceof ActionResult) {
                 $this->notice = app(ResultMapper::class)->notice($remembered);
@@ -180,7 +205,7 @@ trait LoadsBoardData
         }
 
         $result = app(ActionDispatcher::class)->dispatch($command, $this->context(), $this->definition());
-        $guard->finish($this->instanceId, $command->operationId, $result);
+        $guard->finish($this->instanceId, $guardId, $result);
         $this->notice = app(ResultMapper::class)->notice($result);
         $this->emitFor($result, $command);
 
@@ -226,7 +251,21 @@ trait LoadsBoardData
             default => 'kanban:loading',
         };
 
-        $this->dispatch($name, operationId: $command->operationId, status: $result->status->value);
+        $cardId = is_scalar($command->payload['cardId'] ?? null) ? (string) $command->payload['cardId'] : null;
+        $fromStageId = is_scalar($command->payload['fromStageId'] ?? null) ? (string) $command->payload['fromStageId'] : null;
+        $toStageId = is_scalar($command->payload['toStageId'] ?? null) ? (string) $command->payload['toStageId'] : null;
+
+        $this->dispatch(
+            $name,
+            instanceId: $this->instanceId,
+            boardKey: $this->boardKey,
+            operationId: $command->operationId,
+            status: $result->status->value,
+            messageCode: $result->messageCode ?? $result->status->value,
+            cardId: $cardId,
+            fromStageId: $fromStageId,
+            toStageId: $toStageId,
+        );
     }
 
     protected function syncReorderFlag(): void
@@ -234,6 +273,9 @@ trait LoadsBoardData
         try {
             $manual = $this->sort === 'manualOrder';
             $enabled = $this->definition()->settings->features->reorderCards && $manual;
+            if ($this->definition()->providerClass === \Karnoweb\Kanban\Providers\EloquentKanbanDataProvider::class) {
+                $enabled = $enabled && ($this->provider()->capabilities($this->context())['manualOrder'] ?? false);
+            }
         } catch (BoardAccessDenied|UnknownBoard) {
             $this->reorderAllowed = false;
 

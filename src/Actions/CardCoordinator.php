@@ -17,34 +17,35 @@ final class CardCoordinator
     }
 
     /** @param array<string, mixed> $fields */
-    public function update(string $operationId, string $cardId, array $fields, BoardDefinition $definition): ActionCommand
+    public function update(string $operationId, string $cardId, array $fields, BoardDefinition $definition, ?string $expectedVersion = null): ActionCommand
     {
         $payload = $this->onlyAllowed($fields, $definition);
         $payload['cardId'] = $cardId;
 
-        return new ActionCommand($operationId, ActionType::UpdateCard, $payload);
+        return new ActionCommand($operationId, ActionType::UpdateCard, $payload, $expectedVersion);
     }
 
-    public function archive(string $operationId, string $cardId): ActionCommand
+    public function archive(string $operationId, string $cardId, ?string $expectedVersion = null): ActionCommand
     {
-        return new ActionCommand($operationId, ActionType::ArchiveCard, ['cardId' => $cardId]);
+        return new ActionCommand($operationId, ActionType::ArchiveCard, ['cardId' => $cardId], $expectedVersion);
     }
 
-    public function restore(string $operationId, string $cardId, ?string $stageId): ActionCommand
+    public function restore(string $operationId, string $cardId, ?string $stageId, ?string $expectedVersion = null): ActionCommand
     {
         return new ActionCommand($operationId, ActionType::RestoreCard, [
             'cardId' => $cardId,
             'stageId' => $stageId,
-        ]);
+        ], $expectedVersion);
     }
 
-    public function custom(string $operationId, string $cardId, string $actionId, array $fields): ActionCommand
+    public function custom(string $operationId, string $cardId, string $actionId, array $fields, ?string $expectedVersion = null): ActionCommand
     {
         return new ActionCommand($operationId, ActionType::ExecuteCardAction, [
             'cardId' => $cardId,
             'actionId' => $actionId,
             'fields' => implode(',', array_map('strval', $fields)),
-        ]);
+            'formData' => $fields,
+        ], $expectedVersion);
     }
 
     /** @param array<string, mixed> $fields

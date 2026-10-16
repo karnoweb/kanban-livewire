@@ -28,10 +28,19 @@ final class CrmBoardFactory extends WorkbenchBoardFactory
 
     protected function settings(): array
     {
-        return ['interaction' => [
-            'transition_policy' => 'deny',
-            'transitions' => ['new' => ['progress'], 'progress' => ['negotiation'], 'negotiation' => ['closed']],
-            'confirmation_rules' => ['negotiation>closed' => ['mode' => 'form', 'fields' => ['note' => ['required' => true]]]],
-        ]];
+        return [
+            'interaction' => [
+                'transition_policy' => 'deny',
+                'transitions' => ['new' => ['progress'], 'progress' => ['negotiation'], 'negotiation' => ['closed']],
+                'confirmation_rules' => ['negotiation>closed' => ['mode' => 'form', 'fields' => ['note' => ['required' => true]]]],
+            ],
+            'features' => [
+                'create_card' => true,
+                'create_stage' => false,
+                'bulk' => false,
+                'filters' => false,
+                'realtime' => false,
+            ],
+        ];
     }
 }

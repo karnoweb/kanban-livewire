@@ -37,6 +37,14 @@ final class BoardBuilder
     /** @var list<CardData> */
     private array $cards = [];
 
+    private ?array $sources = null;
+
+    private array $stageMap = [];
+
+    private ?\Karnoweb\Kanban\Data\SwimlaneDefinition $swimlane = null;
+
+    private bool $pageSizeExplicit = false;
+
     public function __construct()
     {
         $this->settings = KanbanSettings::defaults();
@@ -93,8 +101,37 @@ final class BoardBuilder
         return $this;
     }
 
+    /** Explicit per-board allowlist; an empty array permits no sources. */
+    public function sources(array $keys): self
+    {
+        foreach ($keys as $key) {
+            if (! is_string($key)) {
+                throw new InvalidBoardDefinition('Sources must be string slugs.', $this->key);
+            }
+            \Karnoweb\Kanban\Models\CardIdentity::assertSource($key);
+        }
+        $this->sources = array_values(array_unique($keys));
+
+        return $this;
+    }
+
+    public function stageMap(array $map): self
+    {
+        $this->stageMap = $map;
+
+        return $this;
+    }
+
+    public function swimlanes(\Karnoweb\Kanban\Data\SwimlaneDefinition $definition): self
+    {
+        $this->swimlane = $definition;
+
+        return $this;
+    }
+
     public function settings(KanbanSettings|array $settings): self
     {
+        $this->pageSizeExplicit = $settings instanceof KanbanSettings || isset($settings['pagination']['page_size']);
         $this->settings = $settings instanceof KanbanSettings ? $settings : KanbanSettings::fromArray($settings);
 
         return $this;
@@ -140,18 +177,35 @@ final class BoardBuilder
 
     public function build(): BoardDefinition
     {
-        $provider = $this->providerClass ?? InlineDataProvider::class;
-        $handler = $this->handlerClass ?? UnsupportedActionHandler::class;
+        $provider = $this->providerClass ?? ($this->sources !== null ? \Karnoweb\Kanban\Providers\EloquentKanbanDataProvider::class : InlineDataProvider::class);
+        $handler = $this->handlerClass ?? ($this->sources !== null && $this->providerClass === null ? \Karnoweb\Kanban\Actions\EloquentKanbanActionHandler::class : UnsupportedActionHandler::class);
+        $settings = $this->settings;
+        if ($provider === \Karnoweb\Kanban\Providers\EloquentKanbanDataProvider::class) {
+            $values = get_object_vars($settings);
+            $values['features'] = new \Karnoweb\Kanban\Data\FeatureSettings(...array_replace(get_object_vars($settings->features), [
+                'createStage' => false, 'updateStage' => false, 'reorderStages' => false, 'archiveStage' => false,
+            ]));
+            if (! $this->pageSizeExplicit) {
+                $page = get_object_vars($settings->pagination);
+                $page['pageSize'] = min((int) $settings->model->eloquent['default_page_size'], $settings->pagination->maxPageSize);
+                $values['pagination'] = new \Karnoweb\Kanban\Data\PaginationSettings(...$page);
+            }
+            $settings = new KanbanSettings(...$values);
+        }
 
         $definition = new BoardDefinition(
             key: (string) $this->key,
             board: $this->board ?? throw new InvalidBoardDefinition('Board data is required.', $this->key),
             providerClass: $provider,
             handlerClass: $handler,
-            settings: $this->settings,
+            settings: $settings,
             views: $this->views,
             inlineStages: $this->stages,
             inlineCards: $this->cards,
+            cardForm: new \Karnoweb\Kanban\Data\CardFormSchema(array_merge((new \Karnoweb\Kanban\Data\CardFormSchema)->fields, $this->sources !== null ? ['source'] : [])),
+            sources: $this->sources,
+            stageMap: $this->stageMap,
+            swimlane: $this->swimlane,
         );
 
         return (new BoardDefinitionValidator)->validate($definition);

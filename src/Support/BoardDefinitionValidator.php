@@ -36,6 +36,38 @@ final class BoardDefinitionValidator
 
         $stageIds = [];
 
+        if ($definition->sources !== null) {
+            $registry = app(\Karnoweb\Kanban\Models\KanbanModelRegistry::class);
+            foreach ($definition->sources as $source) {
+                \Karnoweb\Kanban\Models\CardIdentity::assertSource($source);
+                if (! $registry->has($source)) {
+                    throw new InvalidBoardDefinition('Board contains an unregistered source.', $key);
+                }
+                if (! $registry->isEloquent($source)) {
+                    if ($definition->providerClass === \Karnoweb\Kanban\Providers\EloquentKanbanDataProvider::class) {
+                        throw new InvalidBoardDefinition('Non-Eloquent sources require an explicit combined provider.', $key);
+                    }
+                    continue;
+                }
+                $model = $registry->definition($source);
+                if ($model->stageDefinitions === []) {
+                    throw new InvalidBoardDefinition('A model source must declare its stages.', $key);
+                }
+                if (count($definition->sources) > 1 || isset($definition->stageMap[$source])) {
+                    $map = $definition->stageMap[$source] ?? [];
+                    if (array_diff(array_keys($model->stageDefinitions), array_keys($map)) !== [] || count($map) !== count($model->stageDefinitions)) {
+                        throw new InvalidBoardDefinition('Mixed sources require a complete, explicit stageMap.', $key);
+                    }
+                    foreach ($map as $mapped) {
+                        if (! is_string($mapped)) {
+                            throw new InvalidBoardDefinition('Mapped stage ids must be strings.', $key);
+                        }
+                        \Karnoweb\Kanban\Support\ValueGuard::id($mapped, 'stageMap');
+                    }
+                }
+            }
+        }
+
         foreach ($definition->inlineStages as $stage) {
             if (! $stage instanceof StageData || $stage->boardId !== $definition->board->id) {
                 throw new InvalidBoardDefinition('Inline stage does not belong to this board.', $key);

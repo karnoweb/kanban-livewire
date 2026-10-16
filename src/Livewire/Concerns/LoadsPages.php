@@ -8,6 +8,18 @@ use Karnoweb\Kanban\Data\CardData;
 
 trait LoadsPages
 {
+    public function shiftStageWindow(string $stageId, int $direction): void
+    {
+        $index = $this->columnIndex($stageId);
+        if ($index === null || ! in_array($direction, [-1, 1], true)) {
+            return;
+        }
+        $column = $this->columns[$index];
+        $size = $this->renderedCount(count($column['cards']), $this->definition());
+        $max = max(0, count($column['cards']) - $size);
+        $this->columns[$index]['windowStart'] = max(0, min($max, ($column['windowStart'] ?? 0) + $direction * max(1, intdiv($size, 2))));
+    }
+
     public function loadMore(string $stageId): void
     {
         $index = $this->columnIndex($stageId);
@@ -81,6 +93,8 @@ trait LoadsPages
             $page = $this->provider()->stageCards($this->context(), $stageId, $this->query(null, $stageId));
             $this->columns[$index]['cards'] = array_map(static fn (CardData $card): array => $card->toArray(), $page->items);
             $this->columns[$index]['loadedCount'] = count($page->items);
+            $this->columns[$index]['renderedCount'] = $this->renderedCount(count($page->items), $this->definition());
+            $this->columns[$index]['windowStart'] = 0;
             $this->columns[$index]['hasMore'] = $page->hasMore;
             $this->columns[$index]['nextCursor'] = $page->nextCursor;
             $this->columns[$index]['error'] = null;

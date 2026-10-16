@@ -2,7 +2,7 @@
   "name": "karnoweb/laravel-livewire-kanban",
   "description": "Domain-agnostic enterprise Kanban and List UI for Laravel Livewire",
   "type": "library",
-  "version": "13.0.0",
+  "version": "14.0.0",
   "license": "proprietary",
   "require": {
     "php": "^8.3",

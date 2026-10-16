@@ -24,6 +24,36 @@ abstract class WorkbenchBoardFactory implements BoardFactory
         return ['interaction' => ['transition_policy' => 'deny']];
     }
 
+    /** @return array<string, mixed> */
+    public function resolvedSettings(): array
+    {
+        $defaults = array_replace_recursive([
+            'appearance' => ['theme' => 'light', 'direction' => 'ltr'],
+            'views' => [
+                'default' => 'board',
+                'allowed' => ['board', 'list'],
+                'density' => 'comfortable',
+                'detail_surface' => 'modal',
+            ],
+        ], $this->settings());
+
+        try {
+            $overrides = session('workbench.playground.'.$this->key(), []);
+        } catch (\Throwable) {
+            $overrides = [];
+        }
+        if (! is_array($overrides) || $overrides === []) {
+            return $defaults;
+        }
+
+        $merged = array_replace_recursive($defaults, $overrides);
+        if (isset($overrides['views']['allowed']) && is_array($overrides['views']['allowed'])) {
+            $merged['views']['allowed'] = array_values($overrides['views']['allowed']);
+        }
+
+        return $merged;
+    }
+
     public function make(BoardContext $context): BoardDefinition
     {
         return (new BoardBuilder)
@@ -31,10 +61,7 @@ abstract class WorkbenchBoardFactory implements BoardFactory
             ->board(new BoardData($this->key(), $this->title(), $context->scopeKey))
             ->provider($this->provider())
             ->handler($this->handler())
-            ->settings(array_replace_recursive($this->settings(), [
-                'realtime' => ['enabled' => true],
-                'features' => ['realtime' => true],
-            ]))
+            ->settings($this->resolvedSettings())
             ->build();
     }
 

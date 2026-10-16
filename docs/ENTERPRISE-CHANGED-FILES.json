@@ -1,0 +1,797 @@
+[
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Concerns/HasKanbanCards.php",
+    "phase": 1,
+    "reason": "تعریف اختیاری مدل، ثبت منابع، اعتبارسنجی و تنظیمات"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Models/KanbanModelDefinition.php",
+    "phase": 1,
+    "reason": "تعریف اختیاری مدل، ثبت منابع، اعتبارسنجی و تنظیمات"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Models/KanbanModelRegistry.php",
+    "phase": 1,
+    "reason": "تعریف اختیاری مدل، ثبت منابع، اعتبارسنجی و تنظیمات"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Models/CardIdentity.php",
+    "phase": 1,
+    "reason": "تعریف اختیاری مدل، ثبت منابع، اعتبارسنجی و تنظیمات"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Models/BoardSources.php",
+    "phase": 1,
+    "reason": "تعریف اختیاری مدل، ثبت منابع، اعتبارسنجی و تنظیمات"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Support/BoardBuilder.php",
+    "phase": 1,
+    "reason": "تعریف اختیاری مدل، ثبت منابع، اعتبارسنجی و تنظیمات"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Support/BoardDefinitionValidator.php",
+    "phase": 1,
+    "reason": "تعریف اختیاری مدل، ثبت منابع، اعتبارسنجی و تنظیمات"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Data/BoardDefinition.php",
+    "phase": 1,
+    "reason": "تعریف اختیاری مدل، ثبت منابع، اعتبارسنجی و تنظیمات"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Data/KanbanSettings.php",
+    "phase": 1,
+    "reason": "تعریف اختیاری مدل، ثبت منابع، اعتبارسنجی و تنظیمات"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Data/EnterpriseSettings.php",
+    "phase": 1,
+    "reason": "تعریف اختیاری مدل، ثبت منابع، اعتبارسنجی و تنظیمات"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Data/SecuritySettings.php",
+    "phase": 1,
+    "reason": "تعریف اختیاری مدل، ثبت منابع، اعتبارسنجی و تنظیمات"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/KanbanServiceProvider.php",
+    "phase": 1,
+    "reason": "تعریف اختیاری مدل، ثبت منابع، اعتبارسنجی و تنظیمات"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/config/kanban.php",
+    "phase": 1,
+    "reason": "تعریف اختیاری مدل، ثبت منابع، اعتبارسنجی و تنظیمات"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Providers/EloquentKanbanDataProvider.php",
+    "phase": 2,
+    "reason": "کوئری محدود، صفحه‌بندی امن، آمار و کش"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Support/ModelCursor.php",
+    "phase": 2,
+    "reason": "کوئری محدود، صفحه‌بندی امن، آمار و کش"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Support/ModelQueryCache.php",
+    "phase": 2,
+    "reason": "کوئری محدود، صفحه‌بندی امن، آمار و کش"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Contracts/ColumnMetricsProvider.php",
+    "phase": 2,
+    "reason": "کوئری محدود، صفحه‌بندی امن، آمار و کش"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Performance/EnterpriseQueryPerformanceTest.php",
+    "phase": 2,
+    "reason": "کوئری محدود، صفحه‌بندی امن، آمار و کش"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/ENTERPRISE-BENCHMARK.json",
+    "phase": 2,
+    "reason": "کوئری محدود، صفحه‌بندی امن، آمار و کش"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Actions/EloquentKanbanActionHandler.php",
+    "phase": 3,
+    "reason": "عملیات تراکنشی، نسخه، رتبه و بازیابی نتیجه"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Actions/SparseNumericRank.php",
+    "phase": 3,
+    "reason": "عملیات تراکنشی، نسخه، رتبه و بازیابی نتیجه"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Actions/ModelOperationStore.php",
+    "phase": 3,
+    "reason": "عملیات تراکنشی، نسخه، رتبه و بازیابی نتیجه"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Actions/ModelActionRejected.php",
+    "phase": 3,
+    "reason": "عملیات تراکنشی، نسخه، رتبه و بازیابی نتیجه"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Actions/CardCoordinator.php",
+    "phase": 3,
+    "reason": "عملیات تراکنشی، نسخه، رتبه و بازیابی نتیجه"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Contracts/RankStrategy.php",
+    "phase": 3,
+    "reason": "عملیات تراکنشی، نسخه، رتبه و بازیابی نتیجه"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Contracts/ModelOperationStore.php",
+    "phase": 3,
+    "reason": "عملیات تراکنشی، نسخه، رتبه و بازیابی نتیجه"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Events/KanbanModelChanged.php",
+    "phase": 3,
+    "reason": "عملیات تراکنشی، نسخه، رتبه و بازیابی نتیجه"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Livewire/Concerns/HandlesBulkActions.php",
+    "phase": 3,
+    "reason": "عملیات تراکنشی، نسخه، رتبه و بازیابی نتیجه"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Livewire/Concerns/HandlesCardCrud.php",
+    "phase": 3,
+    "reason": "عملیات تراکنشی، نسخه، رتبه و بازیابی نتیجه"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Livewire/Concerns/HandlesCustomActions.php",
+    "phase": 3,
+    "reason": "عملیات تراکنشی، نسخه، رتبه و بازیابی نتیجه"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Livewire/Concerns/HandlesMoves.php",
+    "phase": 3,
+    "reason": "عملیات تراکنشی، نسخه، رتبه و بازیابی نتیجه"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Integration/EnterpriseConcurrencyTest.php",
+    "phase": 3,
+    "reason": "عملیات تراکنشی، نسخه، رتبه و بازیابی نتیجه"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Fixtures/enterprise-child-move.php",
+    "phase": 3,
+    "reason": "عملیات تراکنشی، نسخه، رتبه و بازیابی نتیجه"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Data/SwimlaneDefinition.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Contracts/SwimlaneProvider.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Enums/ViewMode.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Livewire/CompactBoard.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Livewire/Board.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Livewire/Concerns/LoadsBoardData.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Livewire/Concerns/LoadsPages.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Livewire/Concerns/ManagesBoardQuery.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Livewire/Concerns/HandlesRealtime.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Support/PreferenceManager.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Realtime/RealtimeBridge.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/src/Realtime/RealtimePublisher.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/css/kanban.css",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/dist/kanban.css",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/dist/kanban.js",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/js/board-interactions.js",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/js/virtualizer.js",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/views/livewire/board.blade.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/views/components/board.blade.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/views/components/card.blade.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/views/components/card-actions.blade.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/views/components/card-form.blade.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/views/components/filter-panel.blade.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/views/components/stage.blade.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/views/components/stage-header.blade.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/views/components/virtual-list.blade.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/resources/views/components/load-more.blade.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/lang/en/kanban.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/lang/fa/kanban.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/workbench/app/Models/KanbanTask.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/workbench/app/Models/KanbanTicket.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/workbench/app/Models/KanbanEducationalClass.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/workbench/app/Kanban/EloquentBoardFactory.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/workbench/app/Providers/KanbanBoardServiceProvider.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/workbench/database/migrations/2026_10_17_000001_create_demo_model_cards.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/workbench/database/seeders/EloquentKanbanSeeder.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/workbench/database/seeders/KanbanDemoSeeder.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/workbench/resources/views/layout.blade.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/workbench/routes/web.php",
+    "phase": 4,
+    "reason": "نمایش مدل، گروه، ویجت، لمس، اسکرول و جداسازی رویداد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Feature/EnterpriseModelsTest.php",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Feature/EnterpriseActionsAndViewsTest.php",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Feature/EnterpriseAcceptanceTest.php",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Unit/CardIdentityTest.php",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Database/EnterprisePortableDatabaseTest.php",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Fixtures/EnterpriseTask.php",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Fixtures/EnterpriseTicket.php",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Fixtures/EnterpriseClass.php",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Fixtures/EnterpriseBoardFactory.php",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Fixtures/EnterpriseTestCase.php",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Fixtures/seed-enterprise-browser.php",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/e2e/kanban.spec.mjs",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/playwright.config.mjs",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/.github/workflows/tests.yml",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/scripts/report-enterprise-scenarios.mjs",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/README.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/CHANGELOG.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/UPGRADE.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/README.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/05-data-provider.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/20-api-reference.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/ARCHITECTURE-DECISIONS.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/ENTERPRISE-GAP-ANALYSIS-FA.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/ENTERPRISE-IMPLEMENTATION-STATUS-FA.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/KANBAN-ENTERPRISE-REFACTOR-AGENT-PROMPT-FA.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/KANBAN-ENTERPRISE-CONFIG-AND-USAGE-FA.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/21-trait-eloquent-guide.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/22-multi-source-boards.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/23-eloquent-performance.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/24-workflow-enum-ranking.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/25-metrics-swimlanes.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/26-calendar-integration.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/27-migration-and-upgrade.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/E2E-REALTIME-LATENCY.json",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/ENTERPRISE-SCENARIO-RESULTS.json",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB101.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB102.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB103.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB104.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB105.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB106.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB107.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB108.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB109.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB110.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB111.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB112.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB113.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB114.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB115.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB116.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB117.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB118.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB119.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB120.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB121.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB122.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB123.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB124.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB125.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB126.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB127.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB128.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB129.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB130.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB131.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB132.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB133.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB134.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB135.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB136.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB137.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB138.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB139.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB140.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB141.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB142.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB143.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB144.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB145.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB146.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB147.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB148.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB149.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/tests/Scenarios/KNB150.md",
+    "phase": 5,
+    "reason": "آزمون واقعی و مستندات همسان با کد"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/RELEASE-CHECKLIST.md",
+    "phase": 5,
+    "reason": "ارجاع معیار انتشار به گزارش مستقل توسعه سازمانی"
+  },
+  {
+    "path": "D:/my-packages/kanban-livewire/docs/ENTERPRISE-DATABASE-RESULTS.json",
+    "phase": 5,
+    "reason": "ثبت نتیجه واقعی آزمون MariaDB و PostgreSQL"
+  }
+]

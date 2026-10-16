@@ -5,6 +5,16 @@ declare(strict_types=1);
 return [
     'page_size' => 25,
     'max_page_size' => 100,
+    'models' => ['auto_discover' => false, 'allow_unlisted_sources' => false, 'default_board_sources' => []],
+    'eloquent' => [
+        'enabled' => true, 'query_mode' => 'db_first', 'default_page_size' => 25,
+        'cursor' => ['signed' => true, 'bind_to_scope' => true, 'ttl' => 3600],
+        'count_mode' => 'exact', 'eager_load' => 'declared_only', 'allow_raw_sort' => false, 'allow_raw_filter' => false,
+    ],
+    'ordering' => ['strategy' => 'rank', 'rank_column' => null, 'rebalance' => 'local', 'mixed_sources_require_adapter' => true],
+    'metrics' => ['enabled' => true, 'cache_ttl' => 0],
+    'swimlanes' => ['enabled' => true, 'max_groups' => 30],
+    'cache' => ['enabled' => false, 'ttl' => 30],
     'default_view' => 'board',
     'allowed_views' => ['board', 'list'],
     'default_transition_policy' => 'deny',
@@ -27,6 +37,11 @@ return [
         'virtualization' => true,
         'realtime' => false,
         'custom_actions' => true,
+        'toolbar' => true,
+        'view_switch' => true,
+        'theme_switch' => true,
+        'direction_switch' => true,
+        'density_switch' => true,
     ],
     'appearance' => [
         'theme' => 'system',

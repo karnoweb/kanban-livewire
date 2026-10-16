@@ -12,6 +12,11 @@ trait HandlesCardCrud
 {
     public function openInlineCreate(string $stageId): void
     {
+        if (count($this->definition()->sources ?? []) > 1 && ! is_string($this->filters['source'] ?? null)) {
+            $this->openCardForm($stageId);
+
+            return;
+        }
         $this->inlineStageId = $stageId;
         $this->cardDraft = '';
         $this->cardErrors = [];
@@ -36,9 +41,13 @@ trait HandlesCardCrud
             return;
         }
 
+        $fields = ['title' => $this->cardDraft, 'stageId' => $this->inlineStageId];
+        if ($this->definition()->sources !== null && is_string($this->filters['source'] ?? null)) {
+            $fields['source'] = $this->filters['source'];
+        }
         $result = $this->execute(app(CardCoordinator::class)->create(
             app(OperationIdFactory::class)->make(),
-            ['title' => $this->cardDraft, 'stageId' => $this->inlineStageId],
+            $fields,
             $this->definition(),
         ));
 
@@ -49,18 +58,52 @@ trait HandlesCardCrud
 
     public function openCardForm(?string $stageId = null): void
     {
+        $this->editingCardId = null;
+        $this->editingVersion = null;
         $this->cardFormOpen = true;
         $this->cardForm = ['title' => '', 'stageId' => $stageId ?? ($this->columns[0]['id'] ?? ''), 'description' => ''];
+        $sources = $this->definition()->sources;
+        if ($sources !== null) {
+            $this->cardForm['source'] = is_string($this->filters['source'] ?? null) ? $this->filters['source'] : (count($sources) === 1 ? $sources[0] : '');
+        }
+        $this->cardErrors = [];
+    }
+
+    public function editCard(string $cardId): void
+    {
+        if (! $this->definition()->settings->features->updateCard) {
+            return;
+        }
+        $card = $this->provider()->card($this->context(), $cardId);
+        if ($card === null || ! ($card->permissions['update'] ?? true)) {
+            return;
+        }
+        $this->editingCardId = $cardId;
+        $this->editingVersion = $card->version;
+        $this->cardForm = array_intersect_key($card->toArray(), array_flip(['title', 'description', 'priority', 'dueAt', 'stageId']));
+        if (isset($card->metadata['source'])) {
+            $this->cardForm['source'] = $card->metadata['source'];
+        }
+        $this->cardErrors = [];
+        $this->cardFormOpen = true;
+    }
+
+    public function cancelCardForm(): void
+    {
+        $this->cardFormOpen = false;
+        $this->editingCardId = null;
+        $this->editingVersion = null;
         $this->cardErrors = [];
     }
 
     public function submitCardForm(): void
     {
-        $result = $this->execute(app(CardCoordinator::class)->create(
-            app(OperationIdFactory::class)->make(),
-            $this->cardForm,
-            $this->definition(),
-        ));
+        $operation = app(OperationIdFactory::class)->make();
+        $coordinator = app(CardCoordinator::class);
+        $command = $this->editingCardId === null
+            ? $coordinator->create($operation, $this->cardForm, $this->definition())
+            : $coordinator->update($operation, $this->editingCardId, $this->cardForm, $this->definition(), $this->editingVersion);
+        $result = $this->execute($command);
 
         if ($result->status === ActionStatus::SUCCESS) {
             $this->cardFormOpen = false;
@@ -69,12 +112,20 @@ trait HandlesCardCrud
 
     public function archiveCard(string $cardId): void
     {
-        $this->execute(app(CardCoordinator::class)->archive(app(OperationIdFactory::class)->make(), $cardId));
+        $version = $this->loadedVersion($cardId);
+        $this->execute(app(CardCoordinator::class)->archive(app(OperationIdFactory::class)->make(), $cardId, $version));
     }
 
     public function restoreCard(string $cardId, ?string $stageId = null): void
     {
-        $this->execute(app(CardCoordinator::class)->restore(app(OperationIdFactory::class)->make(), $cardId, $stageId));
+        $version = null;
+        foreach ($this->archiveItems as $item) {
+            if (($item['id'] ?? null) === $cardId) {
+                $version = $item['version'] ?? null;
+                break;
+            }
+        }
+        $this->execute(app(CardCoordinator::class)->restore(app(OperationIdFactory::class)->make(), $cardId, $stageId, $version));
         $this->archiveOpen = false;
     }
 }

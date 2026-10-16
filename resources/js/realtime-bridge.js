@@ -52,15 +52,21 @@
     if (!pusher || !pusher.connection) {
       return null;
     }
+    var wasConnected = false;
     var wasOffline = false;
     var handler = function (states) {
       var state = states.current;
       if (state === 'connected') {
+        wasConnected = true;
         if (wasOffline) {
           wasOffline = false;
+          component.setOffline(false);
           component.reconnect();
         }
-      } else if (state === 'unavailable' || state === 'disconnected' || state === 'failed') {
+      } else if (
+        wasConnected
+        && (state === 'unavailable' || state === 'disconnected' || state === 'failed')
+      ) {
         if (!wasOffline) {
           wasOffline = true;
           component.setOffline(true);

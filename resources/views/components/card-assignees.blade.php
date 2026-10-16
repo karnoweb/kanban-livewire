@@ -1,12 +1,12 @@
-<ul class="kb-assignees">
+<ul class="kb-assignees" data-kb-part="card-assignees">
     @foreach(($card['assignees'] ?? []) as $assignee)
-        <li>
+        <li class="kb-assignee" data-kb-part="card-assignee" title="{{ $assignee['name'] }}{{ !empty($assignee['label']) ? ' · '.$assignee['label'] : '' }}">
             @if(!empty($assignee['avatarUrl']))
-                <img src="{{ $assignee['avatarUrl'] }}" alt="{{ $assignee['name'] }}">
+                <img class="kb-assignee-avatar" src="{{ $assignee['avatarUrl'] }}" alt="{{ $assignee['name'] }}">
             @else
-                <span aria-hidden="true">{{ mb_substr($assignee['name'], 0, 1) }}</span>
+                <span class="kb-assignee-initials" aria-hidden="true">{{ mb_strtoupper(mb_substr($assignee['name'], 0, 2)) }}</span>
             @endif
-            <span>{{ $assignee['name'] }}</span>
+            <span class="kb-assignee-name">{{ $assignee['name'] }}</span>
         </li>
     @endforeach
 </ul>

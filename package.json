@@ -9,8 +9,11 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.50.0",
+    "@tailwindcss/node": "4.3.3",
+    "daisyui": "5.7.50",
     "esbuild": "^0.25.0",
     "laravel-echo": "^2.0.0",
-    "pusher-js": "^8.4.0"
+    "pusher-js": "^8.4.0",
+    "tailwindcss": "4.3.3"
   }
 }

@@ -1,1 +1,1 @@
-<div class="kb-theme" data-theme="{{ $theme }}" data-dir="{{ $dir }}"></div>
+{{-- DaisyUI themes inherit from the host. Root applies an explicit light/dark choice only. --}}

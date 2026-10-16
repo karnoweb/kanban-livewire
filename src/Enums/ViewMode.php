@@ -8,10 +8,11 @@ enum ViewMode: string
 {
     case Board = 'board';
     case List = 'list';
+    case Compact = 'compact';
 
     public static function fromSetting(string $value): self
     {
         return self::tryFrom($value)
-            ?? throw new \InvalidArgumentException('View mode must be board or list.');
+            ?? throw new \InvalidArgumentException('View mode must be board, list or compact.');
     }
 }

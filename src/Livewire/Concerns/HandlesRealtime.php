@@ -40,6 +40,17 @@ trait HandlesRealtime
         $known = null;
         $entity = $payload['entityId'] ?? null;
 
+        if ($this->definition()->sources !== null && is_string($entity)) {
+            try {
+                $identity = \Karnoweb\Kanban\Models\CardIdentity::parse($entity);
+            } catch (\InvalidArgumentException) {
+                return;
+            }
+            if (! in_array($identity->source, $this->definition()->sources, true)) {
+                return;
+            }
+        }
+
         if (is_string($entity)) {
             foreach ($this->columns as $column) {
                 foreach ($column['cards'] as $card) {

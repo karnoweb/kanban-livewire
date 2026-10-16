@@ -28,6 +28,17 @@ final class OrdersBoardFactory extends WorkbenchBoardFactory
 
     protected function settings(): array
     {
-        return ['interaction' => ['transition_policy' => 'deny', 'transitions' => ['review' => ['finance']]]];
+        return [
+            'interaction' => [
+                'transition_policy' => 'deny',
+                'transitions' => ['review' => ['finance'], 'finance' => ['shipped']],
+            ],
+            'features' => [
+                'create_stage' => false,
+                'bulk' => false,
+                'wip' => false,
+                'realtime' => false,
+            ],
+        ];
     }
 }

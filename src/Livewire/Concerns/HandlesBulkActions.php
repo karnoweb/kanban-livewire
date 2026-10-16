@@ -14,11 +14,19 @@ trait HandlesBulkActions
     public function runBulk(string $action, ?string $mode = null): void
     {
         $bulkMode = BulkMode::tryFrom($mode ?? $this->bulkMode) ?? BulkMode::Partial;
+        $versions = [];
+        foreach ($this->selectedIds as $id) {
+            $version = $this->loadedVersion($id);
+            if ($version !== null) {
+                $versions[$id] = $version;
+            }
+        }
         $request = new BulkRequest(
             app(OperationIdFactory::class)->make(),
             array_values($this->selectedIds),
             $bulkMode,
             $action,
+            $versions,
         );
         $result = $this->execute(app(BulkCoordinator::class)->command($request));
         $this->bulkSummary = [

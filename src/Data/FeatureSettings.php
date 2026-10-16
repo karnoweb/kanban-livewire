@@ -25,6 +25,11 @@ final readonly class FeatureSettings
         public bool $virtualization = true,
         public bool $realtime = false,
         public bool $customActions = true,
+        public bool $toolbar = true,
+        public bool $viewSwitch = true,
+        public bool $themeSwitch = true,
+        public bool $directionSwitch = true,
+        public bool $densitySwitch = true,
     ) {}
 
     public function writesEnabled(): bool

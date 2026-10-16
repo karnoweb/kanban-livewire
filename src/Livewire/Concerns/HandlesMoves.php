@@ -63,7 +63,9 @@ trait HandlesMoves
         }
 
         if ($plan['result'] !== null) {
-            $this->notice = app(\Karnoweb\Kanban\Actions\ResultMapper::class)->notice($plan['result']);
+            $result = $plan['result'];
+            $this->notice = app(\Karnoweb\Kanban\Actions\ResultMapper::class)->notice($result);
+            $this->emitFor($result, $request->toCommand());
 
             if (! $plan['noop']) {
                 $this->reload();
@@ -80,10 +82,12 @@ trait HandlesMoves
     public function moveCardToStage(string $cardId, string $toStageId): void
     {
         $from = null;
+        $version = null;
 
         foreach (array_merge($this->listItems, ...array_map(static fn (array $column): array => $column['cards'], $this->columns)) as $card) {
             if (($card['id'] ?? null) === $cardId) {
                 $from = $card['stageId'] ?? null;
+                $version = $card['version'] ?? null;
                 break;
             }
         }
@@ -92,7 +96,7 @@ trait HandlesMoves
             return;
         }
 
-        $this->requestMove($cardId, $from, $toStageId);
+        $this->requestMove($cardId, $from, $toStageId, expectedVersion: $version);
     }
 
     public function reorderCard(string $cardId, string $stageId, ?string $beforeCardId = null, ?string $afterCardId = null): void
@@ -157,7 +161,9 @@ trait HandlesMoves
         $plan = app(MoveCoordinator::class)->prepare($move, $this->definition(), $this->provider(), $this->context());
 
         if ($plan['result'] !== null) {
-            $this->notice = app(\Karnoweb\Kanban\Actions\ResultMapper::class)->notice($plan['result']);
+            $result = $plan['result'];
+            $this->notice = app(\Karnoweb\Kanban\Actions\ResultMapper::class)->notice($result);
+            $this->emitFor($result, $move->toCommand());
             $this->pending = null;
             $this->pendingValues = [];
             $this->reload();

@@ -1,0 +1,42 @@
+{
+  "clientDate": "2026-10-17",
+  "measuredAt": "2026-10-16T21:28:06.297Z",
+  "php": "8.4.22",
+  "os": "Windows",
+  "engines": [
+    {
+      "driver": "mysql",
+      "engine": "MariaDB",
+      "version": "11.8.2",
+      "tests": 3,
+      "assertions": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source": ".phpunit.cache/enterprise-mysql.xml"
+    },
+    {
+      "driver": "pgsql",
+      "engine": "PostgreSQL",
+      "version": "18.4",
+      "tests": 3,
+      "assertions": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "source": ".phpunit.cache/enterprise-pgsql.xml"
+    }
+  ],
+  "coverage": [
+    "scoped reads/counts/metrics",
+    "versioned move",
+    "binary text keyset pagination",
+    "atomic bulk rollback",
+    "strict WIP"
+  ],
+  "limitations": [
+    "Multi-process race measured on SQLite only",
+    "100k benchmark measured on SQLite only"
+  ],
+  "cleanup": "Isolated kanban_agent_test_* databases dropped after tests"
+}

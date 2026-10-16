@@ -29,9 +29,16 @@ final class TicketBoardFactory extends WorkbenchBoardFactory
     protected function settings(): array
     {
         return [
-            'interaction' => ['transition_policy' => 'deny', 'transitions' => ['open' => ['answering'], 'answering' => ['waiting', 'closed']]],
+            'interaction' => [
+                'transition_policy' => 'deny',
+                'transitions' => ['open' => ['answering'], 'answering' => ['waiting', 'closed']],
+            ],
+            'features' => [
+                'create_stage' => false,
+                'bulk' => false,
+                'realtime' => true,
+            ],
             'realtime' => ['enabled' => true],
-            'features' => ['realtime' => true],
         ];
     }
 }

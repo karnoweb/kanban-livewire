@@ -7,15 +7,95 @@ on:
 jobs:
   phpunit:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '${{ matrix.php }}'
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      # Keep the existing explicit package version without failing on its advisory warning.
+      - run: composer validate --strict --no-check-version
+      - run: composer install --no-interaction --prefer-dist
+      - run: vendor/bin/phpunit --no-coverage --log-junit .phpunit.cache/enterprise-junit.xml
+
+  browser:
+    runs-on: windows-latest
+    env:
+      KANBAN_E2E_PORT: '18100'
+      KANBAN_E2E_REVERB_PORT: '18101'
+      KANBAN_WRITE_BENCHMARK: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
+          extensions: pdo_sqlite, sqlite3, mbstring, fileinfo
           coverage: none
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: composer validate --strict
       - run: composer install --no-interaction --prefer-dist
-      - run: vendor/bin/phpunit --no-coverage
+      - run: npm ci
+      - run: node scripts/build.mjs
+      - run: php vendor/bin/phpunit --no-coverage --log-junit .phpunit.cache/enterprise-junit.xml
+      - shell: pwsh
+        run: |
+          $env:WORKBENCH_DB = Join-Path $PWD '.phpunit.cache/enterprise-e2e.sqlite'
+          New-Item -ItemType File -Path $env:WORKBENCH_DB -Force | Out-Null
+          npx playwright test
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          node scripts/report-enterprise-scenarios.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: enterprise-validation
+          include-hidden-files: true
+          path: |
+            .phpunit.cache/enterprise-junit.xml
+            .phpunit.cache/enterprise-browser.json
+            docs/ENTERPRISE-BENCHMARK.json
+            docs/ENTERPRISE-SCENARIO-RESULTS.json
+
+  database-portability:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        driver: ['mysql', 'pgsql']
+    services:
+      mariadb:
+        image: mariadb:11.8
+        env:
+          MARIADB_ROOT_PASSWORD: test-password
+          MARIADB_DATABASE: kanban_agent_test_ci
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_PASSWORD: test-password
+          POSTGRES_DB: kanban_agent_test_ci
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+    env:
+      KANBAN_TEST_DB_DRIVER: '${{ matrix.driver }}'
+      KANBAN_TEST_DB_DATABASE: kanban_agent_test_ci
+      KANBAN_TEST_DB_PASSWORD: test-password
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_mysql, pdo_pgsql, pdo_sqlite, sqlite3, mbstring
+          coverage: none
+      - run: composer install --no-interaction --prefer-dist
+      - run: php vendor/bin/phpunit --no-coverage tests/Database/EnterprisePortableDatabaseTest.php

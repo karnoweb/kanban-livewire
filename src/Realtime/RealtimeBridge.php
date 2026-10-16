@@ -37,7 +37,8 @@ final class RealtimeBridge
             return ['decision' => 'foreign-board', 'event' => $event];
         }
 
-        if ($this->deduplicator->isDuplicate($event->boardId, $event->eventId)) {
+        $namespace = hash('sha256', json_encode([$event->boardId, $context->scopeKey, $context->actorId, $context->instanceId], JSON_THROW_ON_ERROR));
+        if ($this->deduplicator->isDuplicate($namespace, $event->eventId)) {
             return ['decision' => 'duplicate', 'event' => $event];
         }
 

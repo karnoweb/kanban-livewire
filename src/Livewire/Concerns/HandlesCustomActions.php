@@ -32,6 +32,7 @@ trait HandlesCustomActions
             $cardId,
             $actionId,
             $fields,
+            $this->loadedVersion($cardId),
         ));
     }
 }

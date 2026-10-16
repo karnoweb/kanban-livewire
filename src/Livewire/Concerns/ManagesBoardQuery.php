@@ -25,6 +25,19 @@ trait ManagesBoardQuery
         $this->resetQueryState();
     }
 
+    public function setBoardFilter(string $field, string $value): void
+    {
+        if (! in_array($field, ['source', 'stage', 'group'], true)) {
+            return;
+        }
+        if ($value === '') {
+            unset($this->filters[$field]);
+        } else {
+            $this->filters[$field] = $value;
+        }
+        $this->resetQueryState();
+    }
+
     public function sortBy(string $field): void
     {
         if ($this->sort === $field) {

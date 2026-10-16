@@ -30,6 +30,22 @@ final class RealtimePublisher
         ?string $entityVersion = null,
         ?string $operationId = null,
     ): RealtimeEventData {
+        $registry = app(\Karnoweb\Kanban\Support\BoardRegistry::class);
+        if ($registry->has($context->boardKey)) {
+            $board = $registry->resolve($context->boardKey, $context);
+            if ($board->sources !== null) {
+                if ($entityId !== null) {
+                    $identity = \Karnoweb\Kanban\Models\CardIdentity::parse($entityId);
+                    if (! in_array($identity->source, $board->sources, true)) {
+                        throw new \InvalidArgumentException('Cannot broadcast a source outside the board allowlist.');
+                    }
+                }
+                // Scope-wide subscribers may have different row visibility. Refetch privately.
+                $eventType = 'BoardInvalidated';
+                $entityId = null;
+                $entityVersion = null;
+            }
+        }
         $hash = $this->hasher->hash($context->scopeKey);
         $event = $this->factory->make($eventType, $hash, $context->boardKey, $entityId, $entityVersion, $operationId);
         $this->events->dispatch(new KanbanBroadcastEvent(

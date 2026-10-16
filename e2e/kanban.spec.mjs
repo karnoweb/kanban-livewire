@@ -10,10 +10,22 @@ async function open(browser, name, path = '/tasks') {
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto(`/login-as/${name}`);
-  if (path !== '/tasks') {
-    await page.goto(path);
-  }
+  await page.goto(path);
   await page.waitForSelector('.kb');
+  // Realtime is opt-in in the demos; enable it explicitly in this test session.
+  const token = await page.locator('meta[name="csrf-token"]').getAttribute('content');
+  const keys = await page.locator('.kb').evaluateAll(roots => roots.map(root => root.dataset.board));
+  for (const key of keys) {
+    const form = { _token: token, board_key: key };
+    for (const feature of ['toolbar', 'search', 'filters', 'view_switch', 'theme_switch', 'direction_switch', 'density_switch', 'create_card', 'update_card', 'create_stage', 'update_stage', 'archive_card', 'archive_stage', 'restore_card', 'drag_drop', 'reorder_cards', 'reorder_stages', 'bulk', 'wip', 'details', 'virtualization', 'realtime', 'custom_actions']) {
+      form[`features[${feature}]`] = '1';
+    }
+    // PHP form parsing requires bracket notation for nested fields.
+    form['views[default]'] = 'board'; form['views[allowed_mode]'] = 'both';
+    const response = await page.request.post('/workbench/playground', { form, maxRedirects: 0 });
+    expect(response.status()).toBe(302);
+  }
+  await page.reload();
   return { context, page };
 }
 
@@ -66,7 +78,9 @@ test('KB-022/KB-023 strict WIP limit is enforced by the server', async ({ browse
 
   const fourth = page.locator('[data-stage="todo"] .kb-card', { hasText: 'fourth' });
   const id = await fourth.getAttribute('data-card');
-  await drop(page, id, 'doing');
+  // A full column blocks native drop; the keyboard/menu path must also be rejected by the server.
+  await fourth.locator('summary').click();
+  await fourth.locator('[data-target-stage="doing"]').click();
   await expect(page.locator('.kb-live')).toHaveText('wip_limit');
   await expect(card(page, id, 'todo')).toBeVisible();
   await context.close();
@@ -162,6 +176,96 @@ test('KB-039 XSS in a title is rendered as text', async ({ browser }) => {
   await context.close();
 });
 
+test('KNB-139 model board, list, compact, sources and aggregate metrics', async ({ browser }) => {
+  const { context, page } = await open(browser, 'alice', '/models/mixed');
+  await expect(page.locator('.kb-card')).toHaveCount(9);
+  await page.locator('[data-kb-part="filter-options"] > summary').click();
+  await expect(page.locator('[data-kb-part="filter-source"]')).toBeVisible();
+  await page.locator('[data-kb-part="filter-source"]').selectOption('tasks');
+  await expect(page.locator('.kb-card')).toHaveCount(3);
+  await expect(page.locator('[data-kb-part="stage-metric"]', { hasText: 'tasks.amount: 60' })).toBeVisible();
+  await page.locator('[data-kb-part="view-list"]').click();
+  await expect(page.locator('[data-kb-part="list-row"]')).toHaveCount(3);
+  await page.goto('/models/compact');
+  await expect(page.locator('.kb')).toHaveAttribute('data-view', 'compact');
+  await expect(page.locator('.kb-card')).toHaveCount(3);
+  await context.close();
+});
+
+test('KNB-143 collapse and keyboard move persist on the model provider', async ({ browser }) => {
+  const { context, page } = await open(browser, 'alice', '/models/tasks');
+  const todo = page.locator('[data-kb-part="stage"][data-stage="todo"]');
+  await todo.locator('[data-kb-part="stage-collapse"]').click();
+  await expect(todo.locator('[data-kb-part="stage-body"]')).toBeHidden();
+  await page.reload();
+  await expect(todo.locator('[data-kb-part="stage-body"]')).toBeHidden();
+  await todo.locator('[data-kb-part="stage-collapse"]').click();
+  await expect(todo.locator('[data-kb-part="stage-body"]')).toBeVisible();
+  const item = todo.locator('.kb-card').first();
+  const id = await item.getAttribute('data-card');
+  await item.locator('summary').press('Enter');
+  await expect(item.locator('[data-target-stage="doing"]')).toBeVisible();
+  await item.locator('[data-target-stage="doing"]').press('Enter');
+  await expect(card(page, id, 'doing')).toBeVisible();
+  const moved = card(page, id, 'doing');
+  await moved.locator('summary').press('Enter');
+  await moved.locator('[data-kb-part="card-action-edit"]').press('Enter');
+  await page.locator('[data-kb-part="card-form-title"] input').fill('Edited browser task');
+  await page.locator('[data-kb-part="card-form"] button[type="submit"]').click();
+  await expect(moved).toContainText('Edited browser task');
+  await page.reload();
+  await expect(card(page, id, 'doing')).toContainText('Edited browser task');
+  await context.close();
+});
+
+test('KNB window navigation keeps every loaded card reachable and preserves scroll', async ({ browser }) => {
+  execFileSync('php', ['tests/Fixtures/seed-enterprise-browser.php'], { stdio: 'pipe' });
+  const { context, page } = await open(browser, 'alice', '/models/tasks');
+  const stage = page.locator('[data-kb-part="stage"][data-stage="todo"]');
+  const body = stage.locator('[data-kb-part="stage-body"]');
+  await body.evaluate(el => { el.scrollTop = 200; });
+  await page.locator('[data-kb-part="appearance-options"] > summary').click();
+  await page.locator('[data-kb-part="theme-dark"]').click();
+  await expect(page.locator('.kb')).toHaveAttribute('data-theme', 'dark');
+  await expect.poll(() => body.evaluate(el => el.scrollTop)).toBe(200);
+  await stage.locator('[data-kb-part="load-more"]').press('Enter');
+  await expect(stage.locator('.kb-card')).toHaveCount(50);
+  await stage.locator('[data-kb-part="load-more"]').press('Enter');
+  await expect(stage.locator('[data-kb-part="virtual-list"]')).toHaveAttribute('data-loaded', '75');
+  await expect(stage.locator('.kb-card')).toHaveCount(50);
+  await stage.locator('[data-kb-part="window-next"]').click();
+  await expect(stage).toContainText('Window card 75');
+  await stage.locator('[data-kb-part="window-previous"]').click();
+  await expect(stage).toContainText('tenant-a tasks 1');
+  await context.close();
+});
+
+test('KNB-144 touch handle moves a model card; mobile RTL and theme remain usable', async ({ browser }) => {
+  const context = await browser.newContext({ hasTouch: true, isMobile: true, viewport: { width: 900, height: 800 } });
+  const page = await context.newPage();
+  await page.goto('/login-as/alice');
+  await page.goto('/models/tasks');
+  const item = page.locator('[data-stage="todo"] .kb-card').first();
+  const id = await item.getAttribute('data-card');
+  const handle = item.locator('[data-kb-part="card-drag-handle"]');
+  const target = page.locator('[data-kb-part="stage"][data-stage="doing"]');
+  await target.scrollIntoViewIfNeeded();
+  const box = await target.boundingBox();
+  const point = { x: box.x + box.width / 2, y: box.y + Math.min(box.height / 2, 150) };
+  const start = await handle.boundingBox();
+  const input = await context.newCDPSession(page);
+  await input.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: start.x + start.width / 2, y: start.y + start.height / 2 }] });
+  await input.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: point.x, y: point.y }] });
+  await input.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await expect(card(page, id, 'doing')).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 800 });
+  await expect(page.locator('.kb')).toHaveAttribute('dir', 'rtl');
+  await page.locator('[data-kb-part="appearance-options"] > summary').click();
+  await page.locator('[data-kb-part="theme-dark"]').click();
+  await expect(page.locator('.kb')).toHaveAttribute('data-theme', 'dark');
+  await context.close();
+});
+
 test('realtime latency: alice move to bob DOM (p95 recorded)', async ({ browser }) => {
   const alice = await open(browser, 'alice');
   const bob = await open(browser, 'bob');
@@ -214,4 +318,45 @@ test('realtime latency: alice move to bob DOM (p95 recorded)', async ({ browser 
   expect(p95).toBeLessThan(2500);
   await alice.context.close();
   await bob.context.close();
+});
+
+
+test('design: host tokens inherit and modal keyboard focus remains contained', async ({ browser }) => {
+  const { context, page } = await open(browser, 'alice');
+  if (process.env.KANBAN_DESIGN_CAPTURE) {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.screenshot({ path: '.phpunit.cache/design-after-desktop.png' });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.screenshot({ path: '.phpunit.cache/design-after-mobile.png' });
+    await page.setViewportSize({ width: 1440, height: 1000 });
+  }
+  await page.locator('[data-kb-part="appearance-options"] > summary').click();
+  await page.locator('[data-kb-part="theme-system"]').click();
+  await expect(page.locator('.kb')).not.toHaveAttribute('data-theme');
+  await page.addStyleTag({ content: 'body { --color-primary: oklch(45% .2 270); --color-primary-content: oklch(99% 0 0); --color-base-100: oklch(95% .03 210); --radius-box: 18px; }' });
+  const colors = await page.evaluate(() => {
+    const probe = document.createElement('span');
+    probe.style.backgroundColor = 'var(--color-primary)'; document.body.append(probe);
+    const expected = getComputedStyle(probe).backgroundColor; probe.remove();
+    return { expected, actual: getComputedStyle(document.querySelector('[data-kb-part="toolbar-create-card"]')).backgroundColor,
+      radius: getComputedStyle(document.querySelector('.kb-card')).borderRadius };
+  });
+  await expect.poll(() => page.locator('[data-kb-part="toolbar-create-card"]').evaluate(el => getComputedStyle(el).backgroundColor)).toBe(colors.expected);
+  expect(colors.radius).toBe('18px');
+  await page.locator('[data-kb-part="appearance-options"] > summary').click();
+  const trigger = page.locator('[data-kb-part="toolbar-create-card"]');
+  await trigger.click();
+  const dialog = page.locator('[data-kb-part="card-form"]');
+  await expect(dialog).toHaveAttribute('aria-modal', 'true');
+  await expect(dialog).toHaveAccessibleName('Create card');
+  await expect(dialog.locator('input').first()).toBeFocused();
+  await expect(page.locator('.kb-toolbar')).toHaveAttribute('inert', '');
+  await dialog.locator('button').last().focus();
+  await page.keyboard.press('Tab');
+  await expect(dialog.locator('input').first()).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(dialog).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+  await expect(page.locator('.kb-toolbar')).not.toHaveAttribute('inert');
+  await context.close();
 });

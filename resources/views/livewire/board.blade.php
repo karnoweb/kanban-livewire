@@ -1,13 +1,20 @@
 <div
-    class="kb"
+    class="kb kb--view-{{ $view }} kb--theme-{{ $theme }} kb--dir-{{ $dir }} kb--density-{{ $density }}"
     dir="{{ $dir }}"
-    data-theme="{{ $theme }}"
+    style="--kb-column-width: {{ $columnWidth ?? '18.5rem' }}"
+    data-kb-part="root"
+    data-kb-theme="{{ $theme }}"
+    @if($theme !== 'system') data-theme="{{ $theme }}" @endif
     data-view="{{ $view }}"
+    data-density="{{ $density }}"
     data-viewport="{{ $viewport }}"
     data-reduced-motion="{{ $reducedMotion ? 'true' : 'false' }}"
     data-connection="{{ $connection }}"
     data-board="{{ $boardKey }}"
+    data-instance="{{ $instanceId }}"
+    data-reorder="{{ $reorderAllowed ? 'true' : 'false' }}"
     data-kb-serial="{{ $listenerSerial }}"
+    data-kb-transitions='@json($transitionMatrix)'
     @if($realtimeOn)
     data-kb-realtime="true"
     data-kb-channel="{{ $realtimeChannel }}"
@@ -22,8 +29,9 @@
         @if(($notice['status'] ?? null) === 'conflict')
             @include('kanban::components.conflict-banner')
         @endif
+        @include('kanban::components.notice-banner')
         @if($view === 'list')
-            @include('kanban::components.list')
+            @include($listTemplate ?? 'kanban::components.list')
         @else
             @include('kanban::components.board')
         @endif
@@ -31,7 +39,7 @@
             @include('kanban::components.move-confirmation')
         @endif
         @if($cardFormOpen)
-            @include('kanban::components.card-form')
+            @include($formTemplate ?? 'kanban::components.card-form')
         @endif
         @if($stageFormOpen)
             @include('kanban::components.stage-form')
@@ -46,5 +54,5 @@
         @endif
         @include('kanban::components.realtime-warning')
     @endif
-    <div class="kb-live" aria-live="polite">{{ $notice['messageCode'] ?? '' }}</div>
+    <div class="kb-live" aria-live="polite" data-kb-part="live-region">{{ $notice['messageCode'] ?? '' }}</div>
 </div>

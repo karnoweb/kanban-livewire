@@ -1,0 +1,4 @@
+/* Standalone/demo bundle only. Hosts with DaisyUI import kanban.css instead. */
+@import "tailwindcss" source(none);
+@import "./kanban.css";
+@plugin "daisyui";

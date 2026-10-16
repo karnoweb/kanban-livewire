@@ -26,6 +26,9 @@ final readonly class BoardDefinition
         public array $inlineCards = [],
         public CardFormSchema $cardForm = new CardFormSchema,
         public StageFormSchema $stageForm = new StageFormSchema,
+        public ?array $sources = null,
+        public array $stageMap = [],
+        public ?SwimlaneDefinition $swimlane = null,
     ) {}
 
     public function isReadOnly(): bool

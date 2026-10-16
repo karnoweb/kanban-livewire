@@ -7,15 +7,21 @@ namespace Workbench\App\Kanban;
 use Illuminate\Database\Eloquent\Builder;
 use Karnoweb\Kanban\Contracts\DataProvider;
 use Karnoweb\Kanban\Data\ActionResult;
+use Karnoweb\Kanban\Data\AssigneeData;
+use Karnoweb\Kanban\Data\AttachmentData;
 use Karnoweb\Kanban\Data\BoardContext;
 use Karnoweb\Kanban\Data\BoardData;
 use Karnoweb\Kanban\Data\BoardQuery;
+use Karnoweb\Kanban\Data\CardActionData;
+use Karnoweb\Kanban\Data\CardBadgeData;
 use Karnoweb\Kanban\Data\CardData;
 use Karnoweb\Kanban\Data\CountResult;
 use Karnoweb\Kanban\Data\PageResult;
 use Karnoweb\Kanban\Data\StageCount;
 use Karnoweb\Kanban\Data\StageData;
 use Karnoweb\Kanban\Enums\ActionStatus;
+use Karnoweb\Kanban\Enums\BadgeTone;
+use Karnoweb\Kanban\Enums\ConfirmationMode;
 use Karnoweb\Kanban\Enums\WipMode;
 use Karnoweb\Kanban\Support\CursorGuard;
 use Workbench\App\Models\DemoCard;
@@ -173,6 +179,63 @@ class WorkbenchReader implements DataProvider
 
     private function dto(DemoCard $card, BoardContext $context): CardData
     {
+        $meta = is_array($card->metadata) ? $card->metadata : [];
+        $badges = [];
+
+        foreach (is_array($meta['badges'] ?? null) ? $meta['badges'] : [] as $item) {
+            if (is_array($item) && ! empty($item['text'])) {
+                $badges[] = new CardBadgeData(
+                    (string) $item['text'],
+                    BadgeTone::tryFrom((string) ($item['tone'] ?? 'neutral')) ?? BadgeTone::Neutral,
+                    isset($item['description']) && is_string($item['description']) ? $item['description'] : null,
+                );
+            }
+        }
+
+        $assignees = [];
+
+        foreach (is_array($meta['assignees'] ?? null) ? $meta['assignees'] : [] as $item) {
+            if (is_array($item) && ! empty($item['id']) && ! empty($item['name'])) {
+                $assignees[] = new AssigneeData(
+                    (string) $item['id'],
+                    (string) $item['name'],
+                    isset($item['avatarUrl']) && is_string($item['avatarUrl']) ? $item['avatarUrl'] : null,
+                    isset($item['label']) && is_string($item['label']) ? $item['label'] : null,
+                );
+            }
+        }
+
+        $attachments = [];
+
+        foreach (is_array($meta['attachments'] ?? null) ? $meta['attachments'] : [] as $item) {
+            if (is_array($item) && ! empty($item['id']) && ! empty($item['name']) && ! empty($item['url'])) {
+                $attachments[] = new AttachmentData(
+                    (string) $item['id'],
+                    (string) $item['name'],
+                    (string) ($item['mime'] ?? 'application/octet-stream'),
+                    isset($item['size']) && is_numeric($item['size']) ? (int) $item['size'] : null,
+                    (string) $item['url'],
+                    isset($item['thumbnailUrl']) && is_string($item['thumbnailUrl']) ? $item['thumbnailUrl'] : null,
+                );
+            }
+        }
+
+        $actions = [];
+
+        foreach (is_array($meta['actions'] ?? null) ? $meta['actions'] : [] as $item) {
+            if (is_array($item) && ! empty($item['id']) && ! empty($item['label'])) {
+                $actions[] = new CardActionData(
+                    (string) $item['id'],
+                    (string) $item['label'],
+                    (bool) ($item['enabled'] ?? true),
+                    ConfirmationMode::tryFrom((string) ($item['confirmation'] ?? 'none')) ?? ConfirmationMode::None,
+                    isset($item['icon']) && is_string($item['icon']) ? $item['icon'] : null,
+                );
+            }
+        }
+
+        unset($meta['badges'], $meta['assignees'], $meta['attachments'], $meta['actions']);
+
         return new CardData(
             (string) $card->public_id,
             $context->boardKey,
@@ -180,9 +243,13 @@ class WorkbenchReader implements DataProvider
             (string) $card->title,
             description: $card->description,
             priority: $card->priority,
+            badges: $badges,
+            assignees: $assignees,
+            attachments: $attachments,
             createdAt: $card->created_at?->toIso8601String(),
             dueAt: $card->due_at,
-            metadata: is_array($card->metadata) ? $card->metadata : [],
+            metadata: $meta,
+            actions: $actions,
             version: (string) $card->version,
             manualOrder: (string) $card->manual_order,
             archived: (bool) $card->archived,

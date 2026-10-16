@@ -11,5 +11,6 @@ final readonly class SecuritySettings
         public int $searchLength = 200,
         public int $bulkIds = 100,
         public ?int $rateLimitPerMinute = null,
+        public array $allowedUrlSchemes = ['http', 'https'],
     ) {}
 }

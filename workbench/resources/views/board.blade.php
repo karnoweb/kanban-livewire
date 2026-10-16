@@ -1,24 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $key }}</title>
-    <link rel="stylesheet" href="/vendor/kanban/kanban.css">
-    @livewireStyles
-</head>
-<body>
-    <p id="whoami">{{ auth()->user()?->name }} / {{ auth()->user()?->tenant_id }}</p>
+@php
+    $examples = config('workbench.examples', []);
+    $example = $examples[$key] ?? null;
+    $active = $example['slug'] ?? 'tasks';
+    $boardTitle = $example['title'] ?? $key;
+    $hideShell = (bool) session('workbench.hide_shell.'.$key, false);
+@endphp
+
+@extends('layout', ['activeBoard' => $active, 'boardTitle' => $boardTitle, 'pageTitle' => $boardTitle, 'example' => $example, 'hideShell' => $hideShell])
+
+@section('board_head')
+    <div class="kb-wb-board-head">
+        <h1 class="kb-wb-board-title">{{ $boardTitle }}</h1>
+        @include('partials.example-banner', ['example' => $example])
+    </div>
+@endsection
+
+@section('content')
     <livewire:kanban-board :board-key="$key" />
-    <script>
-        window.WORKBENCH_REVERB = {
-            key: @json(env('REVERB_APP_KEY', 'kanban-key')),
-            host: @json(env('REVERB_HOST', '127.0.0.1')),
-            port: {{ (int) env('REVERB_PORT', 8081) }}
-        };
-    </script>
-    <script src="/workbench/echo.js"></script>
-    @livewireScripts
-    <script src="/vendor/kanban/kanban.js"></script>
-</body>
-</html>
+    @include('partials.playground-fab', ['key' => $key])
+@endsection

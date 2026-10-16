@@ -17,6 +17,7 @@ final readonly class KanbanSettings
         public RealtimeSettings $realtime,
         public InteractionSettings $interaction,
         public SecuritySettings $security,
+        public EnterpriseSettings $model = new EnterpriseSettings,
     ) {}
 
     public static function defaults(): self
@@ -31,7 +32,7 @@ final readonly class KanbanSettings
             views: new DisplaySettings(
                 defaultView: ViewMode::fromSetting((string) config('kanban.default_view', 'board')),
                 allowedViews: config('kanban.allowed_views', ['board', 'list']),
-                columnWidth: '18rem',
+                columnWidth: (string) ($appearance['column_width'] ?? '18rem'),
                 density: (string) ($appearance['density'] ?? 'comfortable'),
                 detailSurface: (string) ($appearance['detail_surface'] ?? 'modal'),
             ),
@@ -54,6 +55,11 @@ final readonly class KanbanSettings
                 virtualization: (bool) ($features['virtualization'] ?? true),
                 realtime: (bool) ($features['realtime'] ?? false),
                 customActions: (bool) ($features['custom_actions'] ?? true),
+                toolbar: (bool) ($features['toolbar'] ?? true),
+                viewSwitch: (bool) ($features['view_switch'] ?? true),
+                themeSwitch: (bool) ($features['theme_switch'] ?? true),
+                directionSwitch: (bool) ($features['direction_switch'] ?? true),
+                densitySwitch: (bool) ($features['density_switch'] ?? true),
             ),
             pagination: new PaginationSettings(
                 pageSize: (int) config('kanban.page_size', 25),
@@ -75,6 +81,7 @@ final readonly class KanbanSettings
                 animations: (bool) ($interaction['animations'] ?? true),
                 reducedMotion: (bool) ($interaction['reduced_motion'] ?? false),
                 keyboardAlternative: (bool) ($interaction['keyboard_alternative'] ?? true),
+                confirmation: \Karnoweb\Kanban\Enums\ConfirmationMode::from((string) ($interaction['confirmation'] ?? 'none')),
                 transitionPolicy: (string) config('kanban.default_transition_policy', 'deny'),
             ),
             security: new SecuritySettings(
@@ -82,13 +89,21 @@ final readonly class KanbanSettings
                 searchLength: (int) ($security['search_length'] ?? 200),
                 bulkIds: (int) ($security['bulk_ids'] ?? 100),
                 rateLimitPerMinute: $security['rate_limit_per_minute'] ?? null,
+                allowedUrlSchemes: $security['allowed_url_schemes'] ?? ['http', 'https'],
             ),
+            model: EnterpriseSettings::fromArray([]),
         );
     }
 
     /** @param array<string, mixed> $settings */
     public static function fromArray(array $settings): self
     {
+        // Appearance aliases remain supported alongside the canonical views group.
+        foreach (['column_width', 'density', 'detail_surface'] as $key) {
+            if (isset($settings['appearance'][$key]) && ! isset($settings['views'][$key])) {
+                $settings['views'][$key] = $settings['appearance'][$key];
+            }
+        }
         $base = self::defaults();
 
         if (isset($settings['views']) && is_array($settings['views'])) {
@@ -130,6 +145,11 @@ final readonly class KanbanSettings
                 'virtualization' => $base->features->virtualization,
                 'realtime' => $base->features->realtime,
                 'custom_actions' => $base->features->customActions,
+                'toolbar' => $base->features->toolbar,
+                'view_switch' => $base->features->viewSwitch,
+                'theme_switch' => $base->features->themeSwitch,
+                'direction_switch' => $base->features->directionSwitch,
+                'density_switch' => $base->features->densitySwitch,
             ], $settings['features']);
 
             $base = new self(
@@ -153,6 +173,11 @@ final readonly class KanbanSettings
                     (bool) $features['virtualization'],
                     (bool) $features['realtime'],
                     (bool) $features['custom_actions'],
+                    (bool) $features['toolbar'],
+                    (bool) $features['view_switch'],
+                    (bool) $features['theme_switch'],
+                    (bool) $features['direction_switch'],
+                    (bool) $features['density_switch'],
                 ),
                 pagination: $base->pagination,
                 appearance: $base->appearance,
@@ -169,7 +194,7 @@ final readonly class KanbanSettings
                 features: $base->features,
                 pagination: new PaginationSettings(
                     pageSize: (int) ($page['page_size'] ?? $base->pagination->pageSize),
-                    maxPageSize: (int) ($page['max_page_size'] ?? $base->pagination->maxPageSize),
+                    maxPageSize: min((int) ($page['max_page_size'] ?? $base->pagination->maxPageSize), (int) config('kanban.max_page_size', 100)),
                     virtualization: (bool) ($page['virtualization'] ?? $base->pagination->virtualization),
                     virtualizationThreshold: (int) ($page['threshold'] ?? $base->pagination->virtualizationThreshold),
                     overscan: (int) ($page['overscan'] ?? $base->pagination->overscan),
@@ -237,6 +262,24 @@ final readonly class KanbanSettings
             );
         }
 
-        return $base;
+        if (isset($settings['security']) && is_array($settings['security'])) {
+            $security = $settings['security'];
+            $base = new self(
+                views: $base->views, features: $base->features, pagination: $base->pagination,
+                appearance: $base->appearance, realtime: $base->realtime, interaction: $base->interaction,
+                security: new SecuritySettings(
+                    metadataBytes: max(1, min((int) ($security['metadata_bytes'] ?? $base->security->metadataBytes), $base->security->metadataBytes)),
+                    searchLength: max(1, min((int) ($security['search_length'] ?? $base->security->searchLength), $base->security->searchLength)),
+                    bulkIds: max(1, min((int) ($security['bulk_ids'] ?? $base->security->bulkIds), $base->security->bulkIds)),
+                    rateLimitPerMinute: isset($security['rate_limit_per_minute'])
+                        ? max(1, min((int) $security['rate_limit_per_minute'], $base->security->rateLimitPerMinute ?? PHP_INT_MAX))
+                        : $base->security->rateLimitPerMinute,
+                    allowedUrlSchemes: array_values(array_intersect($security['allowed_url_schemes'] ?? $base->security->allowedUrlSchemes, $base->security->allowedUrlSchemes)),
+                ),
+            );
+        }
+
+        return new self($base->views, $base->features, $base->pagination, $base->appearance, $base->realtime,
+            $base->interaction, $base->security, EnterpriseSettings::fromArray($settings));
     }
 }
