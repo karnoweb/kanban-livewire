@@ -1,6 +1,6 @@
 # Changelog
 
-## 14.0.0 — 2026-10-17
+## 13.1.0 — 2026-10-17
 
 ### Changed — breaking CSS integration
 
@@ -23,4 +23,4 @@ First implementation of the public board contract: registry, typed DTOs, Livewir
 
 
 
-Upgrade instructions and known limitations: [14.0.0 release notes](docs/releases/14.0.0.md).
+Upgrade instructions and known limitations: [13.1.0 release notes](docs/releases/13.1.0.md).

@@ -24,12 +24,12 @@
 | No migration in src | repository layout | review | required |
 | Optional features still implemented | `FeatureSettings` | settings tests | required |
 
-## 14.0.0 release verification
+## 13.1.0 release verification
 
 - Local PHP: 221 tests, 794 assertions passed.
 - Local Edge browser: 13 tests passed, including realtime, touch, host token inheritance and modal keyboard focus.
 - MariaDB/PostgreSQL adapter evidence is recorded in `ENTERPRISE-DATABASE-RESULTS.json`.
 - Build, dependency audit and diff whitespace checks passed.
-- Breaking CSS migration and open design findings are disclosed in `releases/14.0.0.md`.
+- Breaking CSS migration and open design findings are disclosed in `releases/13.1.0.md`.
 - Remote CI status is tracked separately; local results do not imply remote CI has completed.
 - Existing proprietary license is unchanged.
