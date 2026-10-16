@@ -8,6 +8,7 @@ jobs:
   phpunit:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         php: ['8.3', '8.4']
     steps:
@@ -21,7 +22,12 @@ jobs:
           node-version: '22'
       # Keep the existing explicit package version without failing on its advisory warning.
       - run: composer validate --strict --no-check-version
-      - run: composer install --no-interaction --prefer-dist
+      # The development lock was resolved on PHP 8.4. Test the supported 8.3
+      # library constraints with versions compatible with that runtime.
+      - if: matrix.php == '8.3'
+        run: composer update --no-interaction --prefer-dist
+      - if: matrix.php != '8.3'
+        run: composer install --no-interaction --prefer-dist
       - run: vendor/bin/phpunit --no-coverage --log-junit .phpunit.cache/enterprise-junit.xml
 
   browser:
