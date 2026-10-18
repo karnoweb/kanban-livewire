@@ -30,6 +30,7 @@ final readonly class FeatureSettings
         public bool $themeSwitch = true,
         public bool $directionSwitch = true,
         public bool $densitySwitch = true,
+        public bool $deleteCard = false,
     ) {}
 
     public function writesEnabled(): bool
@@ -44,6 +45,7 @@ final readonly class FeatureSettings
             || $this->archiveCard
             || $this->archiveStage
             || $this->restoreCard
+            || $this->deleteCard
             || $this->bulk
             || $this->customActions;
     }

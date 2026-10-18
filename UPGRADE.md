@@ -2,6 +2,16 @@
 
 # Upgrade
 
+## 13.1.0 → 13.2.0
+
+- Run Composer update to install the new `morilog/jalali` dependency, and republish/rebuild package assets and any overridden Blade views.
+- Existing DataProvider/ActionHandler implementations remain valid. Lazy detail sections are opt-in through `BoardBuilder::detailsProvider()`; custom section templates are registered only in trusted host code.
+- `views.drawer_width` defaults to 560 pixels. Drawers fill the mobile viewport and keep header/actions outside the scrolling body.
+- Stage badges now show the total count, or count/capacity for WIP-limited stages; loaded-count metadata remains available separately.
+- Review new date settings, card covers, toolbar filter placement and archived-card deletion feature flags. See `docs/releases/13.2.0.md` and `docs/UPGRADE.md`.
+
+- Disabling `theme_switch` / `direction_switch` / `density_switch` now ignores stored preferences for those values and uses the board definition appearance. Hosts that inherit the app panel theme should set `appearance.theme` to `system` and `theme_switch` to `false`.
+
 ## 13.0.0 → 13.1.0
 
 This release includes a styling integration change that requires reviewing host CSS setup. PHP requirements remain PHP 8.3+, Laravel 13 and Livewire 4; the package version does not imply Laravel 14 support.

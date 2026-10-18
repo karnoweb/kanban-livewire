@@ -10,7 +10,7 @@ final class ViewResolver
 {
     public function assertAllowed(string $slot, string $view): void
     {
-        if (! in_array($slot, ['card', 'stage', 'list'], true)) {
+        if (! in_array($slot, ['card', 'stage', 'list', 'detail-section'], true)) {
             throw new InvalidBoardDefinition('Unknown view slot.');
         }
 

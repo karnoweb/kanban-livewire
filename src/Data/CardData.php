@@ -15,6 +15,8 @@ final readonly class CardData
      * @param list<CardActionData> $actions
      * @param array<string, mixed> $metadata
      * @param array<string, bool> $permissions
+     * @param list<ChecklistItemData> $checklist
+     * @param list<CommentData> $comments
      */
     public function __construct(
         public string $id,
@@ -34,6 +36,8 @@ final readonly class CardData
         public ?string $version = null,
         public ?string $manualOrder = null,
         public bool $archived = false,
+        public array $checklist = [],
+        public array $comments = [],
     ) {
         ValueGuard::id($id, 'card.id');
         ValueGuard::id($boardId, 'card.boardId');
@@ -41,6 +45,21 @@ final readonly class CardData
         ValueGuard::requiredText($title, 'card.title');
         ValueGuard::optionalText($description);
         ValueGuard::metadata($metadata);
+
+        foreach ($checklist as $item) {
+            if (! $item instanceof ChecklistItemData) {
+                throw new InvalidArgumentException('Checklist items must be ChecklistItemData.');
+            }
+        }
+        foreach ($comments as $comment) {
+            if (! $comment instanceof CommentData) {
+                throw new InvalidArgumentException('Comments must be CommentData.');
+            }
+        }
+        if (count($checklist) > 100 || count($comments) > 100
+            || strlen(json_encode([$checklist, $comments], JSON_THROW_ON_ERROR)) > (int) config('kanban.limits.detail_bytes', 32768)) {
+            throw new InvalidArgumentException('Card details exceed the size cap.');
+        }
 
         foreach ($badges as $badge) {
             if (! $badge instanceof CardBadgeData) {
@@ -88,6 +107,8 @@ final readonly class CardData
             'version' => $this->version,
             'manualOrder' => $this->manualOrder,
             'archived' => $this->archived,
+            'checklist' => array_map(static fn (ChecklistItemData $item): array => $item->toArray(), $this->checklist),
+            'comments' => array_map(static fn (CommentData $comment): array => $comment->toArray(), $this->comments),
         ];
     }
 }

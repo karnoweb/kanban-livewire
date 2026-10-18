@@ -31,8 +31,10 @@ final class ExamplePagesTest extends WorkbenchTestCase
             ->assertSee($title)
             ->assertSee($marker)
             ->assertSee('data-kb-part="toolbar"', false)
-            ->assertSee('data-kb-part="theme-switch"', false)
-            ->assertSee('data-kb-part="dir-switch"', false)
+            ->assertDontSee('data-kb-part="theme-switch"', false)
+            ->assertSee('action="/workbench/theme"', false)
+            ->assertDontSee('data-kb-part="dir-switch"', false)
+            ->assertSee('data-kb-part="density-toggle"', false)
             ->assertSee('Enterprise SLA');
     }
 
@@ -104,4 +106,13 @@ final class ExamplePagesTest extends WorkbenchTestCase
             ->assertDontSee('data-kb-part="search"', false)
             ->assertDontSee('class="kb-wb-top"', false);
     }
+    public function test_header_theme_applies_to_the_host_and_all_demo_boards(): void
+    {
+        $this->loginAs('alice');
+        $this->post('/workbench/theme', ['theme' => 'dark'])->assertRedirect();
+        $this->get('/crm')->assertOk()->assertSee('data-theme="dark"', false);
+        Livewire::test(Board::class, ['boardKey' => 'tasks.board'])->assertSet('theme', 'dark');
+        $this->post('/workbench/theme', ['theme' => 'invalid'])->assertSessionHasErrors('theme');
+    }
+
 }

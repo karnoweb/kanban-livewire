@@ -28,8 +28,22 @@ use Workbench\App\Models\DemoCard;
 use Workbench\App\Models\DemoOperation;
 use Workbench\App\Models\DemoStage;
 
-class WorkbenchReader implements DataProvider
+class WorkbenchReader implements DataProvider, \Karnoweb\Kanban\Contracts\FilterOptionsProvider
 {
+    public function filterOptions(BoardContext $context): array
+    {
+        $options = ['assignee' => [], 'badge' => []];
+        foreach (DemoCard::query()->where('scope_key', $context->scopeKey)->where('board_key', $context->boardKey)->where('archived', false)->select('metadata')->cursor() as $card) {
+            foreach ($card->metadata['assignees'] ?? [] as $person) {
+                $options['assignee'][(string) $person['id']] = (string) $person['name'];
+            }
+            foreach ($card->metadata['badges'] ?? [] as $badge) {
+                $options['badge'][(string) $badge['text']] = (string) $badge['text'];
+            }
+        }
+        return $options;
+    }
+
     public function board(BoardContext $context): BoardData
     {
         return new BoardData($context->boardKey, $context->boardKey, $context->scopeKey);
@@ -151,6 +165,15 @@ class WorkbenchReader implements DataProvider
             ->where('board_key', $context->boardKey)
             ->where('archived', $archived);
 
+        if (is_string($query->filters['stage'] ?? null) && $query->filters['stage'] !== '') {
+            $builder->where('stage_id', $query->filters['stage']);
+        }
+        foreach (['assignee' => ['assignees', 'id'], 'badge' => ['badges', 'text']] as $filter => [$array, $key]) {
+            if (is_string($query->filters[$filter] ?? null) && $query->filters[$filter] !== '') {
+                $builder->whereRaw("EXISTS (SELECT 1 FROM json_each(demo_cards.metadata, '$.{$array}') AS item WHERE json_extract(item.value, '$.{$key}') = ?)", [$query->filters[$filter]]);
+            }
+        }
+
         if ($stageId !== null) {
             $builder->where('stage_id', $stageId);
         }
@@ -234,7 +257,19 @@ class WorkbenchReader implements DataProvider
             }
         }
 
-        unset($meta['badges'], $meta['assignees'], $meta['attachments'], $meta['actions']);
+        $checklist = [];
+        foreach (is_array($meta['checklist'] ?? null) ? $meta['checklist'] : [] as $index => $item) {
+            if (is_array($item) && is_string($item['title'] ?? null)) {
+                $checklist[] = new \Karnoweb\Kanban\Data\ChecklistItemData((string) ($item['id'] ?? 'item-'.$index), $item['title'], (bool) ($item['done'] ?? false));
+            }
+        }
+        $comments = [];
+        foreach (is_array($meta['comments'] ?? null) ? $meta['comments'] : [] as $index => $item) {
+            if (is_array($item) && is_string($item['body'] ?? null)) {
+                $comments[] = new \Karnoweb\Kanban\Data\CommentData((string) ($item['id'] ?? 'comment-'.$index), $item['body'], is_string($item['author'] ?? null) ? $item['author'] : null, is_string($item['createdAt'] ?? null) ? $item['createdAt'] : null);
+            }
+        }
+        unset($meta['badges'], $meta['assignees'], $meta['attachments'], $meta['actions'], $meta['checklist'], $meta['comments']);
 
         return new CardData(
             (string) $card->public_id,
@@ -253,6 +288,7 @@ class WorkbenchReader implements DataProvider
             version: (string) $card->version,
             manualOrder: (string) $card->manual_order,
             archived: (bool) $card->archived,
+            checklist: $checklist, comments: $comments,
         );
     }
 }

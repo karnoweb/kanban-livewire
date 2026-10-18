@@ -3,6 +3,7 @@
 /.phpunit.cache/
 /for-start-package/
 /kanban.zip
+/artifacts/
 /test-results/
 /playwright-report/
 /workbench/database/*.sqlite

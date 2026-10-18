@@ -16,6 +16,16 @@ use Livewire\Livewire;
 
 trait ScenarioSteps
 {
+    private function stageCountText(string $html, string $stage): string
+    {
+        $dom = new \DOMDocument;
+        $dom->loadHTML($html, LIBXML_NOERROR | LIBXML_NOWARNING);
+        $xpath = new \DOMXPath($dom);
+        $node = $xpath->query('//*[@data-stage="'.$stage.'"]//*[@data-kb-part="stage-count"]')->item(0);
+
+        return trim((string) preg_replace('/\s+/', ' ', $node?->textContent ?? ''));
+    }
+
     protected function bootBoard(string $key, array $config): mixed
     {
         MemoryStore::seed($this->scope->scope, $key, $config);
@@ -43,7 +53,8 @@ trait ScenarioSteps
     public function kb001(): void
     {
         $component = $this->bootBoard('crm.deals', SampleDataFactory::standard(8));
-        $component->assertSee('New')->assertSee('Progress')->assertSee('Review')->assertSee('Done')->assertSee('NEW 1')->assertSee('8 / 8');
+        $component->assertSee('New')->assertSee('Progress')->assertSee('Review')->assertSee('Done')->assertSee('NEW 1');
+        $this->assertSame('8', $this->stageCountText($component->html(), 'new'));
         $this->assertCount(4, $component->get('columns'));
     }
 
@@ -95,7 +106,8 @@ trait ScenarioSteps
         }
 
         $component = $this->bootBoard('crm.deals', $this->column([['id' => 'new', 'title' => 'New']], 'new', $cards));
-        $component->assertSee('C-001')->assertDontSee('C-026')->assertSee('25 / 120');
+        $component->assertSee('C-001')->assertDontSee('C-026');
+        $this->assertSame('120', $this->stageCountText($component->html(), 'new'));
         $this->assertSame(25, $component->get('columns')[0]['loadedCount']);
         $this->assertSame(120, $component->get('columns')[0]['totalCount']);
     }

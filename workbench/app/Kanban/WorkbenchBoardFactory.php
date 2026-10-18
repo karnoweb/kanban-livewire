@@ -28,6 +28,7 @@ abstract class WorkbenchBoardFactory implements BoardFactory
     public function resolvedSettings(): array
     {
         $defaults = array_replace_recursive([
+            'features' => ['delete_card' => true],
             'appearance' => ['theme' => 'light', 'direction' => 'ltr'],
             'views' => [
                 'default' => 'board',

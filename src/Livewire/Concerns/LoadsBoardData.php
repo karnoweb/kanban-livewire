@@ -40,10 +40,18 @@ trait LoadsBoardData
 
         $this->accessDenied = false;
         $prefs = app(PreferenceManager::class);
+        $features = $definition->settings->features;
         $this->scopeHash = app(ScopeHasher::class)->hash($context->scopeKey);
-        $this->theme = $prefs->theme($context) ?? $definition->settings->appearance->theme;
-        $this->dir = $prefs->direction($context) ?? $definition->settings->appearance->direction;
-        $this->density = $prefs->density($context) ?? $definition->settings->views->density;
+        // When a switch is disabled, always follow board appearance (host theme), not a stored preference.
+        $this->theme = $features->themeSwitch
+            ? ($prefs->theme($context) ?? $definition->settings->appearance->theme)
+            : $definition->settings->appearance->theme;
+        $this->dir = $features->directionSwitch
+            ? ($prefs->direction($context) ?? $definition->settings->appearance->direction)
+            : $definition->settings->appearance->direction;
+        $this->density = $features->densitySwitch
+            ? ($prefs->density($context) ?? $definition->settings->views->density)
+            : $definition->settings->views->density;
         $this->reducedMotion = $definition->settings->interaction->reducedMotion
             || ! $definition->settings->interaction->animations
             || $this->reducedMotion;

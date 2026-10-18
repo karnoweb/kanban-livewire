@@ -43,7 +43,24 @@ final class BoardBuilder
 
     private ?\Karnoweb\Kanban\Data\SwimlaneDefinition $swimlane = null;
 
+    private ?string $detailsProviderClass = null;
+
+    private array $detailSectionViews = [];
+
     private bool $pageSizeExplicit = false;
+
+    private ?string $createUrl = null;
+
+    private ?string $editUrl = null;
+
+    public function cardPages(?string $create = null, ?string $edit = null): self
+    {
+        $sanitizer = new UrlSanitizer;
+        $this->createUrl = $sanitizer->sanitize($create);
+        $this->editUrl = $sanitizer->sanitize($edit);
+
+        return $this;
+    }
 
     public function __construct()
     {
@@ -129,6 +146,29 @@ final class BoardBuilder
         return $this;
     }
 
+    /** Register an optional provider for lazy, permission-scoped detail sections. */
+    public function detailsProvider(string $class): self
+    {
+        if (! is_a($class, \Karnoweb\Kanban\Contracts\CardDetailsProvider::class, true)) {
+            throw new InvalidBoardDefinition('Details provider must implement CardDetailsProvider.', $this->key);
+        }
+        $this->detailsProviderClass = $class;
+
+        return $this;
+    }
+
+    /** Templates are registered by trusted host code, never returned by user record data. */
+    public function detailSectionView(string $key, string $view): self
+    {
+        if (preg_match('/^[a-z][a-z0-9_.-]{0,63}$/D', $key) !== 1) {
+            throw new InvalidBoardDefinition('Detail section key is invalid.', $this->key);
+        }
+        (new ViewResolver)->assertAllowed('detail-section', $view);
+        $this->detailSectionViews[$key] = $view;
+
+        return $this;
+    }
+
     public function settings(KanbanSettings|array $settings): self
     {
         $this->pageSizeExplicit = $settings instanceof KanbanSettings || isset($settings['pagination']['page_size']);
@@ -202,10 +242,12 @@ final class BoardBuilder
             views: $this->views,
             inlineStages: $this->stages,
             inlineCards: $this->cards,
-            cardForm: new \Karnoweb\Kanban\Data\CardFormSchema(array_merge((new \Karnoweb\Kanban\Data\CardFormSchema)->fields, $this->sources !== null ? ['source'] : [])),
+            cardForm: new \Karnoweb\Kanban\Data\CardFormSchema(array_merge((new \Karnoweb\Kanban\Data\CardFormSchema)->fields, $this->sources !== null ? ['source'] : []), $this->createUrl, $this->editUrl),
             sources: $this->sources,
             stageMap: $this->stageMap,
             swimlane: $this->swimlane,
+            detailsProviderClass: $this->detailsProviderClass,
+            detailSectionViews: $this->detailSectionViews,
         );
 
         return (new BoardDefinitionValidator)->validate($definition);

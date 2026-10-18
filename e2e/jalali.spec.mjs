@@ -1,0 +1,31 @@
+import { test, expect } from '@playwright/test';
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+
+test('locale settings apply Jalali across board, details and list while preserving ISO values', async ({ page }) => {
+  if (!process.env.WORKBENCH_DB?.replaceAll('\\', '/').includes('/.phpunit.cache/')) throw new Error('Use an isolated browser database');
+  execFileSync('php', ['vendor/bin/testbench', 'migrate:fresh', '--force'], { stdio: 'pipe' });
+  await page.goto('/login-as/alice');
+  await page.goto('/tasks');
+  await expect(page.locator('[data-kb-part="card-due"]').first()).toContainText('2026-11-14');
+  await page.locator('[data-kb-part="workbench-playground-trigger"]').click();
+  const locale = page.locator('input[name="appearance[dates][locale]"]');
+  await locale.fill('fa_IR');
+  await locale.press('Tab');
+  await expect(page.locator('[data-kb-part="card-due"]').first()).toContainText('۱۴۰۵/۰۸/۲۳');
+  await expect(page.locator('[data-kb-part="card-due"]').first()).toHaveAttribute('datetime', '2026-11-14');
+  fs.mkdirSync('docs/redesign', { recursive: true });
+  await page.screenshot({ path: 'docs/redesign/jalali-board.jpg' });
+  const card = page.locator('.kb-card[data-card="101"]');
+  await card.locator('summary').click();
+  await card.locator('[data-kb-part="card-action-details"]').click();
+  const details = page.locator('[data-kb-part="details-modal"]');
+  await expect(details).toContainText('۱۴۰۵/۰۸/۲۳');
+  await page.screenshot({ path: 'docs/redesign/jalali-details.jpg' });
+  await details.getByRole('button', { name: 'Close', exact: true }).click();
+  await page.locator('[data-kb-part="view-list"]').click();
+  await expect(page.locator('[data-kb-part="list-row"]').first()).toContainText('۱۴۰۵/۰۸/۲۳');
+  await page.locator('[data-kb-part="workbench-playground-trigger"]').click();
+  await page.locator('select[name="appearance[dates][calendar]"]').selectOption('gregorian');
+  await expect(page.locator('[data-kb-part="card-due"]').first()).toContainText('2026-11-14');
+});

@@ -207,4 +207,18 @@ final class WorkbenchDatabaseTest extends WorkbenchTestCase
         $this->assertSame('BoardInvalidated', $event->eventType);
         Event::assertDispatched(KanbanBroadcastEvent::class, static fn (KanbanBroadcastEvent $e): bool => str_starts_with($e->channel, 'private-kanban.') && ! array_key_exists('title', $e->payload));
     }
+    public function test_archived_card_delete_rejects_stale_versions_and_preserves_other_tenants(): void
+    {
+        $this->loginAs('alice');
+        $this->exec('archiveCard', ['cardId' => '101']);
+        $version = (string) DemoCard::where('scope_key', 'tenant-a')->where('board_key', 'tasks.board')->where('public_id', '101')->value('version');
+        self::assertSame(ActionStatus::CONFLICT, $this->exec('deleteCard', ['cardId' => '101'], version: '0')->status);
+        $result = $this->exec('deleteCard', ['cardId' => '101'], operation: 'delete-demo-once', version: $version);
+        self::assertSame(ActionStatus::SUCCESS, $result->status);
+        self::assertSame(ActionStatus::SUCCESS, $this->exec('deleteCard', ['cardId' => '101'], operation: 'delete-demo-once', version: $version)->status);
+        self::assertFalse(DemoCard::where('scope_key', 'tenant-a')->where('board_key', 'tasks.board')->where('public_id', '101')->exists());
+        self::assertTrue(DemoCard::where('scope_key', 'tenant-b')->where('board_key', 'tasks.board')->where('public_id', '101')->exists());
+        self::assertSame(ActionStatus::NOT_FOUND, $this->exec('deleteCard', ['cardId' => '102'], version: '1')->status);
+    }
+
 }

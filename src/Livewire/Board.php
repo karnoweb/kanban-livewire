@@ -123,6 +123,9 @@ class Board extends Component
 
     public ?array $detail = null;
 
+    #[Locked]
+    public ?string $detailCardId = null;
+
     public string $detailSurface = 'modal';
 
     public bool $archiveOpen = false;
@@ -199,9 +202,10 @@ class Board extends Component
         $realtime = false;
         $channel = '';
         $features = new FeatureSettings;
-        $columnWidth = '18.5rem';
+        $columnWidth = '21rem';
         $sourceOptions = [];
         $groupOptions = [];
+        $facetOptions = [];
         $filterFields = ['priority'];
         $sortOptions = ['manualOrder', 'priority', 'dueAt', 'title'];
         $cardTemplates = [];
@@ -211,6 +215,10 @@ class Board extends Component
         $formTemplate = 'kanban::components.card-form';
 
         if (! $this->accessDenied) {
+            $detailSections = $this->detailSectionsForRender();
+            if ($this->provider() instanceof \Karnoweb\Kanban\Contracts\FilterOptionsProvider) {
+                $facetOptions = $this->provider()->filterOptions($this->context());
+            }
             $settings = $this->definition()->settings;
             $features = $settings->features;
             $columnWidth = $settings->views->columnWidth;
@@ -253,10 +261,12 @@ class Board extends Component
             'realtimeOn' => $realtime,
             'realtimeChannel' => $channel,
             'features' => $features,
+            'dateSettings' => isset($settings) ? $settings->appearance->dates : \Karnoweb\Kanban\Data\DateSettings::fromArray(),
             'columnWidth' => $columnWidth,
             'transitionMatrix' => $transitionMatrix,
             'sourceOptions' => $sourceOptions,
             'groupOptions' => $groupOptions,
+            'facetOptions' => $facetOptions,
             'filterFields' => $filterFields,
             'sortOptions' => $sortOptions,
             'cardTemplates' => $cardTemplates,
@@ -264,6 +274,9 @@ class Board extends Component
             'stageTemplate' => $stageTemplate,
             'listTemplate' => $listTemplate,
             'formTemplate' => $formTemplate,
+            'detailSections' => $detailSections ?? [],
+            'drawerWidth' => isset($settings) ? $settings->views->drawerWidth : 560,
+            'detailSectionViews' => $this->accessDenied ? [] : $this->definition()->detailSectionViews,
         ]);
     }
 }

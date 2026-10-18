@@ -9,6 +9,8 @@ final readonly class CardFormSchema
     /** @param list<string> $fields */
     public function __construct(
         public array $fields = ['title', 'description', 'priority', 'dueAt', 'stageId'],
+        public ?string $createUrl = null,
+        public ?string $editUrl = null,
     ) {}
 
     public function allows(string $field): bool

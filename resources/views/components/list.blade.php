@@ -1,5 +1,12 @@
 <div class="kb-list" role="table" aria-label="{{ __('kanban::kanban.list') }}" data-kb-part="list">
     <div class="kb-list-scroll" data-kb-part="list-body">
+        <div class="kb-table-head" role="row" data-kb-part="list-header">
+            <div role="columnheader" aria-label="{{ __('kanban::kanban.title') }}"></div>
+            <div role="columnheader">#</div>
+            @foreach(['title', 'status', 'priority', 'labels', 'progress', 'due', 'assignees', 'points', 'actions'] as $field)
+                <div role="columnheader">{{ __('kanban::kanban.'.$field) }}</div>
+            @endforeach
+        </div>
         @forelse($listItems as $card)
             @include('kanban::components.list-row', ['card' => $card])
         @empty

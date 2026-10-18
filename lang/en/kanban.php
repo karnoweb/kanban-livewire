@@ -3,6 +3,37 @@
 declare(strict_types=1);
 
 return [
+    'more_assignees' => ':count more members',
+    'confirm_move' => 'Confirm card move',
+    'cards' => 'cards',
+    'more_filters' => 'More filters',
+    'empty_archive' => 'No archived cards.',
+    'apply_theme' => 'Apply theme',
+    'created' => 'Created',
+    'description' => 'Description',
+    'checklist' => 'Checklist',
+    'attachments' => 'Attachments',
+    'comments' => 'Comments',
+    'completed' => 'Completed',
+    'incomplete' => 'Incomplete',
+    'comments_summary_only' => 'Comment text is unavailable.',
+    'load_details' => 'Load section',
+    'load_more_details' => 'Load more',
+    'no_section_items' => 'No items in this section.',
+    'section_unavailable' => 'This section is unavailable.',
+    'delete_card' => 'Delete card',
+    'delete_confirm' => 'Delete this archived card permanently? This cannot be undone.',
+
+
+    'labels' => 'Labels',
+    'progress' => 'Progress',
+    'due' => 'Due date',
+    'assignees' => 'Assignees',
+    'points' => 'Points',
+    'priority' => 'Priority',
+    'stage_actions' => 'Stage actions',
+    'update_stage' => 'Edit stage',
+
     'filters_sort' => 'Filters & sorting',
     'appearance' => 'Appearance',
     'source' => 'Source',

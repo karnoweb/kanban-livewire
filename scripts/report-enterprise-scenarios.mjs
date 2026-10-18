@@ -28,7 +28,7 @@ const rows = [
   ['جست‌وجوی فارسی و انگلیسی', [test('m', 'search_and_filters_are_applied_before_counts_and_pages')], 'قرارداد و other؛ شمارش فیلترشده ۱'],
   ['فیلتر پیش از صفحه‌بندی', [test('m', 'search_and_filters_are_applied_before_counts_and_pages')], 'priority/status/assignee در SQL؛ کاربر غیرمجاز صفر'],
   ['محدوده امن تجمیع', [test('m', 'read_scope_applies_to_pages_counts_details_and_metrics')], '۱۲ مبلغ مجاز؛ ۹۰۰ مبلغ کاربر دیگر نادیده'],
-  ['جلوگیری از کوئری به‌ازای هر کارت', [test('x', 'eager_loaded_assignees_have_a_constant_query_count_for_twenty_five_cards')], '۲۵ کارت با صاحب مشترک؛ فقط ۳ query'],
+  ['جلوگیری از کوئری به‌ازای هر کارت', [test('x', 'eager_loaded_assignees_have_a_constant_query_count_for_twenty_five_cards')], 'صفحه‌های ۲۵ و ۱۰۰ کارت با صاحب مشترک؛ هرکدام فقط ۳ query'],
   ['بسته‌بودن دسترسی خالی یا خاموش', [test('m', 'empty_allowlist_returns_zero_data'), test('a', 'model_adapter_can_be_disabled_fail_closed')], 'صفر داده و صفر query منابع؛ نوشتن ممنوع'],
   ['مجوز یکسان لیست و بایگانی', [test('m', 'archive_and_restore_share_the_same_visibility_scope'), test('m', 'read_scope_applies_to_pages_counts_details_and_metrics')], 'بایگانی کارت مجاز ۱؛ کارت کاربر دیگر قابل خواندن نباشد'],
   ['انتقال و افزایش نسخه', [test('m', 'valid_move_persists_version_and_operation_status')], 'todo به doing؛ نسخه ۱ به ۲'],

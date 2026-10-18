@@ -3,9 +3,9 @@
     $code = isset($meta['code']) && is_string($meta['code']) ? $meta['code'] : null;
     $points = isset($meta['points']) && is_numeric($meta['points']) ? (int) $meta['points'] : null;
     $progress = isset($meta['progress']) && is_numeric($meta['progress']) ? max(0, min(100, (int) $meta['progress'])) : null;
-    $checklistDone = isset($meta['checklistDone']) && is_numeric($meta['checklistDone']) ? (int) $meta['checklistDone'] : null;
-    $checklistTotal = isset($meta['checklistTotal']) && is_numeric($meta['checklistTotal']) ? (int) $meta['checklistTotal'] : null;
-    $commentsCount = isset($meta['commentsCount']) && is_numeric($meta['commentsCount']) ? (int) $meta['commentsCount'] : null;
+    $checklistDone = isset($meta['checklistDone']) && is_numeric($meta['checklistDone']) ? (int) $meta['checklistDone'] : (!empty($card['checklist']) ? count(array_filter($card['checklist'], static fn ($item) => !empty($item['done']))) : null);
+    $checklistTotal = isset($meta['checklistTotal']) && is_numeric($meta['checklistTotal']) ? (int) $meta['checklistTotal'] : (!empty($card['checklist']) ? count($card['checklist']) : null);
+    $commentsCount = isset($meta['commentsCount']) && is_numeric($meta['commentsCount']) ? (int) $meta['commentsCount'] : (!empty($card['comments']) ? count($card['comments']) : null);
     $blocked = ! empty($meta['blocked']);
     $selected = in_array($card['id'], $selectedIds, true);
     $prio = (string) ($card['priority'] ?? '');
@@ -22,8 +22,7 @@
     data-stage="{{ $card['stageId'] ?? '' }}"
     data-version="{{ $card['version'] ?? '' }}"
 >
-    @include('kanban::components.card-badges', ['card' => $card])
-
+    @include('kanban::components.card-cover', ['card' => $card])
     <div class="kb-card-head" data-kb-part="card-header">
         @if($features->bulk)
             <input
@@ -42,12 +41,17 @@
             @endif
             <h3 class="kb-card-title" data-kb-part="card-title">{{ $card['title'] }}</h3>
         </div>
+        @if($prio !== '')
+            <span class="kb-stat kb-stat--priority kb-stat--priority-{{ $prio }}" data-kb-part="card-priority">{{ __('kanban::kanban.priority_'.$prio) === 'kanban::kanban.priority_'.$prio ? $prio : __('kanban::kanban.priority_'.$prio) }}</span>
+        @endif
         @include('kanban::components.card-actions', ['card' => $card])
     </div>
 
     @if(!empty($card['description']))
         <p class="kb-card-text" data-kb-part="card-description">{{ $card['description'] }}</p>
     @endif
+
+    @include('kanban::components.card-badges', ['card' => $card])
 
     @if($progress !== null)
         <div class="kb-card-progress" data-kb-part="card-progress" aria-label="{{ $card['title'] }}" role="progressbar" aria-valuenow="{{ $progress }}" aria-valuemin="0" aria-valuemax="100">
@@ -57,22 +61,20 @@
 
     @include('kanban::components.card-attachments', ['card' => $card])
 
+    @if(!empty($card['dueAt']) || ($checklistTotal ?? 0) > 0 || ($commentsCount ?? 0) > 0 || !empty($card['attachments']) || $points !== null || !empty($card['assignees']))
     <footer class="kb-card-footer" data-kb-part="card-footer">
         <div class="kb-card-stats" data-kb-part="card-stats">
-            @if($prio !== '')
-                <span class="kb-stat kb-stat--priority kb-stat--priority-{{ $prio }}" data-kb-part="card-priority">{{ $prio }}</span>
-            @endif
             @if(!empty($card['dueAt']))
-                <time class="kb-stat kb-stat--due" data-kb-part="card-due" datetime="{{ $card['dueAt'] }}">📅 {{ $card['dueAt'] }}</time>
+                <time dir="ltr" class="kb-stat kb-stat--due" data-kb-part="card-due" datetime="{{ $card['dueAt'] }}">@include('kanban::components.icon', ['icon' => 'calendar']) {{ app(\Karnoweb\Kanban\Support\DateFormatter::class)->format($card['dueAt'], settings: $dateSettings ?? null) }}</time>
             @endif
             @if($checklistTotal !== null && $checklistTotal > 0)
-                <span class="kb-stat kb-stat--checklist {{ $checklistDone === $checklistTotal ? 'is-complete' : '' }}" data-kb-part="card-checklist">☑ {{ $checklistDone ?? 0 }}/{{ $checklistTotal }}</span>
+                <span class="kb-stat kb-stat--checklist {{ $checklistDone === $checklistTotal ? 'is-complete' : '' }}" data-kb-part="card-checklist">@include('kanban::components.icon', ['icon' => 'checklist']) {{ $checklistDone ?? 0 }}/{{ $checklistTotal }}</span>
             @endif
             @if($commentsCount !== null && $commentsCount > 0)
-                <span class="kb-stat kb-stat--comments" data-kb-part="card-comments">💬 {{ $commentsCount }}</span>
+                <span class="kb-stat kb-stat--comments" data-kb-part="card-comments">@include('kanban::components.icon', ['icon' => 'comment']) {{ $commentsCount }}</span>
             @endif
             @if(!empty($card['attachments']))
-                <span class="kb-stat kb-stat--files" data-kb-part="card-files-count">📎 {{ count($card['attachments']) }}</span>
+                <span class="kb-stat kb-stat--files" data-kb-part="card-files-count">@include('kanban::components.icon', ['icon' => 'attachment']) {{ count($card['attachments']) }}</span>
             @endif
             @if($points !== null)
                 <span class="kb-stat kb-stat--points" data-kb-part="card-points">{{ $points }} pt</span>
@@ -80,4 +82,5 @@
         </div>
         @include('kanban::components.card-assignees', ['card' => $card])
     </footer>
+    @endif
 </article>

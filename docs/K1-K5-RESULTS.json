@@ -1,0 +1,88 @@
+{
+  "measuredAt": "2026-10-18T19:08:24.475859+00:00",
+  "directive": "docs/01-KANBAN-AGENT-IMPLEMENTATION-FA.md",
+  "php": {
+    "name": "D:\\my-packages\\kanban-livewire\\phpunit.xml",
+    "tests": "264",
+    "assertions": "998",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "time": "84.934051"
+  },
+  "browserFullSuite": {
+    "startTime": "2026-10-18T18:54:59.825Z",
+    "duration": 376321.24,
+    "expected": 21,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "drawerCaptureRerun": {
+    "startTime": "2026-10-18T19:05:18.841Z",
+    "duration": 26160.322999999997,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "composer": "validate --strict --no-check-version: PASS",
+  "assets": "npm run build: PASS",
+  "scope": "Local Windows / PHP 8.4.22 / SQLite / Edge",
+  "benchmark": [
+    {
+      "rows": 10000,
+      "columns": 10,
+      "page_size": 25,
+      "loaded": 250,
+      "hydrated": 260,
+      "queries": 21,
+      "milliseconds": 174.664,
+      "memory_delta_bytes": 0,
+      "process_peak_bytes": 88080384,
+      "php": "8.4.22",
+      "database": "3.51.3",
+      "os": "Windows",
+      "cache": "disabled",
+      "temperature": "first pass after insert",
+      "reference_baseline": {
+        "provider": "existing InlineDataProvider",
+        "materialized_cards": 10000,
+        "milliseconds_including_materialization": 630.09,
+        "peak_bytes": 88080384,
+        "note": "In-memory reference; database seed/fetch cost excluded. Not a like-for-like database latency comparison."
+      }
+    },
+    {
+      "rows": 100000,
+      "columns": 10,
+      "page_size": 25,
+      "loaded": 250,
+      "hydrated": 260,
+      "queries": 21,
+      "milliseconds": 646.033,
+      "memory_delta_bytes": 0,
+      "process_peak_bytes": 138412032,
+      "php": "8.4.22",
+      "database": "3.51.3",
+      "os": "Windows",
+      "cache": "disabled",
+      "temperature": "first pass after insert",
+      "reference_baseline": {
+        "provider": "existing InlineDataProvider",
+        "materialized_cards": 100000,
+        "milliseconds_including_materialization": 8035.336,
+        "peak_bytes": 146800640,
+        "note": "In-memory reference; database seed/fetch cost excluded. Not a like-for-like database latency comparison."
+      }
+    }
+  ],
+  "unverifiedThisRun": [
+    "MariaDB",
+    "PostgreSQL",
+    "external CI",
+    "real mobile hardware",
+    "other browsers"
+  ],
+  "report": "docs/K1-K5-IMPLEMENTATION-REPORT-FA.md"
+}

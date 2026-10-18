@@ -7,6 +7,8 @@
     trap: function (dialog) {
       if (!dialog) return function () {};
       var previous = document.activeElement;
+      var previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
       var inert = [];
       for (var node = dialog; node && node !== document.body; node = node.parentElement) {
         if (!node.parentElement) break;
@@ -34,9 +36,10 @@
       }
       dialog.tabIndex = -1;
       dialog.addEventListener('keydown', keepFocus);
-      (items()[0] || dialog).focus();
+      (dialog.querySelector('[autofocus]') || items()[0] || dialog).focus();
       return function () {
         dialog.removeEventListener('keydown', keepFocus);
+        document.body.style.overflow = previousOverflow;
         inert.forEach(function (el) { el.inert = false; });
         if (previous && previous.isConnected && previous.focus) previous.focus();
       };

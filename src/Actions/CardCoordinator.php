@@ -30,6 +30,11 @@ final class CardCoordinator
         return new ActionCommand($operationId, ActionType::ArchiveCard, ['cardId' => $cardId], $expectedVersion);
     }
 
+    public function delete(string $operationId, string $cardId, ?string $expectedVersion = null): ActionCommand
+    {
+        return new ActionCommand($operationId, ActionType::DeleteCard, ['cardId' => $cardId], $expectedVersion);
+    }
+
     public function restore(string $operationId, string $cardId, ?string $stageId, ?string $expectedVersion = null): ActionCommand
     {
         return new ActionCommand($operationId, ActionType::RestoreCard, [

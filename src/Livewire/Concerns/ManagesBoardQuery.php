@@ -27,7 +27,7 @@ trait ManagesBoardQuery
 
     public function setBoardFilter(string $field, string $value): void
     {
-        if (! in_array($field, ['source', 'stage', 'group'], true)) {
+        if (! in_array($field, ['source', 'stage', 'group', 'priority', 'assignee', 'badge'], true)) {
             return;
         }
         if ($value === '') {

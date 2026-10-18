@@ -20,6 +20,10 @@ trait HandlesPreference
 
     public function setTheme(string $theme): void
     {
+        if (! $this->definition()->settings->features->themeSwitch) {
+            return;
+        }
+
         if (! in_array($theme, ['light', 'dark', 'system'], true)) {
             return;
         }
@@ -30,6 +34,10 @@ trait HandlesPreference
 
     public function setDirection(string $direction): void
     {
+        if (! $this->definition()->settings->features->directionSwitch) {
+            return;
+        }
+
         if (! in_array($direction, ['ltr', 'rtl'], true)) {
             return;
         }
@@ -40,6 +48,10 @@ trait HandlesPreference
 
     public function setDensity(string $density): void
     {
+        if (! $this->definition()->settings->features->densitySwitch) {
+            return;
+        }
+
         if (! in_array($density, ['compact', 'comfortable'], true)) {
             return;
         }

@@ -29,6 +29,9 @@ final readonly class BoardDefinition
         public ?array $sources = null,
         public array $stageMap = [],
         public ?SwimlaneDefinition $swimlane = null,
+        /** @var class-string<\Karnoweb\Kanban\Contracts\CardDetailsProvider>|null */
+        public ?string $detailsProviderClass = null,
+        public array $detailSectionViews = [],
     ) {}
 
     public function isReadOnly(): bool

@@ -42,6 +42,7 @@ final class InMemoryHandler implements ActionHandler
             ActionType::CreateCard => $this->createCard($board, $command),
             ActionType::UpdateCard => $this->updateCard($board, $command),
             ActionType::ArchiveCard => $this->archiveCard($board, $command, true),
+            ActionType::DeleteCard => ActionResult::unsupported(),
             ActionType::RestoreCard => $this->archiveCard($board, $command, false),
             ActionType::CreateStage => $this->createStage($board, $command),
             ActionType::UpdateStage => $this->updateStage($board, $command),

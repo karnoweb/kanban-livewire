@@ -32,9 +32,10 @@ final readonly class KanbanSettings
             views: new DisplaySettings(
                 defaultView: ViewMode::fromSetting((string) config('kanban.default_view', 'board')),
                 allowedViews: config('kanban.allowed_views', ['board', 'list']),
-                columnWidth: (string) ($appearance['column_width'] ?? '18rem'),
+                columnWidth: (string) ($appearance['column_width'] ?? '21rem'),
                 density: (string) ($appearance['density'] ?? 'comfortable'),
                 detailSurface: (string) ($appearance['detail_surface'] ?? 'modal'),
+                drawerWidth: (int) ($appearance['drawer_width'] ?? 560),
             ),
             features: new FeatureSettings(
                 dragDrop: (bool) ($features['drag_drop'] ?? true),
@@ -59,6 +60,7 @@ final readonly class KanbanSettings
                 viewSwitch: (bool) ($features['view_switch'] ?? true),
                 themeSwitch: (bool) ($features['theme_switch'] ?? true),
                 directionSwitch: (bool) ($features['direction_switch'] ?? true),
+                deleteCard: (bool) ($features['delete_card'] ?? false),
                 densitySwitch: (bool) ($features['density_switch'] ?? true),
             ),
             pagination: new PaginationSettings(
@@ -69,6 +71,7 @@ final readonly class KanbanSettings
             appearance: new AppearanceSettings(
                 theme: (string) ($appearance['theme'] ?? 'system'),
                 direction: (string) ($appearance['direction'] ?? 'ltr'),
+                dates: DateSettings::fromArray($appearance['dates'] ?? []),
             ),
             realtime: new RealtimeSettings(
                 enabled: (bool) ($realtime['enabled'] ?? false),
@@ -99,7 +102,7 @@ final readonly class KanbanSettings
     public static function fromArray(array $settings): self
     {
         // Appearance aliases remain supported alongside the canonical views group.
-        foreach (['column_width', 'density', 'detail_surface'] as $key) {
+        foreach (['column_width', 'density', 'detail_surface', 'drawer_width'] as $key) {
             if (isset($settings['appearance'][$key]) && ! isset($settings['views'][$key])) {
                 $settings['views'][$key] = $settings['appearance'][$key];
             }
@@ -115,6 +118,7 @@ final readonly class KanbanSettings
                     columnWidth: (string) ($views['column_width'] ?? $base->views->columnWidth),
                     density: (string) ($views['density'] ?? $base->views->density),
                     detailSurface: (string) ($views['detail_surface'] ?? $base->views->detailSurface),
+                    drawerWidth: (int) ($views['drawer_width'] ?? $base->views->drawerWidth),
                 ),
                 features: $base->features,
                 pagination: $base->pagination,
@@ -137,6 +141,7 @@ final readonly class KanbanSettings
                 'archive_card' => $base->features->archiveCard,
                 'archive_stage' => $base->features->archiveStage,
                 'restore_card' => $base->features->restoreCard,
+                'delete_card' => $base->features->deleteCard,
                 'search' => $base->features->search,
                 'filters' => $base->features->filters,
                 'bulk' => $base->features->bulk,
@@ -178,6 +183,7 @@ final readonly class KanbanSettings
                     (bool) $features['theme_switch'],
                     (bool) $features['direction_switch'],
                     (bool) $features['density_switch'],
+                    (bool) $features['delete_card'],
                 ),
                 pagination: $base->pagination,
                 appearance: $base->appearance,
@@ -215,6 +221,7 @@ final readonly class KanbanSettings
                 appearance: new AppearanceSettings(
                     theme: (string) ($appearance['theme'] ?? $base->appearance->theme),
                     direction: (string) ($appearance['direction'] ?? $base->appearance->direction),
+                    dates: DateSettings::fromArray(array_replace($base->appearance->dates->toArray(), $appearance['dates'] ?? [])),
                 ),
                 realtime: $base->realtime,
                 interaction: $base->interaction,

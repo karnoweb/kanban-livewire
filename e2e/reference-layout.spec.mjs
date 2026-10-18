@@ -1,0 +1,53 @@
+import { test, expect } from '@playwright/test';
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+
+test.beforeEach(() => {
+  if (!process.env.WORKBENCH_DB?.replaceAll('\\', '/').includes('/.phpunit.cache/')) throw new Error('Use an isolated database');
+  execFileSync('php', ['vendor/bin/testbench', 'migrate:fresh', '--force'], { stdio: 'pipe' });
+});
+test('reference toolbar, wider cards, compact list and CRM note flow', async ({ page }) => {
+  await page.setViewportSize({ width: 1672, height: 1000 });
+  await page.goto('/login-as/alice');
+  await page.goto('/tasks');
+  await expect(page.locator('[data-kb-part="toolbar-filter-assignee"]')).toBeVisible();
+  await expect(page.locator('[data-kb-part="toolbar-filter-badge"]')).toBeVisible();
+  expect((await page.locator('.kb-card').first().boundingBox()).width).toBeGreaterThan(300);
+  const cover = page.locator('.kb-card[data-card="101"] [data-kb-part="card-cover"]');
+  await expect(cover).toBeVisible();
+  await expect.poll(() => cover.evaluate(el => el.complete && el.naturalWidth > 0)).toBe(true);
+  await page.locator('[data-kb-part="toolbar-filter-assignee"]').selectOption('u-alice');
+  await page.locator('[data-kb-part="filter-options"] > summary').click();
+  await page.locator('[data-kb-part="filter-priority-high"]').click();
+  await expect(page.locator('.kb-card')).toHaveCount(1);
+  await page.locator('[data-kb-part="filter-priority-low"]').click();
+  await expect(page.locator('.kb-card')).toHaveCount(0);
+  await page.locator('[data-kb-part="toolbar-filter-assignee"]').selectOption('');
+  await page.locator('[data-kb-part="filter-options"]').evaluate(el => el.open = true);
+  await page.locator('[data-kb-part="filter-priority-all"]').click();
+  await page.locator('[data-kb-part="filter-options"] > summary').click();
+  await expect(page.locator('.kb-card')).toHaveCount(3);
+  fs.mkdirSync('docs/redesign/reference', { recursive: true });
+  await page.screenshot({ path: 'docs/redesign/reference/board.jpg' });
+  await page.locator('[data-kb-part="view-list"]').click();
+  await expect(page.locator('[data-kb-part="list-row"]')).toHaveCount(3);
+  expect((await page.locator('[data-kb-part="list-row"]').first().boundingBox()).height).toBeLessThan(50);
+  await expect(page.locator('[data-kb-part="list-header"] [role="columnheader"]')).toHaveCount(11);
+  await expect(page.locator('[data-kb-part="view-list"]')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('[data-kb-part="view-list"]')).toBeEnabled();
+  await page.screenshot({ path: 'docs/redesign/reference/list.jpg', clip: { x: 0, y: 0, width: 1672, height: 440 } });
+  await page.goto('/crm');
+  await expect(page.locator('[data-kb-part="toolbar-create-card"], [data-kb-part="stage-add-card"], [data-kb-part="stage-quick-create"], [data-kb-part="toolbar-create-stage"]')).toHaveCount(0);
+  const card = page.locator('.kb-card[data-card="101"]');
+  await card.locator('[data-kb-part="card-menu-trigger"]').click();
+  await card.locator('[data-target-stage="progress"]').click();
+  await expect(page.locator('[aria-modal="true"]')).toBeVisible();
+  await page.screenshot({ path: 'docs/redesign/reference/crm-note.jpg' });
+  // Verify this is a required note form, then cancel without mutating the card.
+  await expect(page.locator('[aria-modal="true"] textarea')).toBeVisible();
+  await page.locator('[aria-modal="true"]').getByRole('button', { name: 'Cancel', exact: true }).click();
+  await card.locator('[data-kb-part="card-menu-trigger"]').click();
+  await card.locator('[data-kb-part="card-action-details"]').click();
+  await expect(page.locator('[data-kb-part="details-comments"]')).toContainText('Sample comment: requirements reviewed');
+  await page.screenshot({ path: 'docs/redesign/reference/details.jpg' });
+});

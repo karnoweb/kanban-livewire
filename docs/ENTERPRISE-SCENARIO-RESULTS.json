@@ -1,18 +1,18 @@
 {
-  "measuredAt": "2026-10-16T21:28:06.683Z",
+  "measuredAt": "2026-10-18T19:06:49.719Z",
   "php": {
     "name": "D:\\my-packages\\kanban-livewire\\phpunit.xml",
-    "tests": "221",
-    "assertions": "794",
+    "tests": "264",
+    "assertions": "998",
     "errors": "0",
     "failures": "0",
     "skipped": "0",
-    "time": "32.171112"
+    "time": "84.934051"
   },
   "browser": {
-    "startTime": "2026-10-16T21:25:28.986Z",
-    "duration": 55944.007999999994,
-    "expected": 12,
+    "startTime": "2026-10-18T18:54:59.825Z",
+    "duration": 376321.24,
+    "expected": 21,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
@@ -27,7 +27,7 @@
       "browserTests": [],
       "expected": "۱ Task؛ ۳ ستون؛ نمایش tasks:1",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB102",
@@ -38,7 +38,7 @@
       "browserTests": [],
       "expected": "مدل نامعتبر و ثبت تکراری هر دو رد شوند",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB103",
@@ -50,7 +50,7 @@
       "browserTests": [],
       "expected": "tickets:1 در برد tasks داده ندهد؛ صفر query منبع دیگر",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB104",
@@ -61,7 +61,7 @@
       "browserTests": [],
       "expected": "صفر query به enterprise_classes",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB105",
@@ -72,7 +72,7 @@
       "browserTests": [],
       "expected": "۱ کلاس؛ صفر query به tasks/tickets",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB106",
@@ -83,7 +83,7 @@
       "browserTests": [],
       "expected": "tasks:1 و tickets:1 مستقل؛ شمارش ۲",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB107",
@@ -94,7 +94,7 @@
       "browserTests": [],
       "expected": "ترتیب todo، doing، done",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB108",
@@ -105,7 +105,7 @@
       "browserTests": [],
       "expected": "todo و open در ستون مشترک؛ شمارش ۲",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB109",
@@ -116,7 +116,7 @@
       "browserTests": [],
       "expected": "خطای تعریف برد؛ داده مخلوط نشود",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB110",
@@ -127,7 +127,7 @@
       "browserTests": [],
       "expected": "دو instanceId متفاوت؛ هر کاربر فقط کارت خود",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB111",
@@ -138,7 +138,7 @@
       "browserTests": [],
       "expected": "100000 ردیف؛ ۱۰ ستون؛ ۲۵۰ کارت؛ ۲۶۰ hydration؛ ۲۱ query",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB112",
@@ -149,7 +149,7 @@
       "browserTests": [],
       "expected": "دو ستون با شمارش ۳؛ نشانگر مستقل و بدون تکرار",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB113",
@@ -160,7 +160,7 @@
       "browserTests": [],
       "expected": "نشانگر tasks روی other رد شود",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB114",
@@ -171,7 +171,7 @@
       "browserTests": [],
       "expected": "تغییر scope یا actor نشانگر را نامعتبر کند",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB115",
@@ -182,7 +182,7 @@
       "browserTests": [],
       "expected": "تغییر search/جهت/ستون و دستکاری نشانگر رد شود",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB116",
@@ -194,7 +194,7 @@
       "browserTests": [],
       "expected": "۱۷ کارت هم‌رتبه؛ ۲۲ کارت دو منبع؛ بدون گم‌شدن/تکرار",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB117",
@@ -205,7 +205,7 @@
       "browserTests": [],
       "expected": "قرارداد و other؛ شمارش فیلترشده ۱",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB118",
@@ -216,7 +216,7 @@
       "browserTests": [],
       "expected": "priority/status/assignee در SQL؛ کاربر غیرمجاز صفر",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB119",
@@ -227,7 +227,7 @@
       "browserTests": [],
       "expected": "۱۲ مبلغ مجاز؛ ۹۰۰ مبلغ کاربر دیگر نادیده",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB120",
@@ -236,9 +236,9 @@
         "EnterpriseAcceptanceTest::test_eager_loaded_assignees_have_a_constant_query_count_for_twenty_five_cards"
       ],
       "browserTests": [],
-      "expected": "۲۵ کارت با صاحب مشترک؛ فقط ۳ query",
+      "expected": "صفحه‌های ۲۵ و ۱۰۰ کارت با صاحب مشترک؛ هرکدام فقط ۳ query",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB121",
@@ -250,7 +250,7 @@
       "browserTests": [],
       "expected": "صفر داده و صفر query منابع؛ نوشتن ممنوع",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB122",
@@ -262,7 +262,7 @@
       "browserTests": [],
       "expected": "بایگانی کارت مجاز ۱؛ کارت کاربر دیگر قابل خواندن نباشد",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB123",
@@ -273,7 +273,7 @@
       "browserTests": [],
       "expected": "todo به doing؛ نسخه ۱ به ۲",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB124",
@@ -284,7 +284,7 @@
       "browserTests": [],
       "expected": "todo به done ممنوع؛ وضعیت اولیه حفظ شود",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB125",
@@ -295,7 +295,7 @@
       "browserTests": [],
       "expected": "tickets:1 در برد tasks برابر NOT_FOUND",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB126",
@@ -306,7 +306,7 @@
       "browserTests": [],
       "expected": "۱ منبع؛ owner=alice از سرور",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB127",
@@ -318,7 +318,7 @@
       "browserTests": [],
       "expected": "فقدان source رد؛ انتخاب tasks مجاز",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB128",
@@ -329,7 +329,7 @@
       "browserTests": [],
       "expected": "کارت خارجی و ناموجود هر دو NOT_FOUND",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB129",
@@ -341,7 +341,7 @@
       "browserTests": [],
       "expected": "مجوز برد و نسخه بررسی؛ قابلیت خاموش تغییری ندهد",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB130",
@@ -353,7 +353,7 @@
       "browserTests": [],
       "expected": "approve معتبر ذخیره؛ note خالی رد؛ متد خام اجرا نشود",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB131",
@@ -365,7 +365,7 @@
       "browserTests": [],
       "expected": "یادداشت اجباری؛ لغو صفر تغییر",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB132",
@@ -376,7 +376,7 @@
       "browserTests": [],
       "expected": "دو درخواست؛ فقط افزایش نسخه از ۱ به ۲",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB133",
@@ -387,7 +387,7 @@
       "browserTests": [],
       "expected": "نسخه ۵؛ expected=1 یا null رد؛ عنوان اولیه حفظ",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB134",
@@ -398,7 +398,7 @@
       "browserTests": [],
       "expected": "۲ پردازش واقعی؛ دقیقاً ۱ success و ۱ wip_limit",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB135",
@@ -409,7 +409,7 @@
       "browserTests": [],
       "expected": "10000 همسایه؛ فقط ۱ UPDATE",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB136",
@@ -421,7 +421,7 @@
       "browserTests": [],
       "expected": "ترتیب نهایی ۱،۳،۲؛ رتبه‌های یکتا",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB137",
@@ -432,7 +432,7 @@
       "browserTests": [],
       "expected": "UNSUPPORTED با rank_storage_required",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB138",
@@ -445,7 +445,7 @@
       "browserTests": [],
       "expected": "جزئی ۱ موفق/۲ خطا؛ اتمی خطادار صفر تغییر؛ اتمی معتبر ۲ موفق",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB139",
@@ -458,7 +458,7 @@
       ],
       "expected": "سه نما از یک Provider؛ شمارش ۳ پس از فیلتر مرورگر",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB140",
@@ -469,7 +469,7 @@
       "browserTests": [],
       "expected": "گروه A/B؛ گروه Private دیده نشود؛ گروه A شمارش ۱",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB141",
@@ -480,7 +480,7 @@
       "browserTests": [],
       "expected": "بدون guard رد؛ team اولیه A حفظ شود",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB142",
@@ -491,7 +491,7 @@
       "browserTests": [],
       "expected": "۲۶ رکورد؛ صفحه ۲۵؛ مجموع صحیح ۲۶",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB143",
@@ -504,7 +504,7 @@
       ],
       "expected": "todo بسته؛ پس از بارگذاری دوباره بسته بماند",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB144",
@@ -519,7 +519,7 @@
       ],
       "expected": "انتقال با نسخه معتبر؛ لمس واقعی در مرورگر شبیه‌سازی دستگاه",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB145",
@@ -532,7 +532,7 @@
       ],
       "expected": "جهت و پوسته‌های موجود؛ عرض موبایل ۳۹۰",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB146",
@@ -546,7 +546,7 @@
       ],
       "expected": "۲ شنونده؛ حذف یک برد ۱؛ حذف هر دو صفر",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB147",
@@ -557,7 +557,7 @@
       "browserTests": [],
       "expected": "منبع خارجی صفر رویداد؛ رویداد مجاز بدون entityId/version",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB148",
@@ -569,7 +569,7 @@
       "browserTests": [],
       "expected": "فقط ۱ رویداد در سطح تراکنش صفر؛ rollback بدون رویداد",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB149",
@@ -580,7 +580,7 @@
       "browserTests": [],
       "expected": "یک رکورد و دو Trait؛ بدون وابستگی اجباری. پکیج تقویم خارجی نصب/آزمایش نشده است",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     },
     {
       "id": "KNB150",
@@ -593,7 +593,7 @@
       ],
       "expected": "تمام تست‌های قبلی و جدید، صفر خطا/رد/skip و مجموعه کامل مرورگر",
       "status": "PASS",
-      "measuredAt": "2026-10-16T21:28:06.683Z"
+      "measuredAt": "2026-10-18T19:06:49.719Z"
     }
   ]
 }

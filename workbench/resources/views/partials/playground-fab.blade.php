@@ -22,6 +22,7 @@
             'update_card' => $f->updateCard,
             'archive_card' => $f->archiveCard,
             'restore_card' => $f->restoreCard,
+            'delete_card' => $f->deleteCard,
             'create_stage' => $f->createStage,
             'update_stage' => $f->updateStage,
             'archive_stage' => $f->archiveStage,
@@ -38,6 +39,12 @@
         'appearance' => [
             'theme' => $s->appearance->theme,
             'direction' => $s->appearance->direction,
+            'dates' => [
+                'calendar' => $s->appearance->dates->calendar,
+                'locale' => $s->appearance->dates->locale,
+                'timezone' => $s->appearance->dates->timezone,
+                'persian_digits' => $s->appearance->dates->persianDigits,
+            ],
         ],
         'views' => [
             'default' => $s->views->defaultView->value,
@@ -158,6 +165,10 @@
                 <label class="kb-wb-fab-check">
                     <input type="checkbox" name="features[restore_card]" value="1" @checked($f->restoreCard)>
                     <span>بازیابی از آرشیو (<code>restore_card</code>)</span>
+                </label>
+                <label class="kb-wb-fab-check">
+                    <input type="checkbox" name="features[delete_card]" value="1" @checked($f->deleteCard)>
+                    <span>حذف کارت بایگانی‌شده (<code>delete_card</code>)</span>
                 </label>
                 <label class="kb-wb-fab-check">
                     <input type="checkbox" name="features[create_stage]" value="1" @checked($f->createStage)>
@@ -302,6 +313,20 @@
                         @endforeach
                     </select>
                 </label>
+            </fieldset>
+            <fieldset class="kb-wb-fab-group">
+                <legend>نمایش تاریخ و زمان</legend>
+                <label class="kb-wb-fab-field"><span>تقویم</span>
+                    <select name="appearance[dates][calendar]">
+                        @foreach(['auto' => 'خودکار بر اساس محل', 'jalali' => 'جلالی', 'gregorian' => 'میلادی'] as $value => $label)
+                            <option value="{{ $value }}" @selected($s->appearance->dates->calendar === $value)>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                </label>
+                <label class="kb-wb-fab-field"><span>محل؛ خالی یعنی تنظیم برنامه</span><input name="appearance[dates][locale]" value="{{ $s->appearance->dates->locale }}" placeholder="fa_IR / en_US" dir="ltr"></label>
+                <label class="kb-wb-fab-field"><span>منطقهٔ زمانی؛ خالی یعنی خودکار</span><input name="appearance[dates][timezone]" value="{{ $s->appearance->dates->timezone }}" placeholder="Asia/Tehran" dir="ltr"></label>
+                <input type="hidden" name="appearance[dates][persian_digits]" value="0">
+                <label class="kb-wb-fab-check"><input type="checkbox" name="appearance[dates][persian_digits]" value="1" @checked($s->appearance->dates->persianDigits)><span>ارقام فارسی در تقویم جلالی</span></label>
             </fieldset>
         </form>
 

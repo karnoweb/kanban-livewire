@@ -62,7 +62,7 @@ final class EnterpriseAcceptanceTest extends EnterpriseTestCase
     {
         Schema::create('enterprise_owners', fn (Blueprint $table) => [$table->string('id')->primary(), $table->string('name')]);
         DB::table('enterprise_owners')->insert(['id' => 'alice', 'name' => 'Alice']);
-        foreach (range(1, 25) as $i) { $this->task(); }
+        foreach (range(1, 100) as $i) { $this->task(); }
         $registry = new KanbanModelRegistry; $registry->register('tasks', EagerTask::class);
         $provider = new EloquentKanbanDataProvider(new BoardSources(app(BoardRegistry::class), $registry), new ModelCursor);
         DB::enableQueryLog(); DB::flushQueryLog();
@@ -70,6 +70,10 @@ final class EnterpriseAcceptanceTest extends EnterpriseTestCase
         self::assertCount(25, $page->items);
         self::assertCount(3, DB::getQueryLog()); // Count + bounded cards + eager owners.
         self::assertSame('Alice', $page->items[0]->metadata['owner']);
+        DB::flushQueryLog();
+        $largePage = $provider->listCards($this->context, new BoardQuery(limit: 100));
+        self::assertCount(100, $largePage->items);
+        self::assertCount(3, DB::getQueryLog());
     }
 
     public function test_multisource_create_accepts_only_the_explicit_selected_source(): void

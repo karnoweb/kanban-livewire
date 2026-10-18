@@ -13,9 +13,10 @@ final readonly class DisplaySettings
     public function __construct(
         public ViewMode $defaultView = ViewMode::Board,
         public array $allowedViews = ['board', 'list'],
-        public string $columnWidth = '18rem',
+        public string $columnWidth = '21rem',
         public string $density = 'comfortable',
         public string $detailSurface = 'modal',
+        public int $drawerWidth = 560,
     ) {
         if ($allowedViews === []) {
             throw new InvalidArgumentException('At least one view must stay enabled.');
@@ -31,6 +32,9 @@ final readonly class DisplaySettings
 
         if (! in_array($detailSurface, ['modal', 'drawer'], true)) {
             throw new InvalidArgumentException('Detail surface must be modal or drawer.');
+        }
+        if ($drawerWidth < 320 || $drawerWidth > 960) {
+            throw new InvalidArgumentException('Drawer width must be between 320 and 960 pixels.');
         }
     }
 

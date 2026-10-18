@@ -6,19 +6,8 @@
             @endif
             <h2 class="kb-modal-title" data-kb-part="details-title">{{ $detail['title'] ?? '' }}</h2>
         </div>
-        <button type="button" class="btn-ghost btn kb-btn kb-btn--ghost" data-kb-part="details-close" wire:click="closeDetails">{{ __('kanban::kanban.close') }}</button>
+        @include('kanban::components.close-button', ['closeAction' => 'closeDetails', 'closePart' => 'details-close'])
     </header>
-    @include('kanban::components.card-badges', ['card' => $detail])
-    @if(!empty($detail['description']))
-        <p class="kb-modal-body" data-kb-part="details-description">{{ $detail['description'] }}</p>
-    @endif
-    @include('kanban::components.card-attachments', ['card' => $detail])
-    @include('kanban::components.card-assignees', ['card' => $detail])
-    @php($url = $detail['metadata']['url'] ?? null)
-    <footer class="kb-modal-footer" data-kb-part="details-footer">
-        @if(is_string($url) && preg_match('#^(https?://|/)#i', $url) === 1)
-            <a class="kb-link" data-kb-part="details-link" href="{{ $url }}">{{ __('kanban::kanban.open') }}</a>
-        @endif
-        @include('kanban::components.card-actions', ['card' => $detail])
-    </footer>
+    @include('kanban::components.card-detail-content')
+    @include('kanban::components.card-detail-footer')
 </div>

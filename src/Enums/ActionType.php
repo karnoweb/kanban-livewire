@@ -11,6 +11,7 @@ enum ActionType: string
     case CreateCard = 'createCard';
     case UpdateCard = 'updateCard';
     case ArchiveCard = 'archiveCard';
+    case DeleteCard = 'deleteCard';
     case RestoreCard = 'restoreCard';
     case CreateStage = 'createStage';
     case UpdateStage = 'updateStage';

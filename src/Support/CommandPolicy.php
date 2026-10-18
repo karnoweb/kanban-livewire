@@ -30,6 +30,7 @@ final class CommandPolicy
             ActionType::UpdateCard => $features->updateCard,
             ActionType::ArchiveCard => $features->archiveCard,
             ActionType::RestoreCard => $features->restoreCard,
+            ActionType::DeleteCard => $features->deleteCard,
             ActionType::CreateStage => $features->createStage,
             ActionType::UpdateStage => $features->updateStage,
             ActionType::ReorderStage => $features->reorderStages,

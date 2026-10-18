@@ -26,19 +26,31 @@ final class CrmBoardFactory extends WorkbenchBoardFactory
         return CrmHandler::class;
     }
 
+    public function resolvedSettings(): array
+    {
+        $settings = parent::resolvedSettings();
+        // Workflow constraints belong to the host, not the appearance playground.
+        $settings['features']['create_card'] = false;
+        $settings['features']['create_stage'] = false;
+        $settings['features']['bulk'] = false;
+        $settings['interaction'] = $this->settings()['interaction'];
+
+        return $settings;
+    }
+
     protected function settings(): array
     {
         return [
             'interaction' => [
                 'transition_policy' => 'deny',
                 'transitions' => ['new' => ['progress'], 'progress' => ['negotiation'], 'negotiation' => ['closed']],
-                'confirmation_rules' => ['negotiation>closed' => ['mode' => 'form', 'fields' => ['note' => ['required' => true]]]],
+                'confirmation_rules' => array_fill_keys(['new>progress', 'progress>negotiation', 'negotiation>closed'], ['mode' => 'form', 'fields' => ['note' => ['required' => true]]]),
             ],
             'features' => [
-                'create_card' => true,
+                'create_card' => false,
                 'create_stage' => false,
                 'bulk' => false,
-                'filters' => false,
+                'filters' => true,
                 'realtime' => false,
             ],
         ];

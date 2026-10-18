@@ -111,14 +111,14 @@ final class EloquentKanbanActionHandler implements ActionHandler
 
         return $connection->transaction(function () use ($command, $context, $board, $definition, $id, $create, $connection) {
             $rebalanced = [];
-            $record = $create ? new $definition->model : $this->provider->scoped($definition, $board, $context, $command->type === ActionType::RestoreCard)
+            $record = $create ? new $definition->model : $this->provider->scoped($definition, $board, $context, in_array($command->type, [ActionType::RestoreCard, ActionType::DeleteCard], true))
                 ->where($definition->fieldMap['id'], $id->recordId)->lockForUpdate()->first();
             if ($record === null) {
                 $this->reject(ActionStatus::NOT_FOUND, 'not_found');
             }
             $ability = match ($command->type) {
                 ActionType::CreateCard => 'create', ActionType::UpdateCard => 'update', ActionType::MoveCard => 'move',
-                ActionType::ReorderCard => 'reorder', ActionType::ArchiveCard => 'archive', ActionType::RestoreCard => 'restore',
+                ActionType::ReorderCard => 'reorder', ActionType::ArchiveCard => 'archive', ActionType::RestoreCard => 'restore', ActionType::DeleteCard => 'delete',
                 ActionType::ExecuteCardAction => 'action:'.($command->payload['actionId'] ?? ''),
                 default => '',
             };
@@ -130,6 +130,7 @@ final class EloquentKanbanActionHandler implements ActionHandler
                 ActionType::UpdateCard => $board->settings->features->updateCard,
                 ActionType::ArchiveCard => $board->settings->features->archiveCard,
                 ActionType::RestoreCard => $board->settings->features->restoreCard,
+                ActionType::DeleteCard => $board->settings->features->deleteCard,
                 ActionType::ReorderCard => $board->settings->features->reorderCards,
                 ActionType::ExecuteCardAction => $board->settings->features->customActions,
                 default => true,
@@ -163,6 +164,25 @@ final class EloquentKanbanActionHandler implements ActionHandler
                 if ($origin->readOnly || $origin->disabled) {
                     $this->reject(ActionStatus::FORBIDDEN, 'stage_read_only');
                 }
+            }
+            if ($command->type === ActionType::DeleteCard) {
+                $id = (new CardIdentity($definition->source, (string) $record->getAttribute($definition->fieldMap['id'])))->encode();
+                $newVersion = $versionColumn === null ? null : (string) (((int) $record->getAttribute($versionColumn)) + 1);
+                if ($record->delete() === false) {
+                    $this->reject(ActionStatus::DOMAIN_REJECTED, 'delete_rejected');
+                }
+                if (isset($definition->hooks['after'])) {
+                    ($definition->hooks['after'])($record, $command, $context);
+                }
+                $connection->afterCommit(fn () => app(\Karnoweb\Kanban\Support\ModelQueryCache::class)->invalidate($context));
+                $connection->afterCommit(fn () => event(new \Karnoweb\Kanban\Events\KanbanModelChanged(
+                    $context, $definition->source, $id, $command->operationId, $command->type->value, $newVersion,
+                )));
+                if (isset($definition->hooks['afterCommit'])) {
+                    $connection->afterCommit(fn () => ($definition->hooks['afterCommit'])($record, $command, $context));
+                }
+
+                return ActionResult::success([$id], ['board'], $newVersion);
             }
             if ($create || in_array($command->type, [ActionType::MoveCard, ActionType::ReorderCard, ActionType::RestoreCard], true)) {
                 $target = (string) ($command->payload['toStageId'] ?? $command->payload['stageId'] ?? $current);

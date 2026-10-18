@@ -25,7 +25,7 @@ final class EloquentBoardFactory implements BoardFactory
                 'views' => ['default' => $compact ? 'compact' : 'board', 'allowed' => ['board', 'list', 'compact']],
                 'pagination' => ['page_size' => $compact ? 5 : 25],
                 'interaction' => ['transition_policy' => 'allow'],
-                'appearance' => ['direction' => 'rtl', 'theme' => 'system'],
+                'appearance' => ['direction' => session('workbench.direction', 'rtl'), 'theme' => 'system'],
                 'features' => ['toolbar' => ! $compact],
             ]);
         if ($mixed) {

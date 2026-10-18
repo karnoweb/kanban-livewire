@@ -11,6 +11,7 @@ final readonly class AppearanceSettings
     public function __construct(
         public string $theme = 'system',
         public string $direction = 'ltr',
+        public DateSettings $dates = new DateSettings,
     ) {
         if (! in_array($theme, ['light', 'dark', 'system'], true)) {
             throw new InvalidArgumentException('Theme must be light, dark, or system.');

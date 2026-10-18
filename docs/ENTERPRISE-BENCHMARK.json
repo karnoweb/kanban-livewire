@@ -6,9 +6,9 @@
         "loaded": 250,
         "hydrated": 260,
         "queries": 21,
-        "milliseconds": 88.252,
+        "milliseconds": 174.664,
         "memory_delta_bytes": 0,
-        "process_peak_bytes": 79691776,
+        "process_peak_bytes": 88080384,
         "php": "8.4.22",
         "database": "3.51.3",
         "os": "Windows",
@@ -17,8 +17,8 @@
         "reference_baseline": {
             "provider": "existing InlineDataProvider",
             "materialized_cards": 10000,
-            "milliseconds_including_materialization": 332.946,
-            "peak_bytes": 81788928,
+            "milliseconds_including_materialization": 630.09,
+            "peak_bytes": 88080384,
             "note": "In-memory reference; database seed\/fetch cost excluded. Not a like-for-like database latency comparison."
         }
     },
@@ -29,9 +29,9 @@
         "loaded": 250,
         "hydrated": 260,
         "queries": 21,
-        "milliseconds": 379.58,
+        "milliseconds": 646.033,
         "memory_delta_bytes": 0,
-        "process_peak_bytes": 121634816,
+        "process_peak_bytes": 138412032,
         "php": "8.4.22",
         "database": "3.51.3",
         "os": "Windows",
@@ -40,8 +40,8 @@
         "reference_baseline": {
             "provider": "existing InlineDataProvider",
             "materialized_cards": 100000,
-            "milliseconds_including_materialization": 3785.822,
-            "peak_bytes": 130023424,
+            "milliseconds_including_materialization": 8035.336,
+            "peak_bytes": 146800640,
             "note": "In-memory reference; database seed\/fetch cost excluded. Not a like-for-like database latency comparison."
         }
     }

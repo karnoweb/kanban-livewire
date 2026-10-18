@@ -104,6 +104,7 @@ final class KanbanDemoSeeder extends Seeder
                 }
             }
         }
+        $this->call(CardPresentationSeeder::class);
     }
 
     /** @return array{description: string, priority: string, due_at: string, metadata: array<string, mixed>} */

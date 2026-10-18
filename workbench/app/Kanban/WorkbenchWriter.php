@@ -70,11 +70,16 @@ class WorkbenchWriter implements ActionHandler
                 );
             }
 
+            if ($context->boardKey === 'crm.deals' && in_array($command->type, [ActionType::CreateCard, ActionType::CreateStage], true)) {
+                return new ActionResult(ActionStatus::VALIDATION_ERROR, messageCode: 'validation_failed');
+            }
+
             $result = match ($command->type) {
                 ActionType::MoveCard, ActionType::ReorderCard => $this->move($command, $context),
                 ActionType::CreateCard => $this->createCard($command, $context),
                 ActionType::UpdateCard => $this->updateCard($command, $context),
                 ActionType::ArchiveCard => $this->archiveCard($command, $context, true),
+                ActionType::DeleteCard => $this->deleteCard($command, $context),
                 ActionType::RestoreCard => $this->archiveCard($command, $context, false),
                 ActionType::CreateStage => $this->createStage($command, $context),
                 ActionType::UpdateStage => $this->updateStage($command, $context),
@@ -209,6 +214,14 @@ class WorkbenchWriter implements ActionHandler
             return $this->wip();
         }
 
+        if ($context->boardKey === 'crm.deals' && $from !== $to) {
+            $allowed = ['new' => 'progress', 'progress' => 'negotiation', 'negotiation' => 'closed'];
+            $transitionNote = $command->payload['formData']['note'] ?? null;
+            if (($allowed[$from] ?? null) !== $to || ! is_string($transitionNote) || trim($transitionNote) === '' || strlen($transitionNote) > 5000) {
+                return new ActionResult(ActionStatus::VALIDATION_ERROR, messageCode: 'validation_failed');
+            }
+        }
+
         $before = $command->payload['beforeCardId'] ?? null;
         $after = $command->payload['afterCardId'] ?? null;
         $card->manual_order = $this->orderFor(
@@ -221,9 +234,17 @@ class WorkbenchWriter implements ActionHandler
 
         $note = $command->payload['formData']['note'] ?? null;
 
-        if (is_string($note) && $note !== '') {
+        if (is_string($note) && $note !== '' && strlen($note) <= 5000) {
             $metadata = is_array($card->metadata) ? $card->metadata : [];
             $metadata['note'] = $note;
+            $comments = is_array($metadata['comments'] ?? null) ? $metadata['comments'] : [];
+            $comments[] = ['id' => $command->operationId, 'body' => $note, 'author' => $context->actorId, 'createdAt' => Date::now()->toIso8601String()];
+            $comments = array_slice($comments, -100);
+            while (count($comments) > 1 && strlen(json_encode([$metadata['checklist'] ?? [], $comments], JSON_THROW_ON_ERROR)) > 28000) {
+                array_shift($comments);
+            }
+            $metadata['comments'] = $comments;
+            $metadata['commentsCount'] = count($metadata['comments']);
             $card->metadata = $metadata;
         }
 
@@ -333,6 +354,27 @@ class WorkbenchWriter implements ActionHandler
         $this->publish($context, $archive ? 'CardArchived' : 'CardRestored', (string) $card->public_id, (string) $card->version, $command->operationId);
 
         return ActionResult::success([(string) $card->public_id], ['counts', 'card:'.$card->public_id], (string) $card->version);
+    }
+
+    private function deleteCard(ActionCommand $command, BoardContext $context): ActionResult
+    {
+        $definition = app(\Karnoweb\Kanban\Support\BoardRegistry::class)->resolve($context->boardKey, $context);
+        if (! $definition->settings->features->deleteCard) {
+            return new ActionResult(ActionStatus::FORBIDDEN, messageCode: 'feature_disabled');
+        }
+        $card = $this->card($context, (string) ($command->payload['cardId'] ?? ''));
+        if ($card === null || ! $card->archived) {
+            return $this->notFound();
+        }
+        if ($command->expectedVersion === null || (string) $card->version !== $command->expectedVersion) {
+            return new ActionResult(ActionStatus::CONFLICT, messageCode: 'conflict');
+        }
+        $id = (string) $card->public_id;
+        $version = (string) (((int) $card->version) + 1);
+        $card->delete();
+        $this->publish($context, 'BoardInvalidated', null, null, $command->operationId);
+
+        return ActionResult::success([$id], ['board'], $version);
     }
 
     private function createStage(ActionCommand $command, BoardContext $context): ActionResult

@@ -1,0 +1,453 @@
+{
+  "scope": "Files touched during K1-K5 completion; pre-existing uncommitted work was preserved. Generated images from older UI suites may also be refreshed.",
+  "files": [
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\README.md",
+      "relative": "README.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\config\\kanban.php",
+      "relative": "config/kanban.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\CONFIGURATION.md",
+      "relative": "docs/CONFIGURATION.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\DRAWER.md",
+      "relative": "docs/DRAWER.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\E2E-REALTIME-LATENCY.json",
+      "relative": "docs/E2E-REALTIME-LATENCY.json"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\ENTERPRISE-BENCHMARK.json",
+      "relative": "docs/ENTERPRISE-BENCHMARK.json"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\ENTERPRISE-SCENARIO-RESULTS.json",
+      "relative": "docs/ENTERPRISE-SCENARIO-RESULTS.json"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\EXAMPLES-CRM-ORDERS-TICKETS.md",
+      "relative": "docs/EXAMPLES-CRM-ORDERS-TICKETS.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\K1-K5-IMPLEMENTATION-REPORT-FA.md",
+      "relative": "docs/K1-K5-IMPLEMENTATION-REPORT-FA.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\K1-K5-RESULTS.json",
+      "relative": "docs/K1-K5-RESULTS.json"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\SOURCES.md",
+      "relative": "docs/SOURCES.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\TEST-SCENARIOS.md",
+      "relative": "docs/TEST-SCENARIOS.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\UPGRADE.md",
+      "relative": "docs/UPGRADE.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\USAGE.md",
+      "relative": "docs/USAGE.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\redesign\\k1k5\\board-dark.jpg",
+      "relative": "docs/redesign/k1k5/board-dark.jpg"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\redesign\\k1k5\\board-light.jpg",
+      "relative": "docs/redesign/k1k5/board-light.jpg"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\redesign\\k1k5\\board-mobile.jpg",
+      "relative": "docs/redesign/k1k5/board-mobile.jpg"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\redesign\\k1k5\\board-rtl.jpg",
+      "relative": "docs/redesign/k1k5/board-rtl.jpg"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\redesign\\k1k5\\drawer-dark.jpg",
+      "relative": "docs/redesign/k1k5/drawer-dark.jpg"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\redesign\\k1k5\\drawer-light.jpg",
+      "relative": "docs/redesign/k1k5/drawer-light.jpg"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\redesign\\k1k5\\drawer-mobile.jpg",
+      "relative": "docs/redesign/k1k5/drawer-mobile.jpg"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\redesign\\k1k5\\drawer-rtl.jpg",
+      "relative": "docs/redesign/k1k5/drawer-rtl.jpg"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\redesign\\k1k5\\list-dark.jpg",
+      "relative": "docs/redesign/k1k5/list-dark.jpg"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\redesign\\k1k5\\list-light.jpg",
+      "relative": "docs/redesign/k1k5/list-light.jpg"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\redesign\\k1k5\\list-mobile.jpg",
+      "relative": "docs/redesign/k1k5/list-mobile.jpg"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\docs\\redesign\\k1k5\\list-rtl.jpg",
+      "relative": "docs/redesign/k1k5/list-rtl.jpg"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\e2e\\drawer.spec.mjs",
+      "relative": "e2e/drawer.spec.mjs"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\e2e\\kanban.spec.mjs",
+      "relative": "e2e/kanban.spec.mjs"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\lang\\en\\kanban.php",
+      "relative": "lang/en/kanban.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\lang\\fa\\kanban.php",
+      "relative": "lang/fa/kanban.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\resources\\css\\kanban.css",
+      "relative": "resources/css/kanban.css"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\resources\\dist\\kanban.css",
+      "relative": "resources/dist/kanban.css"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\resources\\dist\\kanban.js",
+      "relative": "resources/dist/kanban.js"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\resources\\js\\focus-manager.js",
+      "relative": "resources/js/focus-manager.js"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\resources\\views\\components\\card-detail-content.blade.php",
+      "relative": "resources/views/components/card-detail-content.blade.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\resources\\views\\components\\card-detail-footer.blade.php",
+      "relative": "resources/views/components/card-detail-footer.blade.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\resources\\views\\components\\card-detail-sections.blade.php",
+      "relative": "resources/views/components/card-detail-sections.blade.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\resources\\views\\components\\card-details-drawer.blade.php",
+      "relative": "resources/views/components/card-details-drawer.blade.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\resources\\views\\components\\card-details-modal.blade.php",
+      "relative": "resources/views/components/card-details-modal.blade.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\scripts\\report-enterprise-scenarios.mjs",
+      "relative": "scripts/report-enterprise-scenarios.mjs"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\src\\Contracts\\CardDetailsProvider.php",
+      "relative": "src/Contracts/CardDetailsProvider.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\src\\Data\\BoardDefinition.php",
+      "relative": "src/Data/BoardDefinition.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\src\\Data\\CardDetailAction.php",
+      "relative": "src/Data/CardDetailAction.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\src\\Data\\CardDetailSectionData.php",
+      "relative": "src/Data/CardDetailSectionData.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\src\\Data\\DisplaySettings.php",
+      "relative": "src/Data/DisplaySettings.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\src\\Data\\KanbanSettings.php",
+      "relative": "src/Data/KanbanSettings.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\src\\Livewire\\Board.php",
+      "relative": "src/Livewire/Board.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\src\\Livewire\\Concerns\\HandlesCardCrud.php",
+      "relative": "src/Livewire/Concerns/HandlesCardCrud.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\src\\Livewire\\Concerns\\HandlesCardDetails.php",
+      "relative": "src/Livewire/Concerns/HandlesCardDetails.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\src\\Support\\BoardBuilder.php",
+      "relative": "src/Support/BoardBuilder.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\src\\Support\\BoardDefinitionValidator.php",
+      "relative": "src/Support/BoardDefinitionValidator.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\src\\Support\\ViewResolver.php",
+      "relative": "src/Support/ViewResolver.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Feature\\CardDetailsProviderTest.php",
+      "relative": "tests/Feature/CardDetailsProviderTest.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Feature\\EnterpriseAcceptanceTest.php",
+      "relative": "tests/Feature/EnterpriseAcceptanceTest.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Feature\\StageCountPresentationTest.php",
+      "relative": "tests/Feature/StageCountPresentationTest.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Fixtures\\CardDetailsBoardFactory.php",
+      "relative": "tests/Fixtures/CardDetailsBoardFactory.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Fixtures\\TestCardDetailsProvider.php",
+      "relative": "tests/Fixtures/TestCardDetailsProvider.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KD001_LazyDrawerSections.md",
+      "relative": "tests/Scenarios/KD001_LazyDrawerSections.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KD002_DrawerSurfaces.md",
+      "relative": "tests/Scenarios/KD002_DrawerSurfaces.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB101.md",
+      "relative": "tests/Scenarios/KNB101.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB102.md",
+      "relative": "tests/Scenarios/KNB102.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB103.md",
+      "relative": "tests/Scenarios/KNB103.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB104.md",
+      "relative": "tests/Scenarios/KNB104.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB105.md",
+      "relative": "tests/Scenarios/KNB105.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB106.md",
+      "relative": "tests/Scenarios/KNB106.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB107.md",
+      "relative": "tests/Scenarios/KNB107.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB108.md",
+      "relative": "tests/Scenarios/KNB108.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB109.md",
+      "relative": "tests/Scenarios/KNB109.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB110.md",
+      "relative": "tests/Scenarios/KNB110.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB111.md",
+      "relative": "tests/Scenarios/KNB111.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB112.md",
+      "relative": "tests/Scenarios/KNB112.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB113.md",
+      "relative": "tests/Scenarios/KNB113.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB114.md",
+      "relative": "tests/Scenarios/KNB114.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB115.md",
+      "relative": "tests/Scenarios/KNB115.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB116.md",
+      "relative": "tests/Scenarios/KNB116.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB117.md",
+      "relative": "tests/Scenarios/KNB117.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB118.md",
+      "relative": "tests/Scenarios/KNB118.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB119.md",
+      "relative": "tests/Scenarios/KNB119.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB120.md",
+      "relative": "tests/Scenarios/KNB120.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB121.md",
+      "relative": "tests/Scenarios/KNB121.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB122.md",
+      "relative": "tests/Scenarios/KNB122.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB123.md",
+      "relative": "tests/Scenarios/KNB123.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB124.md",
+      "relative": "tests/Scenarios/KNB124.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB125.md",
+      "relative": "tests/Scenarios/KNB125.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB126.md",
+      "relative": "tests/Scenarios/KNB126.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB127.md",
+      "relative": "tests/Scenarios/KNB127.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB128.md",
+      "relative": "tests/Scenarios/KNB128.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB129.md",
+      "relative": "tests/Scenarios/KNB129.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB130.md",
+      "relative": "tests/Scenarios/KNB130.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB131.md",
+      "relative": "tests/Scenarios/KNB131.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB132.md",
+      "relative": "tests/Scenarios/KNB132.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB133.md",
+      "relative": "tests/Scenarios/KNB133.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB134.md",
+      "relative": "tests/Scenarios/KNB134.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB135.md",
+      "relative": "tests/Scenarios/KNB135.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB136.md",
+      "relative": "tests/Scenarios/KNB136.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB137.md",
+      "relative": "tests/Scenarios/KNB137.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB138.md",
+      "relative": "tests/Scenarios/KNB138.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB139.md",
+      "relative": "tests/Scenarios/KNB139.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB140.md",
+      "relative": "tests/Scenarios/KNB140.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB141.md",
+      "relative": "tests/Scenarios/KNB141.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB142.md",
+      "relative": "tests/Scenarios/KNB142.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB143.md",
+      "relative": "tests/Scenarios/KNB143.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB144.md",
+      "relative": "tests/Scenarios/KNB144.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB145.md",
+      "relative": "tests/Scenarios/KNB145.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB146.md",
+      "relative": "tests/Scenarios/KNB146.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB147.md",
+      "relative": "tests/Scenarios/KNB147.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB148.md",
+      "relative": "tests/Scenarios/KNB148.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB149.md",
+      "relative": "tests/Scenarios/KNB149.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\KNB150.md",
+      "relative": "tests/Scenarios/KNB150.md"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\tests\\Scenarios\\ScenarioSteps.php",
+      "relative": "tests/Scenarios/ScenarioSteps.php"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\workbench\\resources\\css\\workbench.css",
+      "relative": "workbench/resources/css/workbench.css"
+    },
+    {
+      "path": "D:\\my-packages\\kanban-livewire\\workbench\\resources\\views\\layout.blade.php",
+      "relative": "workbench/resources/views/layout.blade.php"
+    }
+  ]
+}

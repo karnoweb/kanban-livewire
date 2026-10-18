@@ -40,6 +40,7 @@ final class KanbanBoardServiceProvider extends ServiceProvider
 
     public function boot(BoardRegistry $registry): void
     {
+        $this->app['router']->pushMiddlewareToGroup('web', \Workbench\App\Http\Middleware\WorkbenchLocale::class);
         $registry->register('crm.deals', CrmBoardFactory::class);
         $registry->register('tickets.board', TicketBoardFactory::class);
         $registry->register('tasks.board', TaskBoardFactory::class);

@@ -30,6 +30,10 @@ final class BoardDefinitionValidator
             throw new InvalidBoardDefinition('Handler must implement ActionHandler.', $key);
         }
 
+        if ($definition->detailsProviderClass !== null && ! is_a($definition->detailsProviderClass, \Karnoweb\Kanban\Contracts\CardDetailsProvider::class, true)) {
+            throw new InvalidBoardDefinition('Details provider must implement CardDetailsProvider.', $key);
+        }
+
         if ($definition->providerClass === InlineDataProvider::class && $definition->inlineStages === [] && $definition->inlineCards !== []) {
             throw new InvalidBoardDefinition('Inline cards require stages.', $key);
         }
@@ -102,6 +106,13 @@ final class BoardDefinitionValidator
 
         foreach ($definition->views as $name => $view) {
             $resolver->assertAllowed($name, $view);
+        }
+
+        foreach ($definition->detailSectionViews as $key => $view) {
+            if (! is_string($key) || preg_match('/^[a-z][a-z0-9_.-]{0,63}$/D', $key) !== 1) {
+                throw new InvalidBoardDefinition('Detail section key is invalid.', $definition->key);
+            }
+            $resolver->assertAllowed('detail-section', $view);
         }
 
         return $definition;

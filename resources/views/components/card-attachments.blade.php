@@ -1,3 +1,4 @@
+@if(!empty($card['attachments']))
 <ul class="kb-attachments" data-kb-part="card-attachments">
     @foreach(($card['attachments'] ?? []) as $attachment)
         <li class="kb-attachment" data-kb-part="card-attachment">
@@ -11,3 +12,4 @@
         </li>
     @endforeach
 </ul>
+@endif

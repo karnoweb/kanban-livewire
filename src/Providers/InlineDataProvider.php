@@ -16,7 +16,7 @@ use Karnoweb\Kanban\Data\StageCount;
 use Karnoweb\Kanban\Data\StageData;
 use Karnoweb\Kanban\Support\CursorGuard;
 
-final class InlineDataProvider implements DataProvider
+final class InlineDataProvider implements DataProvider, \Karnoweb\Kanban\Contracts\FilterOptionsProvider
 {
     /** @param list<StageData> $stages
      * @param list<CardData> $cards
@@ -26,6 +26,23 @@ final class InlineDataProvider implements DataProvider
         private readonly array $stages = [],
         private readonly array $cards = [],
     ) {}
+
+    public function filterOptions(BoardContext $context): array
+    {
+        $options = ['assignee' => [], 'badge' => []];
+        foreach ($this->cards as $card) {
+            if ($card->archived || $card->boardId !== $this->board?->id) {
+                continue;
+            }
+            foreach ($card->assignees as $person) {
+                $options['assignee'][$person->id] = $person->name;
+            }
+            foreach ($card->badges as $badge) {
+                $options['badge'][$badge->text] = $badge->text;
+            }
+        }
+        return $options;
+    }
 
     public function board(BoardContext $context): BoardData
     {
@@ -112,6 +129,10 @@ final class InlineDataProvider implements DataProvider
                 if (! str_contains($haystack, mb_strtolower($query->search))) {
                     return false;
                 }
+            }
+
+            if (is_string($query->filters['stage'] ?? null) && $query->filters['stage'] !== '' && $card->stageId !== $query->filters['stage']) {
+                return false;
             }
 
             $assignee = $query->filters['assignee'] ?? null;

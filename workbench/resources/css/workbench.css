@@ -463,3 +463,12 @@ body.kb-wb{background:var(--color-base-200);color:var(--color-base-content)}
 
 .kb-wb-example{color:var(--color-base-content);background:var(--color-base-100);border-color:var(--color-base-300)}
 .kb-wb-example-tag{color:var(--color-primary-content);background:var(--color-primary)}
+:is(.kb-wb-theme,.kb-wb-locale){display:flex;align-items:center;gap:4px}:is(.kb-wb-theme,.kb-wb-locale) :is(select,button){min-block-size:32px;border:1px solid var(--color-base-300);border-radius:7px;background:var(--color-base-100);color:var(--color-base-content);font:inherit;font-size:12px;padding:5px 8px}:is(.kb-wb-theme,.kb-wb-locale) button{display:grid;place-items:center;cursor:pointer}:is(.kb-wb-theme,.kb-wb-locale) :focus-visible{outline:2px solid var(--color-primary);outline-offset:2px}
+.kb-wb-example-text{color:var(--color-base-content)}
+.kb-wb:has(.kb [aria-modal="true"]) .kb-wb-fab{visibility:hidden}
+.kb-wb-fab-field input:not([type="checkbox"]){inline-size:100%;min-block-size:36px;padding:7px 10px;border:1px solid var(--color-base-300);border-radius:7px;background:var(--color-base-100);color:var(--color-base-content);box-sizing:border-box}
+
+/* Google Fonts are a demo-host choice; the reusable package inherits its host font. */
+body.kb-wb{font-family:"Inter","Vazirmatn",sans-serif}body.kb-wb :where(button,input,select,textarea){font-family:inherit}
+
+html[dir="rtl"] body.kb-wb{font-family:"Vazirmatn","Inter",sans-serif}.kb-wb-locale select{min-inline-size:118px}.kb-wb-top-end{flex-wrap:wrap}

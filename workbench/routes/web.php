@@ -13,6 +13,8 @@ use Workbench\App\Models\DemoUser;
 Broadcast::routes(['middleware' => ['web']]);
 
 Route::middleware('web')->group(function (): void {
+    Route::get('/workbench/board-preview.svg', fn () => response()->file(dirname(__DIR__).'/resources/images/board-preview.svg', ['Content-Type' => 'image/svg+xml']));
+
     Route::get('/workbench/health', fn () => response('ok'));
 
     Route::redirect('/', '/tasks');
@@ -21,6 +23,30 @@ Route::middleware('web')->group(function (): void {
         Auth::login(DemoUser::query()->where('name', $name)->firstOrFail());
 
         return redirect()->back()->header('Fallback', '/tasks');
+    });
+
+    Route::post('/workbench/locale', function (Request $request, ContextFactory $contexts, PreferenceManager $preferences) {
+        $direction = $request->validate(['direction' => ['required', 'in:ltr,rtl']])['direction'];
+        session()->put('workbench.direction', $direction);
+        $dates = ['calendar' => $direction === 'rtl' ? 'jalali' : 'gregorian', 'locale' => $direction === 'rtl' ? 'fa_IR' : 'en_US', 'timezone' => $direction === 'rtl' ? 'Asia/Tehran' : null, 'persian_digits' => $direction === 'rtl'];
+        foreach (['tasks.board', 'crm.deals', 'tickets.board', 'orders.board', 'models.tasks', 'models.tickets', 'models.classes', 'models.mixed', 'models.compact'] as $key) {
+            $preferences->rememberDirection($contexts->make($key), $direction);
+            session()->put('workbench.playground.'.$key.'.appearance.direction', $direction);
+            session()->put('workbench.playground.'.$key.'.appearance.dates', $dates);
+        }
+        return redirect()->back();
+    });
+
+    Route::post('/workbench/theme', function (Request $request, ContextFactory $contexts, PreferenceManager $preferences) {
+        $validated = $request->validate(['theme' => ['required', 'in:light,dark,system']]);
+        $theme = $validated['theme'];
+        session()->put('workbench.theme', $theme);
+        foreach (['tasks.board', 'crm.deals', 'tickets.board', 'orders.board', 'models.tasks', 'models.tickets', 'models.classes', 'models.mixed', 'models.compact'] as $key) {
+            $preferences->rememberTheme($contexts->make($key), $theme);
+            session()->put('workbench.playground.'.$key.'.appearance.theme', $theme);
+        }
+
+        return redirect()->back();
     });
 
     Route::post('/workbench/playground', function (Request $request, ContextFactory $contexts, PreferenceManager $preferences) {
@@ -42,6 +68,7 @@ Route::middleware('web')->group(function (): void {
             'archive_card',
             'archive_stage',
             'restore_card',
+            'delete_card',
             'drag_drop',
             'reorder_cards',
             'reorder_stages',
@@ -79,6 +106,7 @@ Route::middleware('web')->group(function (): void {
                 $features['archive_card'] = false;
                 $features['archive_stage'] = false;
                 $features['restore_card'] = false;
+                $features['delete_card'] = false;
                 $features['bulk'] = false;
                 $features['custom_actions'] = false;
             }
@@ -127,16 +155,28 @@ Route::middleware('web')->group(function (): void {
             }
         }
 
+        $request->validate([
+            'appearance.dates.calendar' => ['nullable', 'in:auto,jalali,gregorian'],
+            'appearance.dates.locale' => ['nullable', 'string', 'max:40', 'regex:/^[A-Za-z]{2,3}(?:[-_][A-Za-z0-9]{2,8})*$/'],
+            'appearance.dates.timezone' => ['nullable', 'timezone'],
+        ]);
+
         $overrides = [
             'features' => $features,
             'appearance' => [
                 'theme' => (string) $request->input('appearance.theme', 'light'),
                 'direction' => (string) $request->input('appearance.direction', 'ltr'),
+                'dates' => [
+                    'calendar' => $request->input('appearance.dates.calendar') ?? 'auto',
+                    'locale' => $request->input('appearance.dates.locale') ?: null,
+                    'timezone' => $request->input('appearance.dates.timezone') ?: null,
+                    'persian_digits' => $request->boolean('appearance.dates.persian_digits', true),
+                ],
             ],
             'views' => [
                 'default' => $defaultView,
                 'allowed' => $allowedViews,
-                'column_width' => (string) $request->input('views.column_width', '18.5rem'),
+                'column_width' => (string) $request->input('views.column_width', '21rem'),
                 'density' => (string) $request->input('views.density', 'comfortable'),
                 'detail_surface' => (string) $request->input('views.detail_surface', 'modal'),
             ],

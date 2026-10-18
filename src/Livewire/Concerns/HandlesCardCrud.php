@@ -12,6 +12,13 @@ trait HandlesCardCrud
 {
     public function openInlineCreate(string $stageId): void
     {
+        if (! $this->definition()->settings->features->createCard) {
+            return;
+        }
+        if ($this->definition()->cardForm->createUrl !== null) {
+            $this->openCardForm($stageId);
+            return;
+        }
         if (count($this->definition()->sources ?? []) > 1 && ! is_string($this->filters['source'] ?? null)) {
             $this->openCardForm($stageId);
 
@@ -58,6 +65,13 @@ trait HandlesCardCrud
 
     public function openCardForm(?string $stageId = null): void
     {
+        if (! $this->definition()->settings->features->createCard) {
+            return;
+        }
+        if (($url = $this->definition()->cardForm->createUrl) !== null) {
+            $this->redirect(app(\Karnoweb\Kanban\Support\UrlSanitizer::class)->sanitize(str_replace('{stage}', rawurlencode($stageId ?? ''), $url)));
+            return;
+        }
         $this->editingCardId = null;
         $this->editingVersion = null;
         $this->cardFormOpen = true;
@@ -78,6 +92,10 @@ trait HandlesCardCrud
         if ($card === null || ! ($card->permissions['update'] ?? true)) {
             return;
         }
+        if (($url = $this->definition()->cardForm->editUrl) !== null) {
+            $this->redirect(app(\Karnoweb\Kanban\Support\UrlSanitizer::class)->sanitize(str_replace('{id}', rawurlencode($cardId), $url)));
+            return;
+        }
         $this->editingCardId = $cardId;
         $this->editingVersion = $card->version;
         $this->cardForm = array_intersect_key($card->toArray(), array_flip(['title', 'description', 'priority', 'dueAt', 'stageId']));
@@ -86,6 +104,7 @@ trait HandlesCardCrud
         }
         $this->cardErrors = [];
         $this->cardFormOpen = true;
+        $this->closeDetails();
     }
 
     public function cancelCardForm(): void
@@ -114,6 +133,27 @@ trait HandlesCardCrud
     {
         $version = $this->loadedVersion($cardId);
         $this->execute(app(CardCoordinator::class)->archive(app(OperationIdFactory::class)->make(), $cardId, $version));
+    }
+
+    public function deleteCard(string $cardId): void
+    {
+        if (! $this->definition()->settings->features->deleteCard) {
+            return;
+        }
+        $item = collect($this->archiveItems)->firstWhere('id', $cardId);
+        if ($item === null || ! ($item['permissions']['delete'] ?? true)) {
+            return;
+        }
+        $result = $this->execute(app(CardCoordinator::class)->delete(
+            app(OperationIdFactory::class)->make(), $cardId, $item['version'] ?? null,
+        ));
+        if ($result->status === ActionStatus::SUCCESS) {
+            $this->selectedIds = array_values(array_diff($this->selectedIds, [$cardId]));
+            if (($this->detail['id'] ?? null) === $cardId) {
+                $this->detail = null;
+            }
+        }
+        $this->openArchive();
     }
 
     public function restoreCard(string $cardId, ?string $stageId = null): void

@@ -2,6 +2,8 @@
 
 رابط Board و List برای Laravel 13 و Livewire 4. پکیج جدول، migration یا مدل کسب‌وکار ندارد. داده و تغییر را میزبان با `DataProvider` و `ActionHandler` انجام می‌دهد.
 
+راهنمای مصرف‌کننده: [شروع](docs/USAGE.md)، [تنظیمات](docs/CONFIGURATION.md)، [منابع](docs/SOURCES.md)، [بخش‌های جزئیات](docs/DRAWER.md)، [نمونه‌های CRM/Order/Ticket](docs/EXAMPLES-CRM-ORDERS-TICKETS.md)، [ارتقا](docs/UPGRADE.md) و [آزمون‌ها](docs/TEST-SCENARIOS.md).
+
 ## اتصال اختیاری مدل‌های لاراول
 
 مدل با `HasKanbanCards` و یک متد `kanbanDefinition()`، نگاشت فیلدها، محدوده خواندن و مجوز عملیات را تعریف می‌کند. سپس مدل را در `KanbanModelRegistry` ثبت و در Factory با `sources(['tasks'])` انتخاب کنید. روش‌های فعلی `provider()` و `handler()` همچنان معتبرند. Trait به‌تنهایی منبع را در هیچ بردی نمایش نمی‌دهد.
@@ -120,3 +122,7 @@ public function boot(BoardRegistry $registry): void
 راهنمای کامل در `docs/` است (از جمله [راهنمای سفارشی‌سازی ظاهر و سلکتورهای CSS](docs/11-views-customization.md)). سناریوهای پذیرش `KB-001` تا `KB-044` در `tests/Scenarios` هستند.
 
 مجوز این مخزن تا اعلام مالک `proprietary` است و مجوز متن‌باز محسوب نمی‌شود.
+
+### Jalali date presentation
+
+Iranian locales automatically use `morilog/jalali` for date/time presentation. Configure `kanban.dates` globally or `appearance.dates` per board; calendar, display timezone, formats and Persian digits can be overridden independently. Storage, sorting and ISO datetime attributes retain their original values. See [Jalali date settings](docs/JALALI-DATES.md).

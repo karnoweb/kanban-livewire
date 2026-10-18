@@ -338,7 +338,7 @@ final class EloquentKanbanDataProvider implements DataProvider, ColumnMetricsPro
             }
         }
         $permissions = [];
-        foreach (['view', 'update', 'move', 'reorder', 'archive', 'restore'] as $ability) {
+        foreach (['view', 'update', 'move', 'reorder', 'archive', 'restore', 'delete'] as $ability) {
             $permissions[$ability] = $definition->allows($ability, $record, $context);
         }
 
@@ -351,6 +351,7 @@ final class EloquentKanbanDataProvider implements DataProvider, ColumnMetricsPro
             metadata: $metadata,
             actions: $extras['actions'] ?? [], permissions: $permissions,
             version: $value('version'), manualOrder: $value('rank'), archived: $value('archivedAt') !== null,
+            checklist: $extras['checklist'] ?? [], comments: $extras['comments'] ?? [],
         );
     }
 

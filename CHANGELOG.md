@@ -1,5 +1,29 @@
 # Changelog
 
+## 13.2.0 — 2026-10-18
+
+### Added
+
+- Optional lazy card-detail sections with independent permissions, bounded pagination, safe links and server-registered custom views.
+- Typed detail section/action contracts, stable retry operation identities and version handoff to domain handlers.
+- Configurable desktop drawer width, full-screen mobile drawer, fixed header/actions and background scroll locking.
+- Jalali date presentation through `morilog/jalali`, with locale, timezone and Persian digit settings.
+- Card image covers, typed checklist/comment details, member overflow, archived-card deletion and configurable host create/edit pages.
+- Consumer guides, CRM/Order/Ticket adapter examples, execution reports and Board/List/Drawer screenshots.
+
+### Changed
+
+- Refined Board/List cards, desktop toolbar, filters, icon actions and stage capacity counts while preserving package behavior hooks.
+- Workbench header controls global theme and locale; RTL applies Persian text, font and date presentation.
+- CRM demo enforces note-required transitions and disables direct card/stage creation.
+- Optional detail contracts preserve the existing DataProvider and ActionHandler interfaces.
+
+### Fixed
+
+- When `theme_switch`, `direction_switch`, or `density_switch` is disabled, boot and preference actions follow board appearance settings instead of a stored user preference (so hosts can inherit the panel theme without a separate board theme).
+- Revalidate detail visibility on each request and clear loaded sections when permission is revoked or a card disappears.
+- Separate Workbench theme/locale selectors and avoid waiting on external assets in browser navigation tests.
+
 ## 13.1.0 — 2026-10-17
 
 ### Changed — breaking CSS integration
