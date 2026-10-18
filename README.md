@@ -1,128 +1,185 @@
-# Karnoweb Laravel Livewire Kanban
+# Laravel Livewire Kanban
 
-رابط Board و List برای Laravel 13 و Livewire 4. پکیج جدول، migration یا مدل کسب‌وکار ندارد. داده و تغییر را میزبان با `DataProvider` و `ActionHandler` انجام می‌دهد.
+[![Latest version](https://img.shields.io/packagist/v/karnoweb/laravel-livewire-kanban.svg)](https://packagist.org/packages/karnoweb/laravel-livewire-kanban)
+[![Tests](https://github.com/karnoweb/kanban-livewire/actions/workflows/tests.yml/badge.svg)](https://github.com/karnoweb/kanban-livewire/actions/workflows/tests.yml)
 
-راهنمای مصرف‌کننده: [شروع](docs/USAGE.md)، [تنظیمات](docs/CONFIGURATION.md)، [منابع](docs/SOURCES.md)، [بخش‌های جزئیات](docs/DRAWER.md)، [نمونه‌های CRM/Order/Ticket](docs/EXAMPLES-CRM-ORDERS-TICKETS.md)، [ارتقا](docs/UPGRADE.md) و [آزمون‌ها](docs/TEST-SCENARIOS.md).
+A configurable Kanban board and list interface for **Laravel 13** and **Livewire 4**. Connect your existing models or data providers, keep business rules in your application, and build workflows for tasks, tickets, orders, CRM opportunities, and other resources.
 
-## اتصال اختیاری مدل‌های لاراول
+![Kanban board preview](docs/images/board-light.jpg)
 
-مدل با `HasKanbanCards` و یک متد `kanbanDefinition()`، نگاشت فیلدها، محدوده خواندن و مجوز عملیات را تعریف می‌کند. سپس مدل را در `KanbanModelRegistry` ثبت و در Factory با `sources(['tasks'])` انتخاب کنید. روش‌های فعلی `provider()` و `handler()` همچنان معتبرند. Trait به‌تنهایی منبع را در هیچ بردی نمایش نمی‌دهد.
+## Features
 
-راهنمای اجرایی: [اتصال مدل](docs/21-trait-eloquent-guide.md)، [برد چندمنبعی](docs/22-multi-source-boards.md)، [کارایی](docs/23-eloquent-performance.md)، [گردش‌کار و رتبه](docs/24-workflow-enum-ranking.md)، [آمار و گروه‌بندی](docs/25-metrics-swimlanes.md)، [تقویم](docs/26-calendar-integration.md) و [ارتقا](docs/27-migration-and-upgrade.md).
+- **Board and list views** with drag-and-drop, keyboard interaction, independent column pagination, and compact or comfortable layouts.
+- **Optional Eloquent integration** through `HasKanbanCards`, explicit source registration, scoped queries, and mixed-source boards.
+- **Workflow controls** for transitions, confirmation forms, WIP capacity limits, version conflicts, and bulk actions.
+- **Rich card details** with a modal or responsive drawer, lazy sections, independent permissions, and trusted custom templates.
+- **Card presentation** with labels, assignees, attachment covers, checklist progress, comments, and dates supplied by your application.
+- **Search, filtering, and sorting** with allowlisted fields and query-bound cursors.
+- **Optional realtime updates** through the host application's Laravel broadcasting and Echo setup.
+- **Localized presentation** with RTL/LTR, light/dark themes, and Jalali or Gregorian date formatting.
 
-نمونه‌های مستقل جدید پس از اجرای migration/seed محیط نمونه در `/models/tasks`، `/models/tickets`، `/models/classes`، `/models/mixed` و `/models/compact` هستند. گزارش توسعه سازمانی و محدودیت‌های تأیید محیط را در `docs/ENTERPRISE-IMPLEMENTATION-STATUS-FA.md` ببینید؛ وضعیت نسخه قبلی، تأیید انتشار این توسعه محسوب نمی‌شود.
+The package provides the interface and integration contracts. Your application owns its records, authorization, persistence, and domain services. No business model or package migration is required.
 
-## نصب
+## Requirements
+
+| Dependency | Supported version |
+| --- | --- |
+| PHP | 8.3 or later |
+| Laravel | 13.x |
+| Livewire | 4.x |
+| Host CSS integration | Tailwind CSS 4 and DaisyUI 5 with the default empty prefix |
+
+A prebuilt standalone stylesheet is also available for applications without DaisyUI. The package inherits the host font; no external font service is required.
+
+## Installation
 
 ```bash
 composer require karnoweb/laravel-livewire-kanban
+php artisan vendor:publish --tag=kanban-assets
 ```
 
-میزبان دارای DaisyUI: CSS منبع بسته را در فایل سراسری import کنید؛ [راهنمای کامل و متغیرهای میزبان](docs/11-views-customization.md). DaisyUI 5.7.50 با تنظیمات پیش‌فرض بررسی شده است.
+Laravel discovers the package service provider automatically. Publish configuration when you need application-wide overrides:
 
-دارایی آماده فقط برای میزبان بدون DaisyUI (شامل Tailwind و DaisyUI):
+```bash
+php artisan vendor:publish --tag=kanban-config
+```
 
-```html
+### Assets
+
+**Applications using Tailwind 4 and DaisyUI 5:** add the package stylesheet to your application's global CSS. From `resources/css/app.css`:
+
+```css
+@import "../../vendor/karnoweb/laravel-livewire-kanban/resources/css/kanban.css";
+```
+
+Keep your existing Tailwind import and DaisyUI plugin configuration. The package stylesheet declares its Blade sources for class scanning. Load the published JavaScript once in your layout:
+
+```blade
+<script src="{{ asset('vendor/kanban/kanban.js') }}" defer></script>
+```
+
+**Applications without DaisyUI:** use the published standalone stylesheet and JavaScript:
+
+```blade
 <link rel="stylesheet" href="{{ asset('vendor/kanban/kanban.css') }}">
 <script src="{{ asset('vendor/kanban/kanban.js') }}" defer></script>
 ```
 
-انتشار دارایی:
+The standalone stylesheet includes Tailwind, DaisyUI, and a global CSS reset. Choose one CSS integration path; do not load it alongside the source stylesheet in an existing DaisyUI application. The script does not initialize Alpine, Livewire, or Echo a second time.
 
-```bash
-php artisan vendor:publish --tag=kanban-assets
-php artisan vendor:publish --tag=kanban-config
-```
+See [asset installation](docs/02-installation-assets.md) and [styling and view customization](docs/11-views-customization.md).
 
-`kanban.js` نباید Alpine، Livewire یا Echo را دوباره راه‌اندازی کند. Echo را خود میزبان، فقط وقتی Realtime روشن است، می‌سازد.
+## Quick start
 
-## اجرای Workbench (توسعه و دمو)
+### 1. Connect your data
 
-محیط نمونه با [Orchestra Testbench](https://github.com/orchestral/testbench) و پوشه `workbench/` است؛ اپلیکیشن Laravel جدا نیست.
+Choose the integration that fits your application:
 
-**پیش‌نیاز:** PHP 8.3+، Composer، SQLite (پیش‌فرض فایل `workbench/database/workbench.sqlite`).
-
-```bash
-cd kanban-livewire
-composer install
-php vendor/bin/testbench migrate --force
-php vendor/bin/testbench db:seed --class="Workbench\Database\Seeders\KanbanDemoSeeder" --force
-php vendor/bin/testbench serve --host=127.0.0.1 --port=8000
-```
-
-مرورگر: [http://127.0.0.1:8000/tasks](http://127.0.0.1:8000/tasks)
-
-برای ورود بدون فرم لاگین:
-
-| آدرس | کاربر دمو |
+| Integration | Use it for |
 | --- | --- |
-| `/login-as/alice` | tenant-a |
-| `/login-as/bob` | tenant-a |
-| `/login-as/carol` | tenant-b |
+| `HasKanbanCards` and `kanbanDefinition()` | Existing Eloquent models with mapped fields, stages, visibility, and permissions. |
+| `DataProvider` and `ActionHandler` | APIs, custom persistence, or workflows managed by an existing domain service. |
+| `BoardBuilder::stages()` and `cards()` | Small, explicitly supplied in-memory datasets. |
 
-**صفحات نمونه** (هر کدام `BoardFactory` و تنظیمات جدا طبق `docs/examples/`):
+For the Eloquent path, add the trait and definition to your model before registering it. See the [model integration guide](docs/21-trait-eloquent-guide.md) for a complete example. Registering a model does not grant access to it on every board.
 
-| مسیر | سناریو |
-| --- | --- |
-| `/tasks` | Task manager — انتقال آزاد، WIP، لیست/برد |
-| `/crm` | CRM — انتقال محدود، تأیید بستن معامله |
-| `/tickets` | Ticketing — مسیر محدود، ستون Closed فقط‌خواندنی |
-| `/orders` | Orders — گیت تأیید مالی در handler میزبان |
-| `/multi` | دو برد روی یک صفحه |
+### 2. Define a board factory
 
-**دارایی front:** CSS/JS از `resources/dist/` سرو می‌شوند. بعد از تغییر `resources/css/kanban.css` یا `resources/js/`:
-
-```bash
-npm ci
-npm run build
-```
-
-**Realtime (اختیاری، برای برد Tickets):** در ترمینال دوم:
-
-```bash
-php vendor/bin/testbench reverb:start
-```
-
-بدون Reverb، drag و ایجاد کارت روی بیشتر بردها کار می‌کند؛ فقط به‌روزرسانی زنده بین کلاینت‌ها نیاز به Reverb دارد.
-
-**تست:**
-
-```bash
-vendor/bin/phpunit --no-coverage
-# فقط workbench:
-vendor/bin/phpunit --no-coverage --testsuite=Workbench
-```
-
-## ثبت برد
+This example assumes an explicitly registered `tasks` model source:
 
 ```php
-use Karnoweb\Kanban\Support\BoardRegistry;
+namespace App\Kanban;
 
-public function boot(BoardRegistry $registry): void
+use Karnoweb\Kanban\Contracts\BoardFactory;
+use Karnoweb\Kanban\Data\{BoardContext, BoardData, BoardDefinition};
+use Karnoweb\Kanban\Support\BoardBuilder;
+
+final class TaskBoardFactory implements BoardFactory
 {
-    $registry->register('crm.deals', \App\Kanban\CrmBoardFactory::class);
+    public function make(BoardContext $context): BoardDefinition
+    {
+        return (new BoardBuilder)
+            ->key('tasks.board')
+            ->board(new BoardData('tasks.board', 'Tasks', $context->scopeKey))
+            ->sources(['tasks'])
+            ->settings([
+                'pagination' => ['page_size' => 25],
+                'views' => ['detail_surface' => 'drawer'],
+            ])
+            ->build();
+    }
 }
 ```
 
-هویت و tenant فقط از `ScopeResolver` سرور می‌آید. `board-key` مجوز نیست.
+### 3. Register the scope, source, and board
 
-```blade
-<livewire:kanban-board board-key="crm.deals" />
+In your application service provider:
+
+```php
+use App\Kanban\{AppScopeResolver, TaskBoardFactory};
+use App\Models\Task;
+use Karnoweb\Kanban\Contracts\ScopeResolver;
+use Karnoweb\Kanban\Models\KanbanModelRegistry;
+use Karnoweb\Kanban\Support\BoardRegistry;
+
+public function register(): void
+{
+    $this->app->bind(ScopeResolver::class, AppScopeResolver::class);
+}
+
+public function boot(BoardRegistry $boards, KanbanModelRegistry $models): void
+{
+    $models->register('tasks', Task::class);
+    $boards->register('tasks.board', TaskBoardFactory::class);
+}
 ```
 
-## قرارداد کوتاه
+`AppScopeResolver` is a host-defined implementation of `ScopeResolver`. It must authorize the requested board and return a `BoardContext` containing the trusted board key, scope, actor, and instance identity. Derive these from server-side authentication; a browser-provided board key is not an authorization decision. See [security and scope](docs/13-multitenancy-security.md).
 
-- `Kanban::init()` هر بار یک `BoardBuilder` تازه می‌دهد.
-- `build()` یک `BoardDefinition` تغییرناپذیر برمی‌گرداند.
-- Closure در state کامپوننت Livewire ذخیره نمی‌شود؛ `onMove()` فقط کلاس `ActionHandler` می‌پذیرد.
-- انتقال پیش‌فرض `deny` است.
-- `UNKNOWN_OUTCOME` موفقیت نیست. فرمان با `operationId` تازه تکرار نمی‌شود.
-- صفحه‌بندی cursor-based است. پیش‌فرض هر ستون ۲۵ کارت است.
+For domain-owned writes, supply your own `handler()` or explicitly configure the model adapter's authorization and lifecycle rules. See [action handlers](docs/06-handler-actions.md) and [CRM, Order, and Ticket examples](docs/EXAMPLES-CRM-ORDERS-TICKETS.md).
 
-راهنمای کامل در `docs/` است (از جمله [راهنمای سفارشی‌سازی ظاهر و سلکتورهای CSS](docs/11-views-customization.md)). سناریوهای پذیرش `KB-001` تا `KB-044` در `tests/Scenarios` هستند.
+### 4. Render the component
 
-مجوز این مخزن تا اعلام مالک `proprietary` است و مجوز متن‌باز محسوب نمی‌شود.
+```blade
+<livewire:kanban-board board-key="tasks.board" />
+```
 
-### Jalali date presentation
+Place it in a container with a defined height when you want columns and list content to scroll independently. See the [layout guide](docs/11-views-customization.md).
 
-Iranian locales automatically use `morilog/jalali` for date/time presentation. Configure `kanban.dates` globally or `appearance.dates` per board; calendar, display timezone, formats and Persian digits can be overridden independently. Storage, sorting and ISO datetime attributes retain their original values. See [Jalali date settings](docs/JALALI-DATES.md).
+## Rich details and dates
+
+Attach an optional `CardDetailsProvider` with `BoardBuilder::detailsProvider()` to add lazy, permission-scoped sections such as subtasks, dependencies, checklists, comments, activity, attachments, and related records. Existing providers that return only `CardData` keep the base detail view. See [Drawer integration](docs/DRAWER.md).
+
+Iranian locale settings can use `morilog/jalali` for date presentation. Calendar, display timezone, formats, and Persian digits are configurable independently; stored values and sorting retain their original semantics. See [Jalali date settings](docs/JALALI-DATES.md).
+
+## Documentation
+
+| Guide | Contents |
+| --- | --- |
+| [Usage](docs/USAGE.md) | Installation and integration overview |
+| [Configuration](docs/CONFIGURATION.md) | Defaults, features, appearance, and limits |
+| [Sources](docs/SOURCES.md) | Explicit registration and per-board allowlists |
+| [Eloquent integration](docs/21-trait-eloquent-guide.md) | Model definitions, mappings, and policies |
+| [Multi-source boards](docs/22-multi-source-boards.md) | Source-qualified identities and stage mapping |
+| [Drawer](docs/DRAWER.md) | Optional sections, pagination, permissions, and actions |
+| [Customization](docs/11-views-customization.md) | Host theme tokens, layout, and Blade overrides |
+| [Realtime](docs/12-realtime.md) | Broadcasting, Echo, and scoped refresh |
+| [Examples](docs/EXAMPLES-CRM-ORDERS-TICKETS.md) | CRM, Order, and Ticket host adapters |
+| [API reference](docs/20-api-reference.md) | Public contracts and builders |
+
+## Development and testing
+
+See [README_Test.md](README_Test.md) for local setup, Workbench demos, PHP and browser tests, isolated databases, benchmarks, and validation reports.
+
+## Releases and support
+
+- [Changelog](CHANGELOG.md)
+- [Upgrade guide](UPGRADE.md)
+- [GitHub releases](https://github.com/karnoweb/kanban-livewire/releases)
+- [Report an issue](https://github.com/karnoweb/kanban-livewire/issues)
+
+When reporting an issue, include package, PHP, Laravel, and Livewire versions, a minimal reproduction, and the relevant error output. Remove credentials and private application data.
+
+## License
+
+This package is **proprietary**. No open-source license or redistribution rights are granted by this repository.

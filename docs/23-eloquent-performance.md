@@ -22,7 +22,7 @@ $env:KANBAN_WRITE_BENCHMARK='1'
 php vendor/bin/phpunit --no-coverage tests/Performance/EnterpriseQueryPerformanceTest.php
 ```
 
-گزارش واقعی در `ENTERPRISE-BENCHMARK.json` است؛ ۱۰ ستون، داده 10k/100k، ۲۵۰ کارت نمایش و ۲۶۰ رکورد خوانده‌شده با ۲۱ query. اعداد زمانی وابسته به همین محیط Windows/SQLite هستند. حد زمانی تولید ادعا نمی‌شود؛ CI فقط بودجه تعداد query و رکورد را کنترل می‌کند.
+گزارش واقعی در `.phpunit.cache/enterprise-benchmark.json` در ریشه مخزن است؛ ۱۰ ستون، داده 10k/100k، ۲۵۰ کارت نمایش و ۲۶۰ رکورد خوانده‌شده با ۲۱ query. اعداد زمانی وابسته به همین محیط Windows/SQLite هستند. حد زمانی تولید ادعا نمی‌شود؛ CI فقط بودجه تعداد query و رکورد را کنترل می‌کند.
 
 ایندکس میزبان پیشنهادی: `(scope, status, rank, id)` متناسب با شروط واقعی. پکیج ایندکس اجباری ندارد. جست‌وجوی LIKE برای جست‌وجوی متن بزرگ جایگزین موتور جست‌وجو یا full-text بهینه نیست.
 

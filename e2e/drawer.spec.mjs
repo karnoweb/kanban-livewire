@@ -17,7 +17,7 @@ test('drawer shares Board/List details, traps focus and fills the mobile viewpor
     'views[default]': 'board', 'views[allowed_mode]': 'both', 'views[detail_surface]': 'drawer',
   } });
   await page.reload({ waitUntil: 'domcontentloaded' });
-  const output = 'docs/redesign/k1k5';
+  const output = 'test-results/screenshots/drawer';
   fs.mkdirSync(output, { recursive: true });
   async function show(surface = 'card') {
     const row = page.locator(`[data-kb-part="${surface === 'card' ? 'card' : 'list-row'}"][data-card="101"]`);

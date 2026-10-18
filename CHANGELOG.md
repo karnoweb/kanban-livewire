@@ -1,5 +1,16 @@
 # Changelog
 
+## 13.3.0 — 2026-10-19
+
+### Changed
+
+- Rewrote consumer documentation (`docs/01`–`18`, `CONFIGURATION`, `USAGE`, `examples/`) as step-by-step, copy-paste implementation guides aligned with the workbench reference code.
+- Consolidated testing entry points into `README_Test.md`; trimmed obsolete enterprise/redesign report artifacts from `docs/`.
+
+### Added
+
+- `docs/examples/README.md` and expanded CRM, Task, Ticket, and Order scenario guides.
+
 ## 13.2.0 — 2026-10-18
 
 ### Added

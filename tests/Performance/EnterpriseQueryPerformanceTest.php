@@ -73,7 +73,11 @@ final class EnterpriseQueryPerformanceTest extends EnterpriseTestCase
             DB::disableQueryLog();
         }
         if (getenv('KANBAN_WRITE_BENCHMARK') === '1') {
-            file_put_contents(dirname(__DIR__, 2).'/docs/ENTERPRISE-BENCHMARK.json', json_encode($reports, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE).PHP_EOL);
+            $outputDirectory = dirname(__DIR__, 2).'/.phpunit.cache';
+            if (! is_dir($outputDirectory)) {
+                mkdir($outputDirectory, 0777, true);
+            }
+            file_put_contents(dirname(__DIR__, 2).'/.phpunit.cache/enterprise-benchmark.json', json_encode($reports, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE).PHP_EOL);
         }
     }
 }

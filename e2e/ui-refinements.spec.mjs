@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 
-const output = 'docs/redesign/refinements';
+const output = 'test-results/screenshots/refinements';
 test.beforeEach(() => {
   if (!process.env.WORKBENCH_DB?.replaceAll('\\', '/').includes('/.phpunit.cache/')) throw new Error('Use an isolated UI test database');
   execFileSync('php', ['vendor/bin/testbench', 'migrate:fresh', '--force'], { stdio: 'pipe' });

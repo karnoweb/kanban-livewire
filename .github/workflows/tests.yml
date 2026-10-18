@@ -65,8 +65,8 @@ jobs:
           path: |
             .phpunit.cache/enterprise-junit.xml
             .phpunit.cache/enterprise-browser.json
-            docs/ENTERPRISE-BENCHMARK.json
-            docs/ENTERPRISE-SCENARIO-RESULTS.json
+            .phpunit.cache/enterprise-benchmark.json
+            .phpunit.cache/enterprise-scenarios.json
 
   database-portability:
     runs-on: ubuntu-latest

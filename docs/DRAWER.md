@@ -26,4 +26,4 @@ The component re-fetches the card and section descriptors on each request while 
 
 The optional interface is separate from `DataProvider`, preserving existing integrations. A board with no details provider renders its normal base card details. Select `views.detail_surface = drawer` in board settings; Board and List actions call the same `openDetails()` method. Section pagination replaces the current bounded page; it does not retain an unbounded history in Livewire state.
 
-Call `openDetails($cardId, 'drawer')` to open the drawer from a host action; Board and List use the same card identity and provider. See [the existing details implementation report](redesign/REPORT.md) for UI behavior and [the API reference](20-api-reference.md) for the base provider contracts.
+Call `openDetails($cardId, 'drawer')` to open the drawer from a host action; Board and List use the same card identity and provider. See [the API reference](20-api-reference.md) for the base provider contracts.

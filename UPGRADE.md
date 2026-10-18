@@ -2,6 +2,10 @@
 
 # Upgrade
 
+## 13.2.0 → 13.3.0
+
+Documentation-only release. No breaking PHP or configuration changes. Optional: read the rewritten guides under `docs/` starting from [quickstart](docs/01-quickstart.md) and [examples](docs/examples/README.md).
+
 ## 13.1.0 → 13.2.0
 
 - Run Composer update to install the new `morilog/jalali` dependency, and republish/rebuild package assets and any overridden Blade views.

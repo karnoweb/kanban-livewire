@@ -29,8 +29,8 @@ test('desktop toolbar is one row in both directions; extra members open a bounde
     const box = await popup.boundingBox();
     expect(box.x).toBeGreaterThanOrEqual(0);
     expect(box.x + box.width).toBeLessThanOrEqual(1227);
-    fs.mkdirSync('docs/redesign/toolbar', { recursive: true });
-    await page.screenshot({ path: `docs/redesign/toolbar/${dir}.jpg`, clip: { x: 0, y: 0, width: 1227, height: 780 } });
+    fs.mkdirSync('test-results/screenshots/toolbar', { recursive: true });
+    await page.screenshot({ path: `test-results/screenshots/toolbar/${dir}.jpg`, clip: { x: 0, y: 0, width: 1227, height: 780 } });
     await more.press('Escape');
     await expect(popup).not.toBeVisible();
   }

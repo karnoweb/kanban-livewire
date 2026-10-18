@@ -1,13 +1,16 @@
-# شروع سریع
+# اولین برد قابل اجرا
 
-میزبان باید `ScopeResolver` را bind کند و یک factory ثبت کند.
+هدف: ساخت برد شخصی با ذخیره در پایگاه داده، ایجاد و ویرایش کارت، انتقال وضعیت و آرشیو. تمام فایل‌های میزبان و روش بررسی موفقیت و شکست در [راهنمای کامل اتصال مدل](guides/host-task-board.md) آمده‌اند.
 
-```php
-$registry->register('tasks.board', \App\Kanban\TaskBoardFactory::class);
-```
+۱. [پکیج و فایل‌های ظاهری را نصب کنید](02-installation-assets.md).
+۲. migration، مدل، ScopeResolver و Factory راهنمای اتصال را ایجاد کنید.
+۳. مدل را با کلید `tasks` و برد را با کلید `tasks.board` ثبت کنید.
+۴. صفحهٔ محافظت‌شده با ورود کاربر را باز کنید.
 
 ```blade
 <livewire:kanban-board board-key="tasks.board" />
 ```
 
-Factory در هر درخواست `BoardDefinition` می‌سازد. داده کوچک با `stages()` و `cards()` به `InlineDataProvider` می‌رود. داده بزرگ `provider()` صفحه‌ای می‌خواهد.
+ثبت منبع به‌تنهایی کافی نیست: `sources(['tasks'])` در Factory و `visibleQuery()` و `authorize()` در تعریف مدل لازم‌اند. هیچ migration دامنه‌ای همراه پکیج اجرا نمی‌شود.
+
+برای دادهٔ کوچک و فقط‌خواندنی، [مثال بدون مدل](guides/readonly-board.md) به پایگاه دادهٔ جدید نیاز ندارد.

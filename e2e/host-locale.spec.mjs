@@ -17,8 +17,8 @@ test('header locale changes language, direction, font and calendar across naviga
   await page.locator('[data-kb-part="density-toggle"]').click();
   await expect(page.locator('.kb')).toHaveAttribute('data-density', 'compact');
   await expect(page.locator('[data-kb-part="toolbar-create-card"]')).toHaveAttribute('aria-label', 'ساخت کارت');
-  fs.mkdirSync('docs/redesign/locale', { recursive: true });
-  await page.screenshot({ path: 'docs/redesign/locale/rtl.jpg', clip: { x: 0, y: 0, width: 1227, height: 620 } });
+  fs.mkdirSync('test-results/screenshots/locale', { recursive: true });
+  await page.screenshot({ path: 'test-results/screenshots/locale/rtl.jpg', clip: { x: 0, y: 0, width: 1227, height: 620 } });
   await page.goto('/crm');
   await expect(page.locator('.kb')).toHaveAttribute('dir', 'rtl');
   await expect(page.locator('[data-kb-part="card-due"]').first()).toContainText('۱۴۰۵/۰۸/۲۳');

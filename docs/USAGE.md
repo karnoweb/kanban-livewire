@@ -1,12 +1,27 @@
-# Kanban package usage
+# نقشه استفاده از پکیج
 
-This package renders a domain-owned board and list. The host application owns records, authorization, persistence, comments, checklists, attachments, and domain rules. No package migration is required for the model adapter.
+## مسئولیت
 
-## Install and register a board
+| لایه | مالک |
+| --- | --- |
+| UI برد/list، Livewire، قراردادها | پکیج |
+| رکوردها، authorization، تراکنش، قوانین دامنه | اپ میزبان |
+| migration مدل کارت | میزبان (اختیاری) |
 
-Install with Composer, register the package provider through Laravel package discovery, and build a `BoardFactory` that returns `BoardBuilder`. Register each board key with `BoardRegistry` in the host service provider. Render it with `<livewire:kanban-board board-key="support.tickets" />`.
+## مسیر پیاده‌سازی (ترتیب پیشنهادی)
 
-For a small or non-database board, keep the existing `DataProvider` and `ActionHandler` flow. For Eloquent records, use `HasKanbanCards`, register the source explicitly, and set `->sources([...])` on that board. See [the model guide](21-trait-eloquent-guide.md) and [multi-source guide](22-multi-source-boards.md).
+| مرحله | مستند |
+| --- | --- |
+| 1. نصب CSS/JS | [02-installation-assets.md](02-installation-assets.md) |
+| 2. ScopeResolver + اولین برد | [01-quickstart.md](01-quickstart.md) |
+| 3. Registry و Builder | [03-builder-registry.md](03-builder-registry.md) |
+| 4. Settings | [04-dtos-settings.md](04-dtos-settings.md) |
+| 5. خواندن | [05-data-provider.md](05-data-provider.md) |
+| 6. نوشتن | [06-handler-actions.md](06-handler-actions.md) |
+| 7. انتقال/WIP | [08-move-confirm-wip.md](08-move-confirm-wip.md) |
+| 8. سناریوهای CRM/Task/Ticket/Order | [examples/README.md](examples/README.md) |
+
+## Eloquent (میان‌بر)
 
 ```php
 return (new BoardBuilder)
@@ -17,16 +32,37 @@ return (new BoardBuilder)
     ->build();
 ```
 
-The board factory is resolved for the current `BoardContext`; register only a factory class and rebuild the definition for each request. Do not put a model instance, query builder, actor, or closure into Livewire public state.
+قبل از آن: `KanbanModelRegistry::register('tickets', Ticket::class)` و `HasKanbanCards` — [21-trait-eloquent-guide.md](21-trait-eloquent-guide.md).
 
-## Own the domain rules
+## Blade
 
-The Eloquent adapter reads from each model's scoped `visibleQuery()` and writes through the model definition's explicit authorization and lifecycle hooks. Use a host `ActionHandler` when a transition must call an existing domain service. Creation, status changes, and destructive actions deny by default unless the model explicitly authorizes them.
+```blade
+<livewire:kanban-board board-key="support.tickets" />
+```
 
-For additional detail sections, register an optional `CardDetailsProvider` with `->detailsProvider(HostCardDetailsProvider::class)`. It receives a freshly scoped `CardData`; see [Drawer sections](DRAWER.md).
+## قوانین دامنه
 
-## Test and build
+- خواندن: `visibleQuery()` / provider scoped
+- نوشتن: `ActionHandler` یا hookهای مدل — نه update مستقیم status از UI bypass
+- سرویس موجود: داخل handler صدا بزنید؛ `ActionResult` برگردانید
 
-Run `composer test`, then `npm run build`. Browser tests use the separate Playwright configuration and an isolated Workbench database; see [test scenarios](TEST-SCENARIOS.md). Do not point browser tests at a host application's database.
+## جزئیات کارت
 
-More complete references: [builder and registry](03-builder-registry.md), [provider contract](05-data-provider.md), [handler actions](06-handler-actions.md), and [API reference](20-api-reference.md).
+```php
+->detailsProvider(HostCardDetailsProvider::class)
+```
+
+[DRAWER.md](DRAWER.md)
+
+## تست
+
+```bash
+composer test
+npm run build   # در مخزن پکیج برای assets
+```
+
+[16-testing-scenarios.md](16-testing-scenarios.md)
+
+## مرجع API
+
+[20-api-reference.md](20-api-reference.md)

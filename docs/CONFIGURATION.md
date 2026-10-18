@@ -1,25 +1,71 @@
-# Configuration
+# تنظیمات سراسری (`config/kanban.php`)
 
-The source of truth is `config/kanban.php`. Publish it with the `kanban-config` tag when the host needs to override defaults. Unknown model columns, invalid class contracts, and unsafe view names are rejected during definition validation.
+## هدف
 
-| Area | Main options | Purpose |
-|---|---|---|
-| `pagination` | `page_size`, `max_page_size`, cursor lifetime | Bound each column and list request. The signed cursor is tied to board, scope, sources, filters, search, sort, and page size. |
-| `limits` | `search_length`, `bulk_ids`, `metadata_bytes`, `id_length`, `title_length`, `detail_section_bytes`, `detail_section_page_size`, `detail_sections` | Bound client input and serialized detail data. |
-| `model.eloquent` | default page size, cache settings, ordering strategy | Configure the optional Eloquent adapter. Visibility and write authorization still belong to each model definition. |
-| `security` | scope requirements, public board behavior, operation limits | Control request-level authorization and defensive limits. Supply a trusted `ScopeResolver` for the host identity. |
-| `realtime` | enabled, channel and throttling settings | Enable scoped refresh notifications; a host still configures its broadcasting driver and authorization. |
-| `assets` | publish tag and prefixed path | Control package CSS/JavaScript publishing. |
-| `telemetry` | `enabled` | Opt into package telemetry hooks; disabled by default. |
+پیش‌فرض‌های همه بردها را override کنید؛ هر برد می‌تواند در `BoardBuilder::settings()` بازنویسی کند.
 
-Appearance and interaction settings are usually board-specific through `BoardBuilder::settings()`: board/list availability, column width, density, direction, theme, page size, filters, transitions, WIP behavior, and enabled actions. Date presentation can select automatic, Jalali, or Gregorian formatting and a locale/timezone; see [Jalali dates](JALALI-DATES.md).
+## مرحله ۱: انتشار
 
-`views.detail_surface` selects `modal` or `drawer`. `views.drawer_width` defaults to 560 pixels and accepts 320–960; mobile drawers use the full viewport. The corresponding `appearance` aliases remain supported.
+```bash
+php artisan vendor:publish --tag=kanban-config
+```
 
-`->sources([])` explicitly means the board has no model sources. Omitting `sources()` keeps the existing provider/factory behavior. An empty source selection never means “all registered models.”
+**فایل:** `config/kanban.php` (کپی از `vendor/.../config/kanban.php`).
 
-## Detail section limits
+بدون publish، `KanbanServiceProvider` همان پیش‌فرض vendor را merge می‌کند.
 
-`limits.detail_sections` caps advertised sections, `limits.detail_section_page_size` caps each lazy page, and `limits.detail_section_bytes` caps serialized items/actions. Providers should return only display-ready scalar text and cursor values, never HTML or unbounded domain objects.
+## مرحله ۲: کلیدهای پرکاربرد
 
-Do not raise limits to compensate for loading entire comment or attachment histories. Use independent paging and reauthorize each request.
+| کلید | پیش‌فرض | اثر |
+| --- | --- | --- |
+| `page_size` | 25 | اندازه صفحه ستون/list |
+| `max_page_size` | 100 | سقف `BoardQuery::limit` |
+| `default_transition_policy` | `deny` | اگر برد `interaction` ندهد |
+| `default_view` | `board` | |
+| `allowed_views` | `board`, `list` | |
+| `features.*` | [فایل config](https://github.com/karnoweb/kanban-livewire/blob/main/config/kanban.php) | flags سراسری |
+| `dates.*` | `calendar: auto` | [JALALI-DATES.md](JALALI-DATES.md) |
+| `realtime.enabled` | false | |
+| `telemetry.enabled` | false | |
+| `models.auto_discover` | false | ثبت صریح source لازم |
+| `models.allow_unlisted_sources` | false | |
+
+تنظیم per-board: [04-dtos-settings.md](04-dtos-settings.md).
+
+## `limits` / `security`
+
+| کلید | پیش‌فرض |
+| --- | --- |
+| `search_length` | 200 |
+| `bulk_ids` | 100 |
+| `metadata_bytes` | 8192 |
+| `title_length` | 300 |
+| `detail_sections` | 16 |
+| `detail_section_page_size` | 25 |
+| `detail_section_bytes` | 32768 |
+
+## `eloquent` (adapter)
+
+| کلید | نقش |
+| --- | --- |
+| `query_mode` | `db_first` |
+| `cursor.signed` | true |
+| `cursor.bind_to_scope` | true |
+| `count_mode` | `exact` |
+
+visibility و `authorize` هنوز روی تعریف مدل میزبان است — [21-trait-eloquent-guide.md](21-trait-eloquent-guide.md).
+
+## `sources([])` در builder
+
+`->sources([])` یعنی **هیچ** منبع مدلی — نه «همه مدل‌ها».
+
+## اعتبارسنجی
+
+`BoardDefinitionValidator` کلاس نامعتبر، view ناامن و ستون ناشناخته را رد می‌کند.
+
+## خطاهای محتمل
+
+| علامت | علت |
+| --- | --- |
+| تغییر config بی‌اثر | override در factory |
+| `InvalidBoardDefinition` | views خالی یا source نامعتبر |

@@ -18,7 +18,9 @@ Register `tickets` and allow only that source on `support.tickets`. Map the host
 
 A separate board may allow both `orders` and `tickets`, but must provide a complete `stageMap` for both models. Its source filter can narrow that fixed list; it cannot add CRM opportunities or another registered source. Manual ordering across sources is disabled unless a host supplies a shared `RankStrategy`.
 
-For concrete model syntax and registration examples, see [Trait and Eloquent guide](21-trait-eloquent-guide.md), [multi-source boards](22-multi-source-boards.md), and [examples](examples/).
+For concrete model syntax and registration examples, see [Trait and Eloquent guide](21-trait-eloquent-guide.md), [multi-source boards](22-multi-source-boards.md).
+
+**Step-by-step implementation (Persian, with final workbench code):** [examples/README.md](examples/README.md) — [CRM](examples/crm.md), [Tasks](examples/task-manager.md), [Tickets](examples/ticketing.md), [Orders](examples/orders-approvals.md).
 
 ## Complete host-side adapter skeleton
 

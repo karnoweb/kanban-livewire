@@ -79,6 +79,7 @@ const specs = [];
 function flatten(suite) { for (const spec of suite.specs || []) specs.push(spec); for (const child of suite.suites || []) flatten(child); }
 for (const suite of browser.suites || []) flatten(suite);
 const browserPass = specs.length >= 11 && specs.every(spec => spec.ok);
+fs.mkdirSync('.phpunit.cache/scenarios', { recursive: true });
 const measuredAt = new Date().toISOString();
 const results = rows.map(([title, tests, expected, browserTests = []], index) => {
   const php = tests.every(name => name === '@all-php' ? phpPass : cases.get(name)?.pass === true);
@@ -89,9 +90,9 @@ const results = rows.map(([title, tests, expected, browserTests = []], index) =>
     const entry = cases.get(name);
     return entry ? `- ${name} — ${entry.assertions} بررسی — ${path.relative(process.cwd(), entry.file).replaceAll('\\', '/')}` : `- ${name}`;
   }).join('\n');
-  fs.writeFileSync(`tests/Scenarios/${id}.md`, `# ${id} — ${title}\n\n## آماده‌سازی\n\nپایگاه داده SQLite جدا برای هر تست؛ هویت و محدوده معتبر سرور. داده‌ها و تعداد دقیق در متدهای PHP زیر ساخته می‌شوند. آزمون مرورگر از پایگاه داده آزمایشی جدا استفاده می‌کند.\n\n## عملیات و مقادیر\n\n${expected}\n\n## آزمون خودکار PHP\n\n${links}\n\n## مرورگر\n\n${browserTests.length ? browserTests.join('، ') : 'برای این قرارداد، آزمون پایگاه داده/سرور معیار است.'}\n\n## نتیجه واقعی\n\n${result.status} — ${measuredAt}\n\nمبنا: گزارش ${xmlPath} و ${browserPath}؛ وجود فایل آزمون به‌تنهایی PASS محسوب نمی‌شود.\n`);
+  fs.writeFileSync(`.phpunit.cache/scenarios/${id}.md`, `# ${id} — ${title}\n\n## آماده‌سازی\n\nپایگاه داده SQLite جدا برای هر تست؛ هویت و محدوده معتبر سرور. داده‌ها و تعداد دقیق در متدهای PHP زیر ساخته می‌شوند. آزمون مرورگر از پایگاه داده آزمایشی جدا استفاده می‌کند.\n\n## عملیات و مقادیر\n\n${expected}\n\n## آزمون خودکار PHP\n\n${links}\n\n## مرورگر\n\n${browserTests.length ? browserTests.join('، ') : 'برای این قرارداد، آزمون پایگاه داده/سرور معیار است.'}\n\n## نتیجه واقعی\n\n${result.status} — ${measuredAt}\n\nمبنا: گزارش ${xmlPath} و ${browserPath}؛ وجود فایل آزمون به‌تنهایی PASS محسوب نمی‌شود.\n`);
   return result;
 });
-fs.writeFileSync('docs/ENTERPRISE-SCENARIO-RESULTS.json', JSON.stringify({ measuredAt, php: summary, browser: browser.stats, scenarios: results }, null, 2));
+fs.writeFileSync('.phpunit.cache/enterprise-scenarios.json', JSON.stringify({ measuredAt, php: summary, browser: browser.stats, scenarios: results }, null, 2));
 console.log(`${results.filter(row => row.status === 'PASS').length}/50 scenarios verified from executed reports`);
 if (results.some(row => row.status !== 'PASS')) process.exitCode = 1;

@@ -299,8 +299,8 @@ test('realtime latency: alice move to bob DOM (p95 recorded)', async ({ browser 
 
   samples.sort((a, b) => a - b);
   const p95 = samples[Math.ceil(samples.length * 0.95) - 1];
-  fs.mkdirSync('docs', { recursive: true });
-  fs.writeFileSync('docs/E2E-REALTIME-LATENCY.json', JSON.stringify({
+  fs.mkdirSync('.phpunit.cache', { recursive: true });
+  fs.writeFileSync('.phpunit.cache/realtime-latency.json', JSON.stringify({
     measuredAt: new Date().toISOString(),
     browser: 'msedge',
     samples: samples.length,

@@ -14,14 +14,14 @@ test('locale settings apply Jalali across board, details and list while preservi
   await locale.press('Tab');
   await expect(page.locator('[data-kb-part="card-due"]').first()).toContainText('۱۴۰۵/۰۸/۲۳');
   await expect(page.locator('[data-kb-part="card-due"]').first()).toHaveAttribute('datetime', '2026-11-14');
-  fs.mkdirSync('docs/redesign', { recursive: true });
-  await page.screenshot({ path: 'docs/redesign/jalali-board.jpg' });
+  fs.mkdirSync('test-results/screenshots', { recursive: true });
+  await page.screenshot({ path: 'test-results/screenshots/jalali-board.jpg' });
   const card = page.locator('.kb-card[data-card="101"]');
   await card.locator('summary').click();
   await card.locator('[data-kb-part="card-action-details"]').click();
   const details = page.locator('[data-kb-part="details-modal"]');
   await expect(details).toContainText('۱۴۰۵/۰۸/۲۳');
-  await page.screenshot({ path: 'docs/redesign/jalali-details.jpg' });
+  await page.screenshot({ path: 'test-results/screenshots/jalali-details.jpg' });
   await details.getByRole('button', { name: 'Close', exact: true }).click();
   await page.locator('[data-kb-part="view-list"]').click();
   await expect(page.locator('[data-kb-part="list-row"]').first()).toContainText('۱۴۰۵/۰۸/۲۳');
