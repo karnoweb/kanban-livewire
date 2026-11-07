@@ -44,7 +44,7 @@
         @if($prio !== '')
             <span class="kb-stat kb-stat--priority kb-stat--priority-{{ $prio }}" data-kb-part="card-priority">{{ __('kanban::kanban.priority_'.$prio) === 'kanban::kanban.priority_'.$prio ? $prio : __('kanban::kanban.priority_'.$prio) }}</span>
         @endif
-        @include('kanban::components.card-actions', ['card' => $card])
+        @include($cardActionsTemplate ?? 'kanban::components.card-actions', ['card' => $card])
     </div>
 
     @if(!empty($card['description']))

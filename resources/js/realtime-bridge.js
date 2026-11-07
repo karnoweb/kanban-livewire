@@ -15,6 +15,12 @@
     if (handlers && handlers.onEvent && subscription && subscription.listen) {
       subscription.listen(EVENT, handlers.onEvent);
     }
+    if (handlers && handlers.onSubscribed && subscription && subscription.subscribed) {
+      subscription.subscribed(handlers.onSubscribed);
+    }
+    if (handlers && handlers.onError && subscription && subscription.error) {
+      subscription.error(handlers.onError);
+    }
     listeners.set(id, { subscription: subscription, echo: echo, name: name, serial: handlers ? handlers.serial : null, unbind: handlers ? handlers.unbind : null });
   }
 
@@ -47,15 +53,17 @@
     return;
   }
 
-  function stateBinding(echo, component) {
+  function stateBinding(echo, component, root) {
     var pusher = echo && echo.connector && echo.connector.pusher;
     if (!pusher || !pusher.connection) {
       return null;
     }
+    root.setAttribute('data-kb-connection-state', pusher.connection.state);
     var wasConnected = false;
     var wasOffline = false;
     var handler = function (states) {
       var state = states.current;
+      root.setAttribute('data-kb-connection-state', state);
       if (state === 'connected') {
         wasConnected = true;
         if (wasOffline) {
@@ -101,17 +109,21 @@
         continue;
       }
       var echo = window.Echo;
+      var warning = el.querySelector('.kb-realtime-warning');
       if (!echo) {
-        var warning = el.querySelector('.kb-realtime-warning');
         if (warning) {
           warning.hidden = false;
         }
         continue;
       }
+      if (warning) {
+        warning.hidden = true;
+      }
       var component = window.Livewire.find(id);
       if (!component) {
         continue;
       }
+      el.setAttribute('data-kb-subscription', 'pending');
       attach(id, echo, channel, {
         serial: serial,
         onEvent: function (comp) {
@@ -119,7 +131,20 @@
             comp.applyRealtimeEvent(payload);
           };
         }(component),
-        unbind: stateBinding(echo, component)
+        onSubscribed: function (comp, root) {
+          return function () {
+            root.setAttribute('data-kb-subscription', 'subscribed');
+            comp.setOffline(false);
+          };
+        }(component, el),
+        onError: function (comp, root) {
+          return function (error) {
+            root.setAttribute('data-kb-subscription', 'failed');
+            console.warn('Kanban channel subscription failed', error && error.status);
+            comp.setOffline(true);
+          };
+        }(component, el),
+        unbind: stateBinding(echo, component, el)
       });
     }
 
@@ -140,6 +165,9 @@
   }
 
   document.addEventListener('livewire:init', scan);
+  document.addEventListener('livewire:initialized', scan);
+  document.addEventListener('livewire:navigated', scan);
+  window.addEventListener('echo:ready', scan);
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', start);
   } else {

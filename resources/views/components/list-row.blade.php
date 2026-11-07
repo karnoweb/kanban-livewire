@@ -30,5 +30,5 @@
     <div role="cell">@if(!empty($card['dueAt']))<time dir="ltr" class="kb-stat" data-kb-part="card-due" datetime="{{ $card['dueAt'] }}">{{ app(\Karnoweb\Kanban\Support\DateFormatter::class)->format($card['dueAt'], settings: $dateSettings ?? null) }}</time>@else<span class="kb-table-empty">—</span>@endif</div>
     <div role="cell">@include('kanban::components.card-assignees', ['card' => $card])</div>
     <div role="cell">@if(isset($meta['points']) && is_numeric($meta['points']))<span class="kb-stat kb-stat--points" data-kb-part="card-points">{{ $meta['points'] }} pt</span>@else<span class="kb-table-empty">—</span>@endif</div>
-    <div role="cell">@include('kanban::components.card-actions', ['card' => $card])</div>
+    <div role="cell">@include($cardActionsTemplate ?? 'kanban::components.card-actions', ['card' => $card])</div>
 </article>

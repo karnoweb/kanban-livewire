@@ -53,6 +53,9 @@
             @include('kanban::components.archive-browser')
         @endif
         @include('kanban::components.realtime-warning')
+        @isset($boardFooterTemplate)
+            @include($boardFooterTemplate)
+        @endisset
     @endif
     <div class="kb-live" aria-live="polite" data-kb-part="live-region">{{ $notice['messageCode'] ?? '' }}</div>
 </div>

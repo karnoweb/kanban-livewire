@@ -4,8 +4,8 @@
     @if(in_array('priority', $filterFields ?? ['priority'], true))
     <div class="kb-filter-chips" role="group" aria-label="{{ __('kanban::kanban.filters') }}" data-kb-part="filter-priority">
         <button type="button" class="btn btn-outline kb-chip {{ $activePriority === '' ? 'is-active' : '' }}" data-kb-part="filter-priority-all" wire:click="setBoardFilter('priority', '')" aria-pressed="{{ $activePriority === '' ? 'true' : 'false' }}">{{ __('kanban::kanban.priority_all') }}</button>
-        @foreach(['high' => 'priority_high', 'medium' => 'priority_medium', 'low' => 'priority_low'] as $prio => $labelKey)
-            <button type="button" class="btn btn-outline kb-chip kb-chip--{{ $prio }} {{ $activePriority === $prio ? 'is-active' : '' }}" data-kb-part="filter-priority-{{ $prio }}" wire:click="setBoardFilter('priority', '{{ $prio }}')" aria-pressed="{{ $activePriority === $prio ? 'true' : 'false' }}">{{ __('kanban::kanban.'.$labelKey) }}</button>
+        @foreach(($facetOptions['priority'] ?? ['high' => __('kanban::kanban.priority_high'), 'medium' => __('kanban::kanban.priority_medium'), 'low' => __('kanban::kanban.priority_low')]) as $prio => $label)
+            <button type="button" class="btn btn-outline kb-chip kb-chip--{{ $prio }} {{ $activePriority === $prio ? 'is-active' : '' }}" data-kb-part="filter-priority-{{ $prio }}" wire:click="setBoardFilter('priority', @js((string) $prio))" aria-pressed="{{ $activePriority === $prio ? 'true' : 'false' }}">{{ $label }}</button>
         @endforeach
     </div>
     @endif

@@ -10,7 +10,9 @@ use Illuminate\Contracts\Events\ShouldDispatchAfterCommit;
 
 final class KanbanBroadcastEvent implements ShouldBroadcast, ShouldDispatchAfterCommit
 {
-    /** @param array<string, mixed> $payload minimal RealtimeEventData payload only */
+    /**
+     * @param array<string, mixed> $payload minimal RealtimeEventData payload only
+     */
     public function __construct(
         public readonly string $channel,
         public readonly array $payload,
@@ -28,7 +30,14 @@ final class KanbanBroadcastEvent implements ShouldBroadcast, ShouldDispatchAfter
         return 'kanban.event';
     }
 
-    /** @return array<string, mixed> */
+    public function broadcastQueue(): string
+    {
+        return (string) config('kanban.broadcast_queue', 'default');
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
     public function broadcastWith(): array
     {
         return $this->payload;

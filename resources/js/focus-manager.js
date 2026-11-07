@@ -46,7 +46,9 @@
     }
   };
   function sync() {
-    var dialogs = document.querySelectorAll('.kb [aria-modal="true"]');
+    var dialogs = Array.from(document.querySelectorAll('.kb [aria-modal="true"]')).filter(function (dialog) {
+      return dialog.getClientRects().length > 0 && getComputedStyle(dialog).visibility !== 'hidden' && !dialog.closest('[hidden]');
+    });
     var next = dialogs[dialogs.length - 1] || null;
     if (next === active) return;
     if (release) release();
@@ -55,7 +57,7 @@
   }
   function boot() {
     sync();
-    new MutationObserver(sync).observe(document.body, { childList: true, subtree: true });
+    new MutationObserver(sync).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['aria-modal', 'hidden', 'style', 'open'] });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
   else boot();
